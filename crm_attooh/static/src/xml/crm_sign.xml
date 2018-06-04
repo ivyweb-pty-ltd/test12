@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <t t-extend="website_sign.create_signature_request_dialog">
+        <t t-jquery="div.o_sign_request_signers" t-operation="append">
+            <!-- <div class="o_sign_request_signers"> -->
+                <div class="form-group">
+                    <label for="o_sign_crm_lead_select" class="col-md-3">Oppotunity</label>
+                    <div class="col-md-9">
+                        <input id="o_sign_crm_lead_select" placeholder="Search Lead...."/>
+                    </div>
+                <!-- </div> -->
+            </div>
+        </t>
+    </t>
+</odoo>

@@ -8,12 +8,11 @@ class CrmAttooh(models.Model):
 
     name = fields.Char()
 
-
 class SignatureRequest(models.Model):
     _inherit = 'signature.request'
 
     lead_id = fields.Many2one('crm.lead')
-
+    
     @api.model
     def initialize_sign_new(self, id, signers, followers, lead_id, reference, subject, message, send=True):
         signature_request = self.create(
@@ -39,11 +38,14 @@ class CRM(models.Model):
     signature_requests_count = fields.Integer("# Signature Requests", compute='_compute_signature_requests')
     signature_ids = fields.One2many('signature.request', 'lead_id')
     product_area = fields.Selection([
+        ('financial_planning', 'Financial Planning'),
         ('short_term', 'Short Term'),
         ('health', 'Health'),
         ('investments', 'Investments'),
         ('risk', 'Risk')
     ], string="Product Area")
+    referred = fields.Many2one('res.partner', 'Referred By')
+    phone = fields.Char('Work Phone')
 
     @api.onchange('stage_id')
     def onchanhge_stage_id(self):
@@ -68,26 +70,28 @@ class CRM(models.Model):
                         'stage_activity_id': activity.id,
                     })
 
+        # TO FIX: why self.id is <odoo.models.NewId object >
+        lead_id = self._context.get('params', {}).get('id')
+        if lead_id:
+            automate_emails = self.stage_id.stage_automated_email_ids.filtered(lambda r: r.user_id == self.user_id)
+            for record in automate_emails:
+                self.browse(lead_id).message_post_with_template(record.email_template_id.id)
+
+        signature_requests = self.stage_id.stage_signature_request_ids.filtered(lambda r: r.user_id == self.user_id)
+        for record in signature_requests:
+            print('EEEE', record, record.signature_request_template_id)
+            # self.browse(lead_id).message_post_with_template(record.email_template_id.id)
+
     @api.onchange('product_area')
     def onchanhge_product_area(self):
         if self.product_area == 'short_term':
-            team_id = self.env['crm.team'].search([('name', '=', 'Short Term')], order='id desc', limit=1)
-            if team_id:
-                self.update({'team_id': team_id.id})
+            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_1')
         elif self.product_area == 'health':
-            team_id = self.env['crm.team'].search([('name', '=', 'Health')], order='id desc', limit=1)
-            if team_id:
-                self.update({'team_id': team_id.id})
+            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_2')
         elif self.product_area == 'investments':
-            team_id = self.env['crm.team'].search([('name', '=', 'Investments')], order='id desc', limit=1)
-            if team_id:
-                self.update({'team_id': team_id.id})
+            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_3')
         elif self.product_area == 'risk':
-            team_id = self.env['crm.team'].search([('name', '=', 'Risk')], order='id desc', limit=1)
-            if team_id:
-                self.update({'team_id': team_id.id})
-        else:
-            pass
+            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_4')
 
     @api.multi
     def _compute_signature_requests(self):
@@ -100,3 +104,4 @@ class CRM(models.Model):
         action = self.env['ir.actions.act_window'].for_xml_id('website_sign', 'signature_request_action')
         action['domain'] = [('id', 'in', self.signature_ids.ids)]
         return action
+

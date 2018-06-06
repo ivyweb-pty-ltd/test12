@@ -44,9 +44,25 @@ class MailActivity(models.Model):
                 {'type': 'activity_updated', 'activity_created': True})
         return activity_user
 
+class CrmAutomatedEmails(models.Model):
+    _name = "crm.automated.email"
+
+    crm_stage_id = fields.Many2one('crm.stage', string="Stage")
+    email_template_id = fields.Many2one('mail.template', string='Email Templates', request=True)
+    user_id = fields.Many2one('res.users', string='Users', required=True)
+
+class CrmSignatureRequest(models.Model):
+    _name = "crm.signature.request"
+
+    crm_stage_id = fields.Many2one('crm.stage', string="Stage")
+    signature_request_template_id = fields.Many2one('signature.request.template', string='Signature Request Templates', required=True)
+    user_id = fields.Many2one('res.users', string='Users', required=True)
+
 
 class crm_stage(models.Model):
     _inherit = 'crm.stage'
 
     team_ids = fields.Many2many('crm.team', 'crm_team_stage_rel', 'team_id', 'stage_id', string='Teams')
     stage_activity_ids = fields.One2many('stage.activity', 'crm_stage_id', string="Activities")
+    stage_automated_email_ids = fields.One2many('crm.automated.email', 'crm_stage_id', string="Email Templates")
+    stage_signature_request_ids = fields.One2many('crm.signature.request', 'crm_stage_id', string="Signature Request")

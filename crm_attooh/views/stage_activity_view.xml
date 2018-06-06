@@ -70,6 +70,22 @@
                         <page string="Stage Activities">
                             <field name="stage_activity_ids"/>
                         </page>
+                        <page string="Stage Automated Emails">
+                            <field name="stage_automated_email_ids">
+                                <tree editable="top">
+                                    <field name="email_template_id"/>
+                                    <field name="user_id"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Stage Signature Request">
+                            <field name="stage_signature_request_ids">
+                                <tree editable="top">
+                                    <field name="signature_request_template_id"/>
+                                    <field name="user_id"/>
+                                </tree>
+                            </field>
+                        </page>
                     </notebook>
                 </xpath>
             </field>

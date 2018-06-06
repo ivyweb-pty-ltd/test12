@@ -33,6 +33,14 @@
 				<xpath expr="//field[@name='team_id']" position="before">
 					<field name="product_area" />
 				</xpath>
+				<xpath expr="//field[@name='mobile']" position="replace">
+				</xpath>
+				<xpath expr="//field[@name='phone']" position="after">
+					<field name="mobile" />
+				</xpath>
+				<xpath expr="//field[@name='source_id']" position="after">
+					<field name="referred" />
+				</xpath>
 			</field>
 		</record>
 		<record id="crm_lead_view_form_service_lead" model="ir.ui.view">
@@ -42,6 +50,10 @@
 			<field name="arch" type="xml">
 				<xpath expr="//field[@name='mobile']" position="after">
 					<field name="service_ids" widget="many2many_tags" options="{'no_create_edit': True}" />
+				</xpath>
+				<xpath expr="//group[@name='categorization']" position="attributes">
+					<attribute name="groups"></attribute>
+					<!-- <field name="service_ids" widget="many2many_tags" options="{'no_create_edit': True}" /> -->
 				</xpath>
 			</field>
 		</record>

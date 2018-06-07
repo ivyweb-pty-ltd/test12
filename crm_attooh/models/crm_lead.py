@@ -15,6 +15,7 @@ class SignatureRequest(models.Model):
     
     @api.model
     def initialize_sign_new(self, id, signers, followers, lead_id, reference, subject, message, send=True):
+        import pdb; pdb.set_trace()
         signature_request = self.create(
             {'template_id': id, 'reference': reference, 'lead_id': lead_id, 'follower_ids': [(6, 0, followers)],
              'favorited_ids': [(4, self.env.user.id)]})
@@ -70,17 +71,32 @@ class CRM(models.Model):
                         'stage_activity_id': activity.id,
                     })
 
-        # TO FIX: why self.id is <odoo.models.NewId object >
-        lead_id = self._context.get('params', {}).get('id')
-        if lead_id:
-            automate_emails = self.stage_id.stage_automated_email_ids.filtered(lambda r: r.user_id == self.user_id)
-            for record in automate_emails:
-                self.browse(lead_id).message_post_with_template(record.email_template_id.id)
+    @api.multi
+    def write(self, vals):
+        if vals.get('stage_id'):
+            res = super(CRM, self).write(vals)
+            for record in self:
+                automate_emails = self.stage_id.stage_automated_email_ids.filtered(lambda r: r.user_id == self.user_id)
+                for email in automate_emails:
+                    record.message_post_with_template(email.email_template_id.id)
+                signature_requests = self.stage_id.stage_signature_request_ids.filtered(lambda r: r.user_id == self.user_id)
+                for request in signature_requests:
+                    template = request.signature_request_template_id
+                    signers = [{
+                        'partner_id': record.partner_id.id,
+                        'role': 1
+                    }]
+                    message = _('Signature Request for %s ') % record.stage_id.name
+                    subject = _('Signature Request - %s') % template.attachment_id.name
+                    Request = self.env['signature.request']
+                    Request.initialize_sign_new(template.id, signers, [], record.id,
+                        template.attachment_id.name, subject, message)
+            return res
 
-        signature_requests = self.stage_id.stage_signature_request_ids.filtered(lambda r: r.user_id == self.user_id)
-        for record in signature_requests:
-            print('EEEE', record, record.signature_request_template_id)
-            # self.browse(lead_id).message_post_with_template(record.email_template_id.id)
+            # signature_requests = self.stage_id.stage_signature_request_ids.filtered(lambda r: r.user_id == self.user_id)
+            # for record in signature_requests:
+            #     print('EEEE', record, record.signature_request_template_id)
+            #     # self.browse(lead_id).message_post_with_template(record.email_template_id.id)
 
     @api.onchange('product_area')
     def onchanhge_product_area(self):

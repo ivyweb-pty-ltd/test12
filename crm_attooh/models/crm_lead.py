@@ -73,8 +73,8 @@ class CRM(models.Model):
 
     @api.multi
     def write(self, vals):
+        res = super(CRM, self).write(vals)
         if vals.get('stage_id'):
-            res = super(CRM, self).write(vals)
             for record in self:
                 automate_emails = self.stage_id.stage_automated_email_ids.filtered(lambda r: r.user_id == self.user_id)
                 for email in automate_emails:
@@ -98,6 +98,7 @@ class CRM(models.Model):
             #     print('EEEE', record, record.signature_request_template_id)
             #     # self.browse(lead_id).message_post_with_template(record.email_template_id.id)
 
+    @api.multi
     @api.onchange('product_area')
     def onchanhge_product_area(self):
         if self.product_area == 'short_term':
@@ -108,6 +109,7 @@ class CRM(models.Model):
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_3')
         elif self.product_area == 'risk':
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_4')
+        else: pass
 
     @api.multi
     def _compute_signature_requests(self):

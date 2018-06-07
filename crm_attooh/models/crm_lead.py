@@ -77,6 +77,7 @@ class CRM(models.Model):
         if vals.get('stage_id'):
             for record in self:
                 automate_emails = self.stage_id.stage_automated_email_ids.filtered(lambda r: r.user_id == self.user_id)
+                print ('\n\nautomate_emails',automate_emails)
                 for email in automate_emails:
                     record.message_post_with_template(email.email_template_id.id)
                 signature_requests = self.stage_id.stage_signature_request_ids.filtered(lambda r: r.user_id == self.user_id)
@@ -91,7 +92,7 @@ class CRM(models.Model):
                     Request = self.env['signature.request']
                     Request.initialize_sign_new(template.id, signers, [], record.id,
                         template.attachment_id.name, subject, message)
-            return res
+        return res
 
             # signature_requests = self.stage_id.stage_signature_request_ids.filtered(lambda r: r.user_id == self.user_id)
             # for record in signature_requests:

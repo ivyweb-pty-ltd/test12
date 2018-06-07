@@ -14,3 +14,6 @@ access_helpdesk_ticket_type,access_helpdesk_ticket_type,helpdesk.model_helpdesk_
 access_helpdesk_stage,access_helpdesk_stage,helpdesk.model_helpdesk_stage,,1,1,1,0
 access_mail_message,access_mail_message,mail.model_mail_message,,1,1,1,0
 access_stage_activity,access_stage_activity,model_stage_activity,,1,1,1,0
+access_crm_signature_request,access_crm_signature_request,model_crm_signature_request,,1,0,0,0
+access_ticket_type_activity,access_ticket_type_activity,model_ticket_type_activity,,1,0,0,0
+access_crm_automated_email,access_crm_automated_email,model_crm_automated_email,base.group_user,1,1,1,0

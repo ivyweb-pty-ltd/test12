@@ -15,7 +15,6 @@ class SignatureRequest(models.Model):
     
     @api.model
     def initialize_sign_new(self, id, signers, followers, lead_id, reference, subject, message, send=True):
-        import pdb; pdb.set_trace()
         signature_request = self.create(
             {'template_id': id, 'reference': reference, 'lead_id': lead_id, 'follower_ids': [(6, 0, followers)],
              'favorited_ids': [(4, self.env.user.id)]})

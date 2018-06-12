@@ -17,3 +17,4 @@ access_stage_activity,access_stage_activity,model_stage_activity,,1,1,1,0
 access_crm_signature_request,access_crm_signature_request,model_crm_signature_request,,1,0,0,0
 access_ticket_type_activity,access_ticket_type_activity,model_ticket_type_activity,,1,0,0,0
 access_crm_automated_email,access_crm_automated_email,model_crm_automated_email,base.group_user,1,1,1,0
+access_employee_roles,access_employee_roles,model_employee_roles,,1,0,0,0

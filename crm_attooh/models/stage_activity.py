@@ -10,10 +10,11 @@ class mail_activity(models.Model):
     activity_date = fields.Integer(string="Activity Date")
     assign_to_owner = fields.Boolean(string="Assign to Owner?")
     activity_type_id = fields.Many2one('mail.activity.type', string="Activity Type")
+    employee_role_id = fields.Many2one('employee.roles', string="Employee Role")
+#     user_id = fields.Many2one('employee.roles', string="Assigned To")
     user_id = fields.Many2one('res.users', string="Assigned To")
     team_ids = fields.Many2many('crm.team', 'activity_stage_rel', 'activity_id', 'stage_id', string='Teams')
     crm_stage_id = fields.Many2one('crm.stage', string="Stage")
-
 
 #     @api.depends('date_deadline')
 #     def _compute_activity_date(self):

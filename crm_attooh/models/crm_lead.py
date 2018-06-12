@@ -56,7 +56,7 @@ class CRM(models.Model):
                 if activity.assign_to_owner:
                     user_id = self.user_id and self.user_id.id or False
                 else:
-                    user_id = activity.user_id and activity.user_id.id or False
+                    user_id = activity.employee_role_id.employee_id and activity.employee_role_id.employee_id.id or False
                 activities = self.env['mail.activity'].search(
                     [('res_id', '=', self._origin.id), ('stage_activity_id', '=', activity.id)])
                 if not activities:
@@ -68,7 +68,7 @@ class CRM(models.Model):
                         'summary': activity.name,
                         'user_id': user_id,
                         'stage_activity_id': activity.id,
-                    })
+                        })
 
     @api.multi
     def write(self, vals):

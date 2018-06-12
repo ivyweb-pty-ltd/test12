@@ -10,5 +10,6 @@ class ticket_type_activity(models.Model):
     assign_to_owner = fields.Boolean(string="Assign to Owner?")
     activity_type_id = fields.Many2one('mail.activity.type', string="Activity Type")
     user_id = fields.Many2one('res.users', string="Assigned To")
+    employee_role_id = fields.Many2one('employee.roles', string="Assigned To")
     ticket_type_id = fields.Many2one('helpdesk.ticket.type', string="Ticket Type")
     active = fields.Boolean(default=True)

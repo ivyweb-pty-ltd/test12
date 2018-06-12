@@ -21,7 +21,8 @@
                             <field name="activity_date"/>
                             <field name="assign_to_owner"/>
                             <field name="activity_type_id"/>
-                            <field name="user_id" attrs="{'invisible': [('assign_to_owner', '!=', False)]}"/>
+                            <field name="user_id" attrs="{'invisible': [('assign_to_owner', '!=', False)]}" invisible="1"/>
+                            <field name="employee_role_id" attrs="{'invisible': [('assign_to_owner', '!=', False)]}"/>
                             <field name="ticket_type_id"/>
                         </group>
                     </sheet>
@@ -38,7 +39,8 @@
                     <field name="activity_type_id" />
                     <field name="activity_date" />
                     <field name="assign_to_owner" />
-                    <field name="user_id" attrs="{'invisible': [('assign_to_owner', '!=', False)]}"/>
+                    <field name="user_id" attrs="{'invisible': [('assign_to_owner', '!=', False)]}" invisible="1"/>
+                    <field name="employee_role_id" attrs="{'invisible': [('assign_to_owner', '!=', False)]}"/>
                     <field name="ticket_type_id" />
                 </tree>
             </field>

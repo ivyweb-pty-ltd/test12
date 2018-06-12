@@ -15,3 +15,4 @@ from . import finance_portal_detail
 from . import helpdesk
 from . import helpdesk_portal
 from . import ticket_type_activity
+from . import employee

@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['crm', 'sale_management', 'website_sign', 'website_quote', 'website_form', 'helpdesk', 'base_automation', 'portal'],
+    'depends': ['crm', 'sale_management', 'website_sign', 'website_quote', 'website_form', 'helpdesk', 'base_automation', 'portal', 'hr'],
 
     # always loaded
     'data': [
@@ -29,12 +29,12 @@
         'data/signature_item_type_data.xml',
         'data/helpdesk_demo.xml',
         'data/ticket_type_activity_data.xml',
-#         'data/stage_activity_data.xml',
         'data/crm_demo.xml',
         'data/ticket_type_activity_data.xml',
-#         'data/base_automation_demo.xml',
         'data/sales_team_demo.xml',
+        'data/hr_employee_roles_data.xml',
         'views/crm_views.xml',
+        'views/hr_views.xml',
         'views/res_partner_views.xml',
         'views/ir_attachment.xml',
         'views/res_config_settings_views.xml',

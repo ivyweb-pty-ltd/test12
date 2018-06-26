@@ -29,9 +29,10 @@ class SignatureRequest(models.Model):
             {'template_id': id, 'reference': reference, 'lead_id': lead_id, 'follower_ids': [(6, 0, followers)],
              'favorited_ids': [(4, self.env.user.id)]})
         signature_request.set_signers(signers)
-        if send and record:
+        if send:
             signature_request.action_sent(subject, message)
             signature_request._message_post(_('Waiting for signatures.'), type='comment', subtype='mt_comment')
+        if record:
             body = _('%s has been sent to %s') % (subject, record.partner_id.name)
             record.message_post(body, message_type='comment')
         return {

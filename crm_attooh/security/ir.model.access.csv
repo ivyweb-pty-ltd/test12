@@ -9,7 +9,6 @@ access_partner_asset,access_partner_asset,model_partner_asset,,1,0,0,0
 access_document_type,access_document_type,model_document_type,,1,1,0,0
 access_res_partner,access_res_partner,model_res_partner,,1,1,0,0
 access_ir_attachment,access_ir_attachment,model_ir_attachment,,1,1,1,0
-access_helpdesk_ticket,access_helpdesk_ticket,helpdesk.model_helpdesk_ticket,,1,1,1,0
 access_helpdesk_ticket_type,access_helpdesk_ticket_type,helpdesk.model_helpdesk_ticket_type,,1,1,1,0
 access_helpdesk_stage,access_helpdesk_stage,helpdesk.model_helpdesk_stage,,1,1,1,0
 access_mail_message,access_mail_message,mail.model_mail_message,,1,1,1,0

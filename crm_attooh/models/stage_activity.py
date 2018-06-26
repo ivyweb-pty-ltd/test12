@@ -67,3 +67,4 @@ class crm_stage(models.Model):
     stage_activity_ids = fields.One2many('stage.activity', 'crm_stage_id', string="Activities")
     stage_automated_email_ids = fields.One2many('crm.automated.email', 'crm_stage_id', string="Email Templates")
     stage_signature_request_ids = fields.One2many('crm.signature.request', 'crm_stage_id', string="Signature Request")
+    has_portal_access = fields.Boolean('Subscribe to Portal')

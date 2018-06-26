@@ -278,6 +278,8 @@ class CRM(models.Model):
     asset_ids = fields.One2many('partner.asset', 'partner_id', string='Assets')
     attachment_count = fields.Integer(compute="_compute_attachment_count", string="Attachments")
 
+    # spouse_id = fields.Many2one('res.partner', 'Spouse')
+
     def _compute_attachment_count(self):
         Attachment = self.env['ir.attachment']
         for partner in self:

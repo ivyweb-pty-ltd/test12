@@ -75,20 +75,36 @@ class WebsiteAttoohForm(http.Controller):
             # I couldn't find a cleaner way to pass data to an exception
             return json.dumps({'error_fields': e.args[0]})
         model_record.write(data['record'])
+        
         return json.dumps({'id': model_record.id})
 
     @http.route('/website_form/personal_detail', type='http', auth="user", methods=['POST'], website=True)
     def website_personal_detail_form(self, *args, **kwargs):
         model_record = request.env.user.partner_id
         try:
-            data = self.extract_data(model_record, request.params)
+            partner = {}
+            spouse = {}
+            for key, value in request.params.items():
+                if key.startswith('spouse_'):
+                    k = key.split('spouse_')[1]
+                    spouse[k] = value
+                else:
+                    partner[key] = value
+            data = self.extract_data(model_record, partner)
+            spouse_data = self.extract_data(model_record, spouse)
         # If we encounter an issue while extracting data
         except ValidationError as e:
             # I couldn't find a cleaner way to pass data to an exception
             return json.dumps({'error_fields': e.args[0]})
         model_record.write(data['record'])
+        if model_record.spouse_id:
+            model_record.spouse_id.write(spouse_data['record'])
+        else:
+            spouse_data['record']['name'] = '-'
+            spouse_id = model_record.spouse_id.create(spouse_data['record'])
+            model_record.spouse_id = spouse_id
         return json.dumps({'id': model_record.id})
-    
+
     def _validate_o2m_data(self, data, field):
         related_model = request.env['res.partner']._fields[field].comodel_name
         fields = request.env[related_model]._fields

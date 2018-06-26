@@ -72,5 +72,13 @@
         <field name="default_height" type="float">0.015</field>
         <field name="placeholder">Your Country</field>
     </record>
+    
+    <record model="signature.item.type" id="signature_item_type_checkbox">
+        <field name="name">Checkbox</field>
+        <field name="type">checkbox</field>
+        <field name='tip'>fill in</field>
+        <field name="default_width" type="float">0.037</field>
+        <field name="default_height" type="float">0.025</field>
+    </record>
 
 </odoo>

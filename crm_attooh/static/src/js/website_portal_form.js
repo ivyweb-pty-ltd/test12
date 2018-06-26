@@ -36,7 +36,6 @@ odoo.define('website_attooh_form.animation', function (require) {
             // this.$target.validator();
 
             // Initialize datetimepickers
-            var l10n = _t.database.parameters;
             var datepickers_options = {
                 minDate: moment({ y: 1900 }),
                 maxDate: moment().add(200, "y"),
@@ -92,13 +91,9 @@ odoo.define('website_attooh_form.animation', function (require) {
                 return;
             }
             
-            this.$target.find('.o_website_form_send').off().addClass('disabled');  // Prevent
-																					// users
-																					// from
-																					// crazy
-																					// clicking
+            // Prevent users from crazy clicking
+            this.$target.find('.o_website_form_send').off().addClass('disabled');
             var self = this;
-
             self.$target.find('#o_website_form_result').empty();
             if (!self.check_error_fields({})) {
                 self.update_status('invalid');
@@ -180,7 +175,7 @@ odoo.define('website_attooh_form.animation', function (require) {
                     self.update_status('error');
                     if (result_data.error_fields) {
                         // If the server return a list of bad fields, show these
-						// fields for users
+                        // fields for users
                         self.check_error_fields(result_data.error_fields);
                     }
                 } else {
@@ -293,7 +288,7 @@ odoo.define('website_attooh_form.animation', function (require) {
         update_status: function (status) {
             var self = this;
             if (status !== 'success') {  // Restore send button behavior if
-											// result is an error
+                                            // result is an error
                 this.$target.find('.o_website_form_send').on('click',function (e) {self.send(e);}).removeClass('disabled');
             }
             var $result = this.$('#o_website_form_result');
@@ -302,70 +297,70 @@ odoo.define('website_attooh_form.animation', function (require) {
             });
         },
     });
-    $(document).ready(function(){
-    	$('.button_preview').on('click',function(){
-    		$(this).parents('tr').find('#my_model').modal('show');
-    	})
+    $(document).ready(function (){
+        $('.button_preview').on('click',function (){
+            $(this).parents('tr').find('#my_model').modal('show');
+        });
         // TOFIX: on delete newly added line on finance personal portal
-		// 'dropContainer' is undefined traceback
+        // 'dropContainer' is undefined traceback
 
-   	     // dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
-		 //    evt.preventDefault();
-		 //  };
-		 // dropContainer.ondrop = function(evt) {
-		 // 	doc_attachment.files = evt.dataTransfer.files;
-		 //   evt.preventDefault();
-		 // };
-		 $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-	        event.preventDefault();
-	        $(this).ekkoLightbox();
-	    });
+            // dropContainer.ondragover = dropContainer.ondragenter = function(evt) {
+         //    evt.preventDefault();
+         //  };
+         // dropContainer.ondrop = function(evt) {
+         //     doc_attachment.files = evt.dataTransfer.files;
+         //   evt.preventDefault();
+         // };
+         $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });
 
-		 setTimeout(function (){
-			 $('.media.o_portal_chatter_message .o_portal_chatter_attachments .col-md-2.col-sm-3.text-center').each(function(){
-				 $(this).prepend("<button class='btn view_document_chatter' style='border: 1px solid steelblue;border-radius: 0;width: 95px;padding: 2px;margin-top: 10px;background: steelblue;color: white;'>View</button>")
-			 });
-			 
-			 $('.view_document_chatter').on('click',function(){
+         setTimeout(function (){
+             $('.media.o_portal_chatter_message .o_portal_chatter_attachments .col-md-2.col-sm-3.text-center').each(function (){
+                 $(this).prepend("<button class='btn view_document_chatter' style='border: 1px solid steelblue;border-radius: 0;width: 95px;padding: 2px;margin-top: 10px;background: steelblue;color: white;'>View</button>");
+             });
+             
+             $('.view_document_chatter').on('click',function (){
                 $(document).find('#my_model_doc').remove();
-				 var url = $(this).parents('.col-md-2.col-sm-3.text-center').find('a').attr('href')
-				 var id= parseInt(url.split("content/")[1].split("?")[0]);
-				 ajax.jsonRpc("/get_helpdesk_attachment_id", 'call', {'id': id})
+                 var url = $(this).parents('.col-md-2.col-sm-3.text-center').find('a').attr('href');
+                 var id= parseInt(url.split("content/")[1].split("?")[0]);
+                 ajax.jsonRpc("/get_helpdesk_attachment_id", 'call', {'id': id})
                     .then(function (data) {
-                        if(data.file_type == 'other'){
-                            window.location.replace(data.src)
-                        }else{
-                       var html = ""
-                    	html += '<div id="my_model_doc" class="modal fade" role="dialog">'
-                        html += '<div class="modal-header" style="border-bottom: unset;">'
-                        html += '<h4 class="modal-title" style="color: white; float: left;">'
-                        html += '<span t-field="attachment.name" />'
-                        html += '</h4>'
-                        html += '<button class="close" style="opacity: 1.0" type="button"'
-                        html += 'data-dismiss="modal" aria-lable="Close">'
-                        html += '<span aria-hidden="true" style="color: white;">x</span>'
-                        html += '</button>'
-                        html += '</div>'
-                        html += '<div class="modal-dialog" style="width:80%;height:80%;">'
-                        html += '<div class="modal-content" style="width:100%;height:100%;">'
-                        html += '<div class="modal-body" style="width:100%;height:100%;padding:0px;">'
-                        if(data.file_type=='pdf'){
-                            html += '<iframe class="mb48 o_viewer_pdf"'
-                            html += 'src="'+data.src+'"'
-                            html += 'style="width:100%;height:100%;" />'    
-                        }else{
-                            html += '<img class="img-fluid" style="width:100%;"'
-                            html += 'src="'+data.src+'" />'
+                        if (data.file_type === 'other'){
+                            window.location.replace(data.src);
+                        } else {
+                            var html = "";
+                            html += '<div id="my_model_doc" class="modal fade" role="dialog">';
+                            html += '<div class="modal-header" style="border-bottom: unset;">';
+                            html += '<span t-field="attachment.name" />';
+                            html += '<h4 class="modal-title" style="color: white; float: left;">';
+                            html += '</h4>';
+                            html += '<button class="close" style="opacity: 1.0" type="button"';
+                            html += 'data-dismiss="modal" aria-lable="Close">';
+                            html += '<span aria-hidden="true" style="color: white;">x</span>';
+                            html += '</button>';
+                            html += '</div>';
+                            html += '<div class="modal-dialog" style="width:80%;height:80%;">';
+                            html += '<div class="modal-content" style="width:100%;height:100%;">';
+                            html += '<div class="modal-body" style="width:100%;height:100%;padding:0px;">';
+                            if (data.file_type === 'pdf'){
+                                html += '<iframe class="mb48 o_viewer_pdf"';
+                                html += 'src="'+data.src+'"';
+                                html += 'style="width:100%;height:100%;" />';
+                            } else {
+                                html += '<img class="img-fluid" style="width:100%;"';
+                                html += 'src="'+data.src+'" />';
                         }
-                        html += '</div>'
-                        html += '</div>'
-                        html += '</div>'
-                        html += '</div>'
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
                         $('body').append(html);
-                       $('#my_model_doc').modal('show')
+                        $('#my_model_doc').modal('show');
                        }
                     });
-			 });
-		},500);
+             });
+        },500);
     });
 });

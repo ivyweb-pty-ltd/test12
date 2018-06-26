@@ -11,8 +11,10 @@ class CustomerPortal(CustomerPortal):
         partner = request.env.user.partner_id
         Income = request.env['partner.income']
         Expense = request.env['partner.expense']
+
         return request.render("crm_attooh.personalfinancial_detail", {
             'partner': partner,
+            'spouse': partner.spouse_id,
             'edit_mode': edit_mode,
             'Income_obj': Income,
             'Expense': Expense

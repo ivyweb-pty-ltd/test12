@@ -367,22 +367,28 @@
                                                         <input type="text" class="form-control" name="surname" t-att-value="partner.surname" placeholder="Surname"/>
                                                     </div>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="spouse_name" t-att-value="spouse.name" placeholder="Name"/>
+                                                        <span class="input-group-addon">-</span>
+                                                        <input type="text" class="form-control" name="spouse_surname" t-att-value="spouse.surname" placeholder="Surname"/>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Maiden Name</td>
                                                 <td><input class="form-control" name="maiden_name" t-att-value="partner.maiden_name"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" name="spouse_maiden_name" t-att-value="spouse.maiden_name"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Known as</td>
                                                 <td><input class="form-control" name="preferred_name" t-att-value="partner.preferred_name"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" name="spouse_preferred_name" t-att-value="spouse.preferred_name"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Identity Number</td>
                                                 <td><input class="form-control" required="required" pattern="\d*"  title="This must be a number"  name="id_rsa" t-att-value="partner.id_rsa"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" required="required" pattern="\d*"  title="This must be a number"  name="spouse_id_rsa" t-att-value="spouse.id_rsa"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Marital Status</td>
@@ -395,7 +401,15 @@
                                                         </t>
                                                     </select>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <select name="spouse_marital_status" class="form-control">
+                                                        <t t-foreach="partner._fields['marital_status'].selection or []" t-as="type">
+                                                            <option t-att-value="type[0]" t-att-selected="spouse.marital_status == type[0]">
+                                                                <t t-esc="type[1]"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Date of Marriage</td>
@@ -404,7 +418,11 @@
                                                         <input type="text" class="form-control o_website_form_date" t-att-value="partner.marrige_date" name="marrige_date"/>
                                                     </div>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <div class='col-md-12'>
+                                                        <input type="text" class="form-control o_website_form_date" t-att-value="spouse.marrige_date" name="spouse_marrige_date"/>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Qualification</td>
@@ -417,57 +435,77 @@
                                                         </t>
                                                     </select>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <select name="spouse_qualification" class="form-control">
+                                                        <t t-foreach="partner._fields['qualification'].selection or []" t-as="type">
+                                                            <option t-att-value="type[0]" t-att-selected="spouse.qualification == type[0]">
+                                                                <t t-esc="type[1]"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Employer</td>
                                                 <td><input class="form-control" name="employer" t-att-value="partner.employer"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" name="spouse_employer" t-att-value="spouse.employer"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Address</td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>
+                                                    <input class="form-control" name="street"  placeholder="Street..." t-att-value="partner.street"/>
+                                                    <input class="form-control" name="street2" placeholder="Street 2..." t-att-value="partner.street2"/>
+                                                    <input class="form-control" name="city" placeholder="City"  t-att-value="partner.city"/>
+                                                    <input class="form-control" name="zip" placeholder="ZIP" t-att-value="partner.zip"/>
+                                                    <!-- <span t-field="partner.state_id"/>
+                                                    <span t-field="partner.country_id"/> -->
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" name="spouse_street" placeholder="Street..." t-att-value="spouse.street"/>
+                                                    <input class="form-control" name="spouse_street2" placeholder="Street 2..." t-att-value="spouse.street2"/>
+                                                    <input class="form-control" name="spouse_city" placeholder="City" t-att-value="spouse.city"/>
+                                                    <input class="form-control" name="spouse_zip" placeholder="ZIP" t-att-value="spouse.zip"/>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>Occupation</td>
                                                 <td><input class="form-control" name="occupation" t-att-value="partner.occupation"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" name="spouse_occupation" t-att-value="spouse.occupation"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Tax Number</td>
                                                 <td><input class="form-control" name="income_tax_number" t-att-value="partner.income_tax_number"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" name="spouse_income_tax_number" t-att-value="spouse.income_tax_number"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Madical Aid: Company</td>
                                                 <td><input class="form-control" name="medical_aid_company" t-att-value="partner.medical_aid_company"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" name="spouse_medical_aid_company" t-att-value="spouse.medical_aid_company"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Madical Aid: Plan</td>
                                                 <td><input class="form-control" name="medical_aid_plan" t-att-value="partner.medical_aid_plan"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" name="spouse_medical_aid_plan" t-att-value="spouse.medical_aid_plan"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Madical Aid: Number</td>
                                                 <td><input class="form-control" name="medical_aid_number" t-att-value="partner.medical_aid_number"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" name="spouse_medical_aid_number" t-att-value="spouse.medical_aid_number"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Gross Monthly Salary</td>
                                                 <td><input class="form-control" name="gross_month_salary" t-att-value="partner.gross_month_salary" required="required" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" name="spouse_gross_month_salary" t-att-value="spouse.gross_month_salary" required="required" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Gross Retierment Fund</td>
-                                                <td><input class="form-control" name="gross_retirement_fund" t-att-value="partner.gross_retirement_fund"/></td>
-                                                <td></td>
+                                                <td><input type="checkbox" class="form-control" t-att-checked="'checked' if partner.gross_retirement_fund else None" name="gross_retirement_fund" t-att-value="partner.gross_retirement_fund"/></td>
+                                                <td><input type="checkbox" class="form-control" t-att-checked="'checked' if spouse.gross_retirement_fund else None" name="spouse_gross_retirement_fund" t-att-value="spouse.gross_retirement_fund"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Fund Value</td>
                                                 <td><input class="form-control" name="fund_value" t-att-value="partner.fund_value" required="required" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
-                                                <td></td>
+                                                <td><input class="form-control" name="spouse_fund_value" t-att-value="spouse.fund_value" required="required" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Smoker Status</td>
@@ -476,7 +514,11 @@
                                                     <input type="radio" name="smokes_status" value="no" t-att-checked="partner.smokes_status == 'no'">
                                                         No</input>
                                                 </td>
-                                                <td></td>
+                                                <td>
+                                                    <input type="radio" name="spouse_smokes_status" value="yes" t-att-checked="spouse.smokes_status == 'yes'">YES</input>
+                                                    <input type="radio" name="spouse_smokes_status" value="no" t-att-checked="spouse.smokes_status == 'no'">
+                                                        No</input>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -505,94 +547,117 @@
                                     <tbody>
                                         <tr>
                                             <td>Full Name</td>
-                                            <td><t t-esc="partner.name"/>
-                                                <span></span><t t-esc="partner.surname"/></td>
-                                            <td></td>
+                                            <td>
+                                                <t t-esc="partner.name"/>
+                                                <span></span><t t-esc="partner.surname"/>
+                                            </td>
+                                            <td>
+                                                <t t-esc="spouse.name"/>
+                                                <span></span><t t-esc="spouse.surname"/>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Maiden Name</td>
                                             <td><span t-field="partner.maiden_name"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.maiden_name"/></td>
                                         </tr>
                                         <tr>
                                             <td>Known as</td>
                                             <td><span t-field="partner.preferred_name"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.preferred_name"/></td>
                                         </tr>
                                         <tr>
                                             <td>Identity Number</td>
                                             <td><span t-field="partner.id_rsa"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.id_rsa"/></td>
                                         </tr>
                                         <tr>
                                             <td>Marital Status</td>
                                             <td><span t-field="partner.marital_status"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.marital_status"/></td>
                                         </tr>
                                         <tr>
                                             <td>Date of Marriage</td>
                                             <td><span t-field="partner.marrige_date"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.marrige_date"/></td>
                                         </tr>
                                         <tr>
                                             <td>Qualification</td>
                                             <td><span t-field="partner.qualification"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.qualification"/></td>
                                         </tr>
                                         <tr>
                                             <td>Employer</td>
                                             <td><span t-field="partner.employer"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.employer"/></td>
                                         </tr>
                                         <tr>
                                             <td>Address</td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>
+                                                <span t-field="partner.street"/>
+                                                <span t-field="partner.street2"/>
+                                                <span t-field="partner.city"/>
+                                                <span t-field="partner.state_id"/>
+                                                <span t-field="partner.zip"/>
+                                                <span t-field="partner.country_id"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="spouse.street"/>
+                                                <span t-field="spouse.street2"/>
+                                                <span t-field="spouse.city"/>
+                                                <span t-field="spouse.state_id"/>
+                                                <span t-field="spouse.zip"/>
+                                                <span t-field="spouse.country_id"/>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Occupation</td>
                                             <td><span t-field="partner.occupation"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.occupation"/></td>
                                         </tr>
                                         <tr>
                                             <td>Tax Number</td>
                                             <td><span t-field="partner.income_tax_number"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.income_tax_number"/></td>
                                         </tr>
                                         <tr>
                                             <td>Madical Aid: Company</td>
-                                            <td></td>
-                                            <td></td>
+                                            <td><span t-field="partner.medical_aid_company"/></td>
+                                            <td><span t-field="spouse.medical_aid_company"/></td>
                                         </tr>
                                         <tr>
                                             <td>Madical Aid: Plan</td>
-                                            <td></td>
-                                            <td></td>
+                                            <td><span t-field="partner.medical_aid_plan"/></td>
+                                            <td><span t-field="spouse.medical_aid_plan"/></td>
                                         </tr>
                                         <tr>
                                             <td>Madical Aid: Number</td>
-                                            <td></td>
-                                            <td></td>
+                                            <td><span t-field="partner.medical_aid_number"/></td>
+                                            <td><span t-field="spouse.medical_aid_number"/></td>
                                         </tr>
                                         <tr>
                                             <td>Gross Monthly Salary</td>
                                             <td><span t-field="partner.gross_month_salary"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.gross_month_salary"/></td>
                                         </tr>
                                         <tr>
                                             <td>Gross Retierment Fund</td>
-                                            <td><span t-field="partner.gross_retirement_fund"/></td>
-                                            <td></td>
+                                            <td>
+                                                <input type="checkbox" disabled="disabled" t-att-checked="'checked' if partner.gross_retirement_fund else None"/>
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" disabled="disabled" t-att-checked="'checked' if spouse.gross_retirement_fund else None"/>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Fund Value</td>
                                             <td><span t-field="partner.fund_value"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.fund_value"/></td>
                                         </tr>
                                         <tr>
                                             <td>Smoker Status</td>
                                             <td><span t-field="partner.smokes_status"/></td>
-                                            <td></td>
+                                            <td><span t-field="spouse.smokes_status"/></td>
                                         </tr>
                                     </tbody>
                                 </table>

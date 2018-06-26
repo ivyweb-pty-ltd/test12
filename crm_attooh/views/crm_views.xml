@@ -82,7 +82,11 @@
 			<!-- <xpath expr="link[last()]" position="after"> <link rel="stylesheet" 
 				href="/website_sign/static/src/less/website_sign_backend.less"/> </xpath> -->
 		</template>
-
+		<template id="assets_common" inherit_id="web.assets_common">
+	        <xpath expr="script[last()]" position="after">
+	            <script type="text/javascript" src="/crm_attooh/static/src/js/website_sign_override.js"></script>
+	        </xpath>
+	    </template>
 		
 	</data>
 </odoo>

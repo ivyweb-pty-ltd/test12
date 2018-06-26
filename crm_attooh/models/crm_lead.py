@@ -1,6 +1,16 @@
 # -*- coding: utf-8 -*-
+import base64
+import time
+import uuid
+import io
+from PyPDF2 import PdfFileReader, PdfFileWriter
+from reportlab.lib.utils import ImageReader
+from reportlab.pdfgen import canvas
+from odoo.modules.module import get_module_resource
+
 from odoo import models, fields, api, _
 from datetime import datetime, timedelta
+from odoo.exceptions import UserError
 
 
 class CrmAttooh(models.Model):
@@ -14,20 +24,109 @@ class SignatureRequest(models.Model):
     lead_id = fields.Many2one('crm.lead')
     
     @api.model
-    def initialize_sign_new(self, id, signers, followers, lead_id, reference, subject, message, send=True):
+    def initialize_sign_new(self, id, signers, followers, lead_id, reference, subject, message, record=False, send=True):
         signature_request = self.create(
             {'template_id': id, 'reference': reference, 'lead_id': lead_id, 'follower_ids': [(6, 0, followers)],
              'favorited_ids': [(4, self.env.user.id)]})
         signature_request.set_signers(signers)
-        if send:
+        if send and record:
             signature_request.action_sent(subject, message)
             signature_request._message_post(_('Waiting for signatures.'), type='comment', subtype='mt_comment')
+            body = _('%s has been sent to %s') % (subject, record.partner_id.name)
+            record.message_post(body, message_type='comment')
         return {
             'id': signature_request.id,
             'token': signature_request.access_token,
             'sign_token': signature_request.request_item_ids.filtered(
                 lambda r: r.partner_id == self.env.user.partner_id).access_token,
         }
+
+    @api.one
+    def generate_completed_document(self):
+        if len(self.template_id.signature_item_ids) <= 0:
+            self.completed_document = self.template_id.attachment_id.datas
+            return
+
+        old_pdf = PdfFileReader(io.BytesIO(base64.b64decode(self.template_id.attachment_id.datas)), overwriteWarnings=False)
+        font = "Helvetica"
+        normalFontSize = 0.015
+
+        packet = io.BytesIO()
+        can = canvas.Canvas(packet)
+        itemsByPage = self.template_id.signature_item_ids.getByPage()
+        SignatureItemValue = self.env['signature.item.value']
+        for p in range(0, old_pdf.getNumPages()):
+            page = old_pdf.getPage(p)
+            width = float(page.mediaBox.getUpperRight_x())
+            height = float(page.mediaBox.getUpperRight_y())
+
+            # Set page orientation (either 0, 90, 180 or 270)
+            rotation = page.get('/Rotate')
+            if rotation:
+                can.rotate(rotation)
+                # Translate system so that elements are placed correctly
+                # despite of the orientation
+                if rotation == 90:
+                    width, height = height, width
+                    can.translate(0, -height)
+                elif rotation == 180:
+                    can.translate(-width, -height)
+                elif rotation == 270:
+                    width, height = height, width
+                    can.translate(-width, 0)
+
+            items = itemsByPage[p + 1] if p + 1 in itemsByPage else []
+            for item in items:
+                value = SignatureItemValue.search([('signature_item_id', '=', item.id), ('signature_request_id', '=', self.id)], limit=1)
+                if not value or not value.value:
+                    continue
+
+                value = value.value
+
+                if item.type_id.type == "text":
+                    can.setFont(font, height*item.height*0.8)
+                    can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
+
+                elif item.type_id.type == "textarea":
+                    can.setFont(font, height*normalFontSize*0.8)
+                    lines = value.split('\n')
+                    y = (1-item.posY)
+                    for line in lines:
+                        y -= normalFontSize*0.9
+                        can.drawString(width*item.posX, height*y, line)
+                        y -= normalFontSize*0.1
+
+                elif item.type_id.type == "signature" or item.type_id.type == "initial":
+                    img = base64.b64decode(value[value.find(',')+1:])
+                    can.drawImage(ImageReader(io.BytesIO(img)), width*item.posX, height*(1-item.posY-item.height), width*item.width, height*item.height, 'auto', True)
+                
+                elif item.type_id.type == "checkbox":
+                    if value == "True":
+                        checboxImage = get_module_resource('crm_attooh', 'static', 'img', 'checkedCheckbox.png')
+                        can.drawImage(checboxImage, width * item.posX, height * (1 - item.posY-item.height), height*item.height, height*item.height)
+                    else:
+                        checboxImage = get_module_resource('crm_attooh', 'static', 'img', 'checkbox.png')
+                        can.drawImage(checboxImage, width * item.posX, height * (1 - item.posY-item.height), height*item.height, height*item.height)
+            can.showPage()
+        can.save()
+
+        item_pdf = PdfFileReader(packet, overwriteWarnings=False)
+        new_pdf = PdfFileWriter()
+
+        for p in range(0, old_pdf.getNumPages()):
+            page = old_pdf.getPage(p)
+            page.mergePage(item_pdf.getPage(p))
+            new_pdf.addPage(page)
+
+        output = io.BytesIO()
+        new_pdf.write(output)
+        self.completed_document = base64.b64encode(output.getvalue())
+        output.close()
+
+class SignatureItemTypeAttooh(models.Model):
+    _inherit = "signature.item.type"
+
+    type = fields.Selection(selection_add=[('checkbox', 'Checkbox')])
 
 
 class CRM(models.Model):
@@ -75,8 +174,9 @@ class CRM(models.Model):
         res = super(CRM, self).write(vals)
         if vals.get('stage_id'):
             for record in self:
+                if not record.partner_id:
+                    raise UserError(_('Please select customer on opportunity'))
                 automate_emails = self.stage_id.stage_automated_email_ids.filtered(lambda r: r.user_id == self.user_id)
-                print ('\n\nautomate_emails',automate_emails)
                 for email in automate_emails:
                     record.message_post_with_template(email.email_template_id.id)
                 signature_requests = self.stage_id.stage_signature_request_ids.filtered(lambda r: r.user_id == self.user_id)
@@ -90,13 +190,21 @@ class CRM(models.Model):
                     subject = _('Signature Request - %s') % template.attachment_id.name
                     Request = self.env['signature.request']
                     Request.initialize_sign_new(template.id, signers, [], record.id,
-                        template.attachment_id.name, subject, message)
+                        template.attachment_id.name, subject, message, record, True)
+                if self.stage_id.has_portal_access:
+                    PortalWiard = self.env['portal.wizard']
+                    portal = PortalWiard.create({
+                        'user_ids': [(0, 0, {
+                            'partner_id': record.partner_id.id,
+                            'email': record.partner_id.email,
+                            'in_portal': True,
+                            'user_id': self.env.user.id
+                        })]
+                    })
+                    portal.action_apply()
+                    body = _('Portal invitation has been send to %s') % record.partner_id.name
+                    self.message_post(body, message_type='comment')
         return res
-
-            # signature_requests = self.stage_id.stage_signature_request_ids.filtered(lambda r: r.user_id == self.user_id)
-            # for record in signature_requests:
-            #     print('EEEE', record, record.signature_request_template_id)
-            #     # self.browse(lead_id).message_post_with_template(record.email_template_id.id)
 
     @api.multi
     @api.onchange('product_area')

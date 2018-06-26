@@ -94,6 +94,7 @@
                             <field name="smokes_status" widget="radio" options="{'horizontal': true}"/>
                             <field name="medical_aid_company"/>
                             <field name="medical_aid_plan"/>
+                            <!-- <field name="spouse_id"/> -->
                         </group>
                         <group>
                             <field name="third_name"/>

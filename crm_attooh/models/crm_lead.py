@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 import base64
-import time
-import uuid
 import io
 from PyPDF2 import PdfFileReader, PdfFileWriter
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
 from odoo.modules.module import get_module_resource
 
 from odoo import models, fields, api, _
@@ -102,12 +104,16 @@ class SignatureRequest(models.Model):
                     can.drawImage(ImageReader(io.BytesIO(img)), width*item.posX, height*(1-item.posY-item.height), width*item.width, height*item.height, 'auto', True)
                 
                 elif item.type_id.type == "checkbox":
+                    symboia_font_family = get_module_resource('crm_attooh', 'fonts', 'Symbola_hint.ttf')
+                    symbola_font = TTFont('Symbola', symboia_font_family)
+                    pdfmetrics.registerFont(symbola_font)
+                    styles = getSampleStyleSheet()
+                    styles["Title"].fontName = 'Symbola'
+                    can.setFont('Symbola', height * item.height * 0.5)
                     if value == "True":
-                        checboxImage = get_module_resource('crm_attooh', 'static', 'img', 'checkedCheckbox.png')
-                        can.drawImage(checboxImage, width * item.posX, height * (1 - item.posY-item.height), height*item.height, height*item.height)
+                        can.drawString(width * item.posX, height * (1 - item.posY - item.height * 0.9), '\u2611')
                     else:
-                        checboxImage = get_module_resource('crm_attooh', 'static', 'img', 'checkbox.png')
-                        can.drawImage(checboxImage, width * item.posX, height * (1 - item.posY-item.height), height*item.height, height*item.height)
+                        can.drawString(width * item.posX, height * (1 - item.posY - item.height * 0.9), '\u2610')
             can.showPage()
         can.save()
 

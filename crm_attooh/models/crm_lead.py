@@ -24,7 +24,7 @@ class SignatureRequest(models.Model):
     _inherit = 'signature.request'
 
     lead_id = fields.Many2one('crm.lead')
-    
+
     @api.model
     def initialize_sign_new(self, id, signers, followers, lead_id, reference, subject, message, record=False, send=True):
         signature_request = self.create(
@@ -102,7 +102,7 @@ class SignatureRequest(models.Model):
                 elif item.type_id.type == "signature" or item.type_id.type == "initial":
                     img = base64.b64decode(value[value.find(',')+1:])
                     can.drawImage(ImageReader(io.BytesIO(img)), width*item.posX, height*(1-item.posY-item.height), width*item.width, height*item.height, 'auto', True)
-                
+
                 elif item.type_id.type == "checkbox":
                     symboia_font_family = get_module_resource('crm_attooh', 'fonts', 'Symbola_hint.ttf')
                     symbola_font = TTFont('Symbola', symboia_font_family)
@@ -149,9 +149,30 @@ class CRM(models.Model):
         ('health', 'Health'),
         ('investments', 'Investments'),
         ('risk', 'Risk')
-    ], string="Product Area")
+        ], default="financial_planning", string="Product Area")
     referred = fields.Many2one('res.partner', 'Referred By')
+
+    submission_data = fields.Date('Submission Date')
+    product_provider_id = fields.Many2one('res.partner', string='Product Provider', domain="[('supplier', '=', True)]")
+    product_id = fields.Many2one('product.template', 'Product')
+    premium = fields.Float('Premium')
+    commission_year_1 = fields.Float('1st year Commission')
+    commission_year_2 = fields.Float('2nd year Commission')
+    monthly_commission = fields.Float(' Monthly Ongoing Commission')
+    date_of_issue = fields.Date('Date of Issue')
+    vitality = fields.Boolean('Vitality')
+    doc = fields.Date('DOC')
+    complience_mail = fields.Date('Compliance Mail')
+    fica = fields.Boolean('FICA')
+    issued_commission_year_1 = fields.Float('Issued 1st year Commission')
+    issued_commission_year_2 = fields.Float('Issued 2nd year Commission')
+    issued_monthly_commission = fields.Float('Issued Monthly Ongoing Commission')
+    book_notes = fields.Text('Production Book Notes')
+    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.user.company_id.currency_id.id)
+
+    # string changes on existing fields
     phone = fields.Char('Work Phone')
+    # team_id = fields.Many2one(string='Sales to New Business')
 
     @api.onchange('stage_id')
     def onchanhge_stage_id(self):
@@ -224,6 +245,8 @@ class CRM(models.Model):
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_3')
         elif self.product_area == 'risk':
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_4')
+        elif self.product_area == 'financial_planning':
+            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_5')
         else: pass
 
     @api.multi
@@ -238,3 +261,10 @@ class CRM(models.Model):
         action['domain'] = [('id', 'in', self.signature_ids.ids)]
         return action
 
+class CrmTeamAttooh(models.Model):
+    _inherit = "crm.team"
+
+    @api.model
+    @api.returns('self', lambda value: value.id if value else False)
+    def _get_default_team_id(self, user_id=None):
+        return self.env.ref('crm_attooh.crm_team_attooh_5')

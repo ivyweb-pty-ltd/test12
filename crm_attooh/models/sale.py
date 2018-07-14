@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
@@ -24,3 +24,21 @@ class SaleOrder(models.Model):
                 payment_on_completion = 0.00
             order.payment_on_acceptance = payment_on_acceptance
             order.payment_on_completion = payment_on_completion
+
+    @api.multi
+    def action_confirm(self):
+        self.ensure_one()
+        res = super(SaleOrder, self).action_confirm()
+        if self.opportunity_id:
+            self.opportunity_id.action_set_won()
+        return res
+
+    @api.model
+    def create(self, vals):
+        order = super(SaleOrder, self).create(vals)
+        opportunity_id = vals.get('opportunity_id')
+        if opportunity_id:
+            opportunity = self.env['crm.lead'].browse(opportunity_id)
+            if opportunity.planned_revenue == 0:
+                opportunity.planned_revenue = order.amount_untaxed
+        return order

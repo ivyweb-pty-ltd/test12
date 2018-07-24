@@ -254,6 +254,7 @@ class CRM(models.Model):
             ('Servant', 'Servant'),
             ('Sibling', 'Sibling'),
             ('Sibling-in-Law', 'Sibling-in-Law'),
+            ('Spouse', 'Spouse'),
             ('Step_Sibling', 'Step Sibling'),
             ('Stepchild', 'Stepchild'),
             ('Step-Grand-Parent', 'Step-Grand Parent'),
@@ -293,6 +294,30 @@ class CRM(models.Model):
         action['domain'] = [('id', 'in', attachments.ids)]
         action['context'] = {'default_res_model': 'res.partner', 'default_res_id': self.id}
         return action
+
+    @api.onchange('first_name')
+    def on_change_first_name(self):
+        print('XXX', self.name)
+        if self.name:
+            name = self.name
+            first_name = name.split(' ')
+            first_name[0] = self.first_name
+            self.name = ' '.join(first_name)
+        else:
+            self.name = self.first_name
+
+    @api.onchange('surname')
+    def on_change_surname(self):
+        if self.name:
+            name = self.name
+            surname = name.split(' ')
+            if len(surname) > 1:
+                surname[-1] = self.surname
+                self.name = ' '.join(surname)
+            else:
+                self.name = '%s %s' % (self.name, self.surname)
+        else:
+            self.name = self.surname
 
     @api.onchange('id_rsa')
     def on_change_rsa_id(self):

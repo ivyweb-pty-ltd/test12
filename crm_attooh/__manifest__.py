@@ -52,6 +52,7 @@
         'views/finance_portal_template.xml',
         'views/helpdesk_ticket_view.xml',
         'views/helpdesk_portal_templates.xml',
+        'views/crm_reporting_view.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
 }

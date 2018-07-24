@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<template id="assets_backend_attooh" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+        <link rel="stylesheet" href="/crm_attooh/static/src/css/crm_attooh.css"/>
+        </xpath>
+    </template>
     <template id="website_quote_template_inherit" inherit_id="website_quote.pricing" name="Website Quote Template">
         <xpath expr="//section[@id='quote']" position="after">
             <section>

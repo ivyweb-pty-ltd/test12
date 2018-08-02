@@ -649,11 +649,11 @@
                                                 <input type="checkbox" disabled="disabled" t-att-checked="'checked' if spouse.gross_retirement_fund else None"/>
                                             </td>
                                         </tr>
-                                        <tr>
+                                        <!-- <tr>
                                             <td>Fund Value</td>
                                             <td><span t-field="partner.fund_value"/></td>
                                             <td><span t-field="spouse.fund_value"/></td>
-                                        </tr>
+                                        </tr> -->
                                         <tr>
                                             <td>Smoker Status</td>
                                             <td><span t-field="partner.smokes_status"/></td>
@@ -968,6 +968,131 @@
                             </form>
                         </div>
 
+                    </div>
+                </div>
+            </t>
+        </template>
+        
+        <template id="my_beneficiaries" name="Personal and Financial Detail">
+            <t t-call="portal.portal_layout">
+                <div class="panel panel-default" t-if="edit_mode == 'dependent'">
+                    <div class="panel-heading">Add Beneficiaries</div>
+                    <form action="/website_form/" method="post" data-force_action="dependent" class="s_website_attooh_form form-horizontal container-fluid mt32" data-editable-form="true" data-success_page="/my/beneficiaries">
+                        <div class="container">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Relationship</th>
+                                        <th>Full Name</th>
+                                        <th>Date of Birth</th>
+                                        <th>Identity Type</th>
+                                        <th>Identity Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="o_hidden clone_tr">
+                                        <input name="id" type="hidden" class="form-control" value="0"/>
+                                        <td>
+
+                                            <select name="relationship" class="form-control">
+                                                <t t-foreach="partner._fields['relationship'].selection or []" t-as="type">
+                                                    <option t-att-value="type[0]">
+                                                        <t t-esc="type[1]"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </td>
+                                        <td><input class="form-control" name="name"/></td>
+                                        <td>
+                                            <div class='col-md-12'>
+                                                <input name="date_of_birth" type="text" class="form-control o_website_form_date"/>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <select name="id_type" class="form-control">
+                                                <t t-foreach="partner._fields['id_type'].selection or []" t-as="type">
+                                                    <option t-att-value="type[0]">
+                                                        <t t-esc="type[1]"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                            <!-- <input class="form-control" name="id_type"/> -->
+                                        
+                                        </td>
+                                        <td><input class="form-control" name="id_rsa"  pattern="\d*"  title="This must be a number"/></td>
+                                        <td>
+                                            <a href="#" class="delete" data-id="0">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <t t-foreach="partner.dependent_ids" t-as="dependent">
+                                        <tr>
+                                            <input name="id" type="hidden" disable="false" class="form-control" t-att-value="dependent.id"/>
+
+                                            <td>
+                                                <select name="relationship" class="form-control">
+                                                    <t t-foreach="partner._fields['relationship'].selection or []" t-as="type">
+                                                        <option t-att-value="type[0]" t-att-selected="dependent.relationship == type[0]">
+                                                            <t t-esc="type[1]"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                            </td>
+                                            <td><input class="form-control" name="name" t-att-value="dependent.name"/></td>
+                                            <td>
+                                                <div class='col-md-12'>
+                                                    <input name="date_of_birth" type="text" class="form-control o_website_form_date" t-att-value="dependent.date_of_birth"/>
+                                                </div>
+                                            </td>
+                                            <td><input class="form-control" name="id_type" t-att-value="dependent.id_type"/></td>
+                                            <td><input class="form-control" name="id_rsa" required="required" pattern="\d*"  title="This must be a number" t-att-value="dependent.id_rsa"/></td>
+                                            <td>
+                                                <a href="#" class="delete" t-att-data-id="dependent.id">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mb16 ml8">
+                            <button href="/my/personalfinancial" class="btn btn-primary o_website_form_send">Save</button>
+                            <button href="#" class="btn btn-primary add_line">Add</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="panel panel-default" t-if="edit_mode != 'dependent'">
+                    <div class="panel-heading">Add Beneficiaries</div>
+                    <div class="container">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Relationship</th>
+                                    <th>Full Name</th>
+                                    <th>Date of Birth</th>
+                                    <th>Identity Type</th>
+                                    <th>Identity Number</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="partner.dependent_ids" t-as="dependent">
+                                    <tr>
+                                        <td><span t-field="dependent.relationship"/></td>
+                                        <td><span t-field="dependent.name"/></td>
+                                        <td><span t-field="dependent.date_of_birth"/></td>
+                                        <td><span t-field="dependent.id_type"/></td>
+                                        <td><span t-field="dependent.id_rsa"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mb16 ml32">
+                        <a href="/my/beneficiaries?edit_mode=dependent" class="btn btn-primary">Edit</a>
                     </div>
                 </div>
             </t>

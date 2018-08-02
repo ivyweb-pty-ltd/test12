@@ -20,3 +20,11 @@ class CustomerPortal(CustomerPortal):
             'Expense': Expense
         })
 
+    @http.route(['/my/beneficiaries'], type='http', auth="user", website=True)
+    def portal_my_beneficiaries(self, meeting_id=None, edit_mode=None, **kw):
+        partner = request.env.user.partner_id
+        return request.render("crm_attooh.my_beneficiaries", {
+            'partner': partner,
+            'edit_mode': edit_mode,
+        })
+

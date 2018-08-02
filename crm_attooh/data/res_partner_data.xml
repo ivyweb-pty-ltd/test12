@@ -24,6 +24,69 @@
         <field name="website_form_access">True</field>
         <field name="website_form_label">Customer</field>
     </record>
+
+    <record model="ir.actions.server" id="action_send_invitation">
+        <field name="name">Send attooh invitation email</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner" />
+        <field name="state">code</field>
+        <field name="code">
+PortalWiard = env['portal.wizard']
+portal = PortalWiard.create({
+    'user_ids': [(0, 0, {
+        'partner_id': record.id,
+        'email': record.email,
+        'in_portal': True,
+        'user_id': env.user.id
+    })]
+})
+portal.action_apply()  
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_sms_request_email">
+        <field name="name">SMS Requesting Email Address</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner" />
+        <field name="state">code</field>
+        <field name="code">
+SMS = env['sms.send_sms']
+SMS.create({
+    'message': 'Send your email address'
+})
+SMS.action_send_sms()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_sms_on_not_open_email">
+        <field name="name">Not Open Email Invitation</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner" />
+        <field name="state">code</field>
+        <field name="code">
+SMS = env['sms.send_sms']
+SMS.create({
+    'message': 'Check your email for get attooh portal access'
+})
+SMS.action_send_sms()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_sms_on_open_email">
+        <field name="name">Open Email Invitation</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner" />
+        <field name="state">code</field>
+        <field name="code">
+if not record.user_id.active:
+    SMS = env['sms.send_sms']
+    SMS.create({
+        'message': 'Please complete attooh registration process. we have sent you registration email'
+    })
+    SMS.action_send_sms()
+        </field>
+    </record>
+
     <function model="ir.model.fields" name="formbuilder_whitelist">
         <value>res.partner</value>
         <value eval="[

@@ -14,19 +14,70 @@
                                 <label class="control-label" for="name">Your Name</label>
                                 <input type="text" name="name" class="form-control" t-att-value="name or partner.name" />
                             </div>
+                            <div t-attf-class="form-group #{error.get('preferred_name') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="preferred_name">Preferred Name</label>
+                                <input type="text" name="preferred_name" class="form-control" t-att-value="preferred_name or partner.preferred_name" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('first_name') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="first_name">First Name</label>
+                                <input type="text" name="first_name" class="form-control" t-att-value="first_name or partner.first_name" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('second_name') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="second_name">Second Name</label>
+                                <input type="text" name="second_name" class="form-control" t-att-value="second_name or partner.second_name" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('third_name') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="third_name">Third Name</label>
+                                <input type="text" name="third_name" class="form-control" t-att-value="third_name or partner.third_name" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('surname') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="surname">Surname</label>
+                                <input type="text" name="surname" class="form-control" t-att-value="surname or partner.surname" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('initials') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="initials">Initials</label>
+                                <input type="text" name="initials" class="form-control" t-att-value="initials or partner.initials" />
+                            </div>
+                            <div t-attf-class="form-group #{error.get('last_prev_name') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="last_prev_name">Last Previous Name</label>
+                                <input type="text" name="last_prev_name" class="form-control" t-att-value="last_prev_name or partner.last_prev_name" />
+                            </div>
                             <div t-attf-class="form-group #{error.get('email') and 'has-error' or ''} col-lg-6">
                                 <label class="control-label" for="email">Email</label>
                                 <input type="email" name="email" class="form-control" t-att-value="email or partner.email" />
                             </div>
                             <div t-attf-class="form-group #{error.get('phone') and 'has-error' or ''} col-lg-6">
-                                <label class="control-label" for="phone">Phone</label>
+                                <label class="control-label" for="phone">Work phone</label>
                                 <input type="tel" name="phone" class="form-control" t-att-value="phone or partner.phone" />
                             </div>
                             <div t-if="not partner.is_company" t-attf-class="form-group #{error.get('mobile') and 'has-error' or ''} col-lg-6">
                                 <label class="control-label" for="mobile">Mobile</label>
                                 <input type="tel" name="mobile" class="form-control" t-att-value="mobile or partner.mobile" />
                             </div>
-
+                            <div t-attf-class="form-group #{error.get('home_language') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="home_language">Home Language</label>
+                                <select name="home_language" class="form-control">
+                                    <t t-foreach="partner._fields['home_language'].selection or []" t-as="type">
+                                        <option t-att-value="type[0]"  t-att-selected="partner.home_language == type[0]">
+                                            <t t-esc="type[1]" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('qualification') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="qualification">Qualification</label>
+                                <select name="qualification" class="form-control">
+                                    <t t-foreach="partner._fields['qualification'].selection or []" t-as="type">
+                                        <option t-att-value="type[0]"  t-att-selected="partner.qualification == type[0]">
+                                            <t t-esc="type[1]" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div t-attf-class="form-group #{error.get('occupation') and 'has-error' or ''} col-lg-6">
+                                <label class="control-label" for="occupation">Occupation</label>
+                                <input type="text" name="occupation" class="form-control" t-att-value="occupation or partner.occupation" />
+                            </div>
                             <div t-attf-class="form-group #{error.get('id_type') and 'has-error' or ''} col-lg-6">
                                 <label class="control-label" for="id_type">ID Type</label>
                                 <select name="id_type" class="form-control">
@@ -88,10 +139,12 @@
                                     </t>
                                 </select>
                             </div>
-                            <input type="hidden" name="redirect" t-att-value="redirect"/>
                         </div>
                         <div class="clearfix">
-                            <button type="submit" class="btn btn-primary pull-right mb32 ">
+                            <button type="submit" formaction="/my/account?redirect=beneficiaries" class="btn btn-primary mr32 mb32 ">
+                                Add Beneficiaries
+                            </button>
+                            <button type="submit" formaction="/my/account" class="btn btn-primary pull-right mb32 ">
                                 Confirm
                                 <span class="fa fa-long-arrow-right" />
                             </button>

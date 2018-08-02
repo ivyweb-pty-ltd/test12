@@ -279,7 +279,7 @@ class CRM(models.Model):
     asset_ids = fields.One2many('partner.asset', 'partner_id', string='Assets')
     attachment_count = fields.Integer(compute="_compute_attachment_count", string="Attachments")
 
-    # spouse_id = fields.Many2one('res.partner', 'Spouse')
+    spouse_id = fields.Many2one('res.partner', 'Spouse')
 
     def _compute_attachment_count(self):
         Attachment = self.env['ir.attachment']
@@ -297,7 +297,6 @@ class CRM(models.Model):
 
     @api.onchange('first_name')
     def on_change_first_name(self):
-        print('XXX', self.name)
         if self.name:
             name = self.name
             first_name = name.split(' ')
@@ -319,7 +318,8 @@ class CRM(models.Model):
         else:
             self.name = self.surname
 
-    @api.onchange('id_rsa')
+    @api.multi
+    @api.onchange('id_rsa', 'id_type')
     def on_change_rsa_id(self):
         if self.id_type == 'rsa_id' and self.id_rsa:
             number = self.id_rsa

@@ -67,7 +67,7 @@ class PaymentTransactionmygate(models.Model):
         if self.sale_order_id.state not in ['draft', 'sent', 'sale']:
             _logger.warning('<%s> transaction STATE INCORRECT for order %s (ID %s, state %s)', self.acquirer_id.provider, self.sale_order_id.name, self.sale_order_id.id, self.sale_order_id.state)
             return 'pay_sale_invalid_doc_state'
-        if not float_compare(self.amount, self.sale_order_id.payment_on_acceptance, 2) == 0:
+        if not float_compare(self.amount, self.sale_order_id.amount_total, 2) == 0:
             _logger.warning(
                 '<%s> transaction AMOUNT MISMATCH for order %s (ID %s): expected %r, got %r',
                 self.acquirer_id.provider, self.sale_order_id.name, self.sale_order_id.id,
@@ -160,7 +160,7 @@ class PaymentTransactionmygate(models.Model):
     def _check_or_create_sale_tx(self, order, acquirer, payment_token=None, tx_type='form', add_tx_values=None, reset_draft=True):
         tx = super(PaymentTransactionmygate, self)._check_or_create_sale_tx(order, acquirer, payment_token=None, tx_type='form', add_tx_values=None, reset_draft=True)
         # change full amount to payment on Acceptance(50%) amount
-        tx.amount = order.payment_on_acceptance
+        tx.amount = order.amount_total
         return tx
 
     def render_sale_button(self, order, return_url, submit_txt=None, render_values=None):
@@ -173,7 +173,7 @@ class PaymentTransactionmygate(models.Model):
             values.update(render_values)
         return self.acquirer_id.with_context(submit_class='btn btn-primary', submit_txt=submit_txt or _('Pay Now')).sudo().render(
             self.reference,
-            order.payment_on_acceptance,
+            order.amount_total,
             order.pricelist_id.currency_id.id,
             values=values,
         )

@@ -34,6 +34,7 @@
         'data/ticket_type_activity_data.xml',
         'data/sales_team_demo.xml',
         'data/hr_employee_roles_data.xml',
+        'data/product_area_data.xml',
         'views/crm_views.xml',
         'views/hr_views.xml',
         'views/res_partner_views.xml',

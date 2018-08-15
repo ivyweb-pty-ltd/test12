@@ -143,13 +143,14 @@ class CRM(models.Model):
                                    string='Services')
     signature_requests_count = fields.Integer("# Signature Requests", compute='_compute_signature_requests')
     signature_ids = fields.One2many('signature.request', 'lead_id')
-    product_area = fields.Selection([
-        ('financial_planning', 'Financial Planning'),
-        ('short_term', 'Short Term'),
-        ('health', 'Health'),
-        ('investments', 'Investments'),
-        ('risk', 'Risk')
-        ], default="financial_planning", string="Product Area")
+#     product_area = fields.Selection([
+#         ('financial_planning', 'Financial Planning'),
+#         ('short_term', 'Short Term'),
+#         ('health', 'Health'),
+#         ('investments', 'Investments'),
+#         ('risk', 'Risk')
+#         ], default="financial_planning", string="Product Area")
+    product_area_id = fields.Many2one('product.area', string="Product Area")
     referred = fields.Many2one('res.partner', 'Referred By')
 
     submission_data = fields.Date('Submission Date')
@@ -235,19 +236,18 @@ class CRM(models.Model):
         return res
 
     @api.multi
-    @api.onchange('product_area')
+    @api.onchange('product_area_id')
     def onchanhge_product_area(self):
-        if self.product_area == 'short_term':
+        if self.product_area_id.id ==  self.env.ref('crm_attooh.product_short_term').id:
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_1')
-        elif self.product_area == 'health':
+        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_health').id:
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_2')
-        elif self.product_area == 'investments':
+        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_investments').id:
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_3')
-        elif self.product_area == 'risk':
+        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_risk').id:
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_4')
-        elif self.product_area == 'financial_planning':
+        else:
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_5')
-        else: pass
 
     @api.multi
     def _compute_signature_requests(self):
@@ -268,3 +268,9 @@ class CrmTeamAttooh(models.Model):
     @api.returns('self', lambda value: value.id if value else False)
     def _get_default_team_id(self, user_id=None):
         return self.env.ref('crm_attooh.crm_team_attooh_5')
+
+
+class ProductArea(models.Model):
+    _name = 'product.area'
+
+    name = fields.Char(string="Product Area")

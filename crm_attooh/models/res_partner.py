@@ -3,7 +3,7 @@
 from datetime import datetime
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError,ValidationError
+from odoo.exceptions import UserError
 
 class EntitySatus(models.Model):
     _name = 'entity.status'
@@ -13,16 +13,10 @@ class EntitySatus(models.Model):
 class CRM(models.Model):
     _inherit = 'res.partner'
 
-    @api.onchange('company_type')
-    def onchange_company_type(self):
-        self.id_type = False
-        if self.company_type == 'person':
-             self.id_type = 'rsa_id'
-
     # fields added for Individual
     first_name = fields.Char('First Name')
     preferred_name = fields.Char('Preferred Name')
-    id_type = fields.Selection([('rsa_id', 'RSA ID'), ('passport', 'Passport'), ('temp_id', 'Temporary ID')], string="ID type", default="rsa_id")
+    id_type = fields.Selection([('rsa_id', 'RSA ID'), ('passport', 'Passport'), ('temp_id', 'Temporary ID')], string="ID type")
     id_rsa = fields.Char('ID Number')
     surname = fields.Char('Surname')
     initials = fields.Char('Initials')
@@ -286,8 +280,6 @@ class CRM(models.Model):
     attachment_count = fields.Integer(compute="_compute_attachment_count", string="Attachments")
 
     spouse_id = fields.Many2one('res.partner', 'Spouse')
-    is_duplicate_id = fields.Boolean(string="duplicate")
-
 
     def _compute_attachment_count(self):
         Attachment = self.env['ir.attachment']
@@ -364,13 +356,6 @@ class CRM(models.Model):
                 self.resident_status = 'permanent'
             if resident_status == 0:
                 self.resident_status = 'sa_citizen'
-
-    @api.constrains('id_rsa')
-    def check_duplicate_rsa_no(self):
-        if self.id_rsa:
-            count_no = self.search_count([('id_rsa', '=', self.id_rsa)])
-            if count_no > 1:
-                raise ValidationError(_('Duplicate ID Number not permitted'))
 
 
 class PartnerIncome(models.Model):

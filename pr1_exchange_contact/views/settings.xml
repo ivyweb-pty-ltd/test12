@@ -52,13 +52,12 @@
                         </group>
                     </group>
                      <group>
-                    <p>Warning if you force a sync from exchange this will force a sync from Exchange for all users and depending on numbers may take some time. After the sync is complete you can then run a Calendar sync to bring the new data into Odoo.</p>
+                    
 		        	<!-- <button type="object" string="Test Connection" class="oe_highlight" name="test_connection" attrs="{'invisible':['|',('state','!=','draft')]}"/> -->
 		        	<button type="object" string="Test Connection" class="oe_highlight" name="test_connection" attrs="{'invisible':['|',('state','=','1draft')]}"/>
 		        	<button type="object" string="Validate Users" class="oe_highlight" name="validate_users" attrs="{'invisible':['|',('state','=','draft')]}"/>
 		        	<button type="object" string="Test Contact Sync" class="oe_highlight" name="test_sync"  attrs="{'invisible':['|',('state','=','draft')]}"/>
 		        	<button type="object" string="Test Calendar Sync" class="oe_highlight" name="test_csync"  attrs="{'invisible':['|',('state','=','draft')]}"/>
-		        	<button type="object" string="Force Sync From Exchange" class="oe_highlight" name="ex_sync"  attrs="{'invisible':['|',('state','=','draft')]}"/>
 		        	
 		        	<button type="object" string="Reset All" class="oe_highlight" name="reset_all"  attrs="{'invisible':['|',('state','=','draft')]}"/>
 		        

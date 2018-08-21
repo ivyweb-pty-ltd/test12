@@ -295,7 +295,7 @@ class ProductArea(models.Model):
 class resUsers(models.Model):
     _inherit = 'res.users'
 
-    is_demo = fields.Boolean(string="Is Financial Advisor")
+    is_financialadvisor = fields.Boolean(string="Is Financial Advisor")
     user_employee_roles_ids = fields.One2many('user.employee.roles','user_id')
 
     @api.onchange('is_financialadvisor')

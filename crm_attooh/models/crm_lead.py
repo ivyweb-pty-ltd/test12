@@ -190,18 +190,18 @@ class CRM(models.Model):
                 if activity.assign_to_owner:
                     user_id = self.user_id and self.user_id.id or False
                 else:
-#                     if self.user_id.is_financialadvisor:
-                    role_ids = self.user_id.user_employee_roles_ids
-                    if not role_ids:
-                        user_id = self.get_user_id(activity)
-                    else:
-                        emp_role_id = role_ids.filtered(lambda l: l.employee_role_id.id == activity.employee_role_id.id)
-                        if emp_role_id:
-                            user_id = emp_role_id.employee_id.id
-                        else:
+                    if self.user_id.is_financialadvisor:
+                        role_ids = self.user_id.user_employee_roles_ids
+                        if not role_ids:
                             user_id = self.get_user_id(activity)
-#                     else:
-#                         user_id = self.get_user_id(activity)
+                        else:
+                            emp_role_id = role_ids.filtered(lambda l: l.employee_role_id.id == activity.employee_role_id.id)
+                            if emp_role_id:
+                                user_id = emp_role_id.employee_id.id
+                            else:
+                                user_id = self.get_user_id(activity)
+                    else:
+                        user_id = self.get_user_id(activity)
                 activities = self.env['mail.activity'].search(
                     [('res_id', '=', self._origin.id), ('stage_activity_id', '=', activity.id)])
                 if not activities:
@@ -291,3 +291,31 @@ class ProductArea(models.Model):
     _name = 'product.area'
 
     name = fields.Char(string="Product Area")
+
+class resUsers(models.Model):
+    _inherit = 'res.users'
+
+    is_demo = fields.Boolean(string="Is Financial Advisor")
+    user_employee_roles_ids = fields.One2many('user.employee.roles','user_id')
+
+    @api.onchange('is_financialadvisor')
+    def onchange_is_financialadvisor(self):
+        if self.is_financialadvisor:
+            self.user_employee_roles_ids = False
+            user_employee_role_lst = []
+            for each in self.env['employee.roles'].search([]):
+                user_employee_role_lst.append((0,0,{
+                                                   'employee_role_id':each.id,
+                                                   'employee_id':each.employee_id.id,
+                                                   'financial_advisor_id':self._origin.id
+                                                   }))
+            self.user_employee_roles_ids = user_employee_role_lst
+
+
+class UserEmployeeRoles(models.Model):
+    _name = 'user.employee.roles'
+
+    employee_role_id = fields.Many2one('employee.roles', string="Role")
+    employee_id = fields.Many2one('res.users', string="Employee")
+    financial_advisor_id = fields.Many2one('res.users', string="Financial Advisor")
+    user_id = fields.Many2one('res.users', string="User")

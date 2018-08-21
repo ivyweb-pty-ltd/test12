@@ -60,7 +60,6 @@
                         <group>
                             <field name="id_type"/>
                             <field name="id_rsa"/>
-                            <field name="is_duplicate_id"/>
                             <field name="phone" widget="phone" string="Work Phone"/>
                             <field name="email" widget="email" context="{'gravatar_image': True}" attrs="{'required': [('user_ids','!=', [])]}"/>
                             <field name="lang"/>

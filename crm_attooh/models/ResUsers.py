@@ -4,24 +4,24 @@ from odoo import models, fields, api, _
 class Users(models.Model):
     _inherit = 'res.users'
 
-    is_financialadvisor = fields.Boolean(string="Is Financial Advisor")
+#     is_financialadvisor = fields.Boolean(string="Is Financial Advisor")
     user_employee_roles_ids = fields.One2many('user.employee.roles','user_id')
 
-class res_users(models.Model):
-    _inherit = 'res.users'
+# class res_users(models.Model):
+#     _inherit = 'res.users'
 
-    @api.onchange('is_financialadvisor')
-    def onchange_is_financialadvisor(self):
-        if self.is_financialadvisor:
-            self.user_employee_roles_ids = False
-            user_employee_role_lst = []
-            for each in self.env['employee.roles'].search([]):
-                user_employee_role_lst.append((0,0,{
-                                                   'employee_role_id':each.id,
-                                                   'employee_id':each.employee_id.id,
-                                                   'financial_advisor_id':self._origin.id
-                                                   }))
-            self.user_employee_roles_ids = user_employee_role_lst
+#     @api.onchange('is_financialadvisor')
+#     def onchange_is_financialadvisor(self):
+#         if self.is_financialadvisor:
+#             self.user_employee_roles_ids = False
+#             user_employee_role_lst = []
+#             for each in self.env['employee.roles'].search([]):
+#                 user_employee_role_lst.append((0,0,{
+#                                                    'employee_role_id':each.id,
+#                                                    'employee_id':each.employee_id.id,
+#                                                    'financial_advisor_id':self._origin.id
+#                                                    }))
+#             self.user_employee_roles_ids = user_employee_role_lst
 
 
 class UserEmployeeRoles(models.Model):

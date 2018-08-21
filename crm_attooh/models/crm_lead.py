@@ -190,18 +190,18 @@ class CRM(models.Model):
                 if activity.assign_to_owner:
                     user_id = self.user_id and self.user_id.id or False
                 else:
-                    if self.user_id.is_financialadvisor:
-                        role_ids = self.user_id.user_employee_roles_ids
-                        if not role_ids:
-                            user_id = self.get_user_id(activity)
-                        else:
-                            emp_role_id = role_ids.filtered(lambda l: l.employee_role_id.id == activity.employee_role_id.id)
-                            if emp_role_id:
-                                user_id = emp_role_id.employee_id.id
-                            else:
-                                user_id = self.get_user_id(activity)
-                    else:
+#                     if self.user_id.is_financialadvisor:
+                    role_ids = self.user_id.user_employee_roles_ids
+                    if not role_ids:
                         user_id = self.get_user_id(activity)
+                    else:
+                        emp_role_id = role_ids.filtered(lambda l: l.employee_role_id.id == activity.employee_role_id.id)
+                        if emp_role_id:
+                            user_id = emp_role_id.employee_id.id
+                        else:
+                            user_id = self.get_user_id(activity)
+#                     else:
+#                         user_id = self.get_user_id(activity)
                 activities = self.env['mail.activity'].search(
                     [('res_id', '=', self._origin.id), ('stage_activity_id', '=', activity.id)])
                 if not activities:

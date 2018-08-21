@@ -27,7 +27,7 @@
         'security/ir.model.access.csv',
         'data/crm_service_data.xml',
         'data/res_partner_data.xml',
-        'views/res_users.xml',
+#         'views/res_users.xml',
         'data/signature_item_type_data.xml',
         'data/helpdesk_demo.xml',
         'data/ticket_type_activity_data.xml',

@@ -22,6 +22,7 @@ class CrmAttooh(models.Model):
 
 
 class Users(models.Model):
+    _name = 'res.users'
     _inherit = 'res.users'
 
     is_demo = fields.Boolean(string="Is Financial Advisor")

@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 
+class Users(models.Model):
+    _inherit = 'res.users'
+
+    is_financial_advisor = fields.Boolean(string="Is Financial Advisor")
+
 
 class res_users(models.Model):
     _inherit = 'res.users'
 
-    is_financial_advisor = fields.Boolean(string="Is Financial Advisor")
     user_employee_roles_ids = fields.One2many('user.employee.roles','user_id')
 
-    @api.multi
     @api.onchange('is_financial_advisor')
     def onchange_is_financial_advisor(self):
         if self.is_financial_advisor:

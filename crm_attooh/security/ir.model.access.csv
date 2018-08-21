@@ -17,4 +17,6 @@ access_crm_signature_request,access_crm_signature_request,model_crm_signature_re
 access_crm_signature_request_sales,access_crm_signature_request_sales,model_crm_signature_request,sales_team.group_sale_manager,1,1,1,1
 access_ticket_type_activity,access_ticket_type_activity,model_ticket_type_activity,,1,0,0,0
 access_crm_automated_email,access_crm_automated_email,model_crm_automated_email,base.group_user,1,1,1,0
-access_employee_roles,access_employee_roles,model_employee_roles,,1,0,0,0
+access_employee_roles,access_employee_roles,model_employee_roles,base.group_user,1,0,0,0
+access_product_area,access_product_area,model_product_area,base.group_user,1,0,0,0
+access_user_employee_roles,access_user_employee_roles,model_user_employee_roles,,1,0,0,0

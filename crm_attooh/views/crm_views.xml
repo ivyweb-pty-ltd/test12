@@ -57,8 +57,12 @@
                         </group>
                     </page>
                 </xpath>
-                <xpath expr="//field[@name='team_id']" position="before">
-                    <field name="product_area" />
+                <field name="team_id" position="replace"/>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="product_area_id" />
+                </xpath>
+                <xpath expr="//page[@name='lead']//field[@name='source_id']" position="after">
+                    <field name="team_id"/>
                 </xpath>
                 <xpath expr="//field[@name='mobile']" position="replace">
                 </xpath>

@@ -21,10 +21,10 @@ class CrmAttooh(models.Model):
     name = fields.Char()
 
 
-class Users(models.Model):
-    _inherit = 'res.users'
+class res_users(models.Model):
+    _inherit = "res.users"
 
-    is_demo = fields.Char(string="Is Financial Advisor")
+    is_final = fields.Char(string="Is Financial Advisor")
 
 
 class SignatureRequest(models.Model):

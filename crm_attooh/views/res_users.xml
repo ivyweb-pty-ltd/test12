@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="base.view_users_form" />
             <field name="arch" type="xml">
                 <field name="partner_id" position="after">
-                    <field name="is_financial_advisor"/>
+                    <field name="is_financialadvisor"/>
                 </field>
                 <xpath expr="//page[2]" position="after">
                     <page string="Employee Roles" attrs="{'invisible':[('is_financial_advisor','=',False)]}">

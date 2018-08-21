@@ -190,7 +190,7 @@ class CRM(models.Model):
                 if activity.assign_to_owner:
                     user_id = self.user_id and self.user_id.id or False
                 else:
-                    if self.user_id.is_financial_advisor:
+                    if self.user_id.is_financialadvisor:
                         role_ids = self.user_id.user_employee_roles_ids
                         if not role_ids:
                             user_id = self.get_user_id(activity)

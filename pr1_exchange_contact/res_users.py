@@ -2,7 +2,7 @@ from datetime import datetime
 from odoo import api, fields, models, modules, tools, _
 from odoo.exceptions import AccessDenied, UserError
 class res_users(models.Model):
-    _name="res.users"
+#     _name="res.users"
     _inherit="res.users"
     @api.model
     def in_rol(self,rn,usr=None):

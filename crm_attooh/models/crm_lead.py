@@ -21,7 +21,7 @@ class CrmAttooh(models.Model):
     name = fields.Char()
 
 
-class res_users(models.Model):
+class User(models.Model):
     _inherit = "res.users"
 
     is_final = fields.Char(string="Is Financial Advisor")

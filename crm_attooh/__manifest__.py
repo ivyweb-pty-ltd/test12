@@ -27,7 +27,6 @@
         'security/ir.model.access.csv',
         'data/crm_service_data.xml',
         'data/res_partner_data.xml',
-#         'views/res_users.xml',
         'data/signature_item_type_data.xml',
         'data/helpdesk_demo.xml',
         'data/ticket_type_activity_data.xml',
@@ -56,6 +55,7 @@
         'views/helpdesk_ticket_view.xml',
         'views/helpdesk_portal_templates.xml',
         'views/crm_reporting_view.xml',
+        'views/res_users.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
 }

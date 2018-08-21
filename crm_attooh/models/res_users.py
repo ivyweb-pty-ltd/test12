@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 from odoo import models, fields, api, _
 
-class Users(models.Model):
+
+class res_users(models.Model):
     _inherit = 'res.users'
 
-    is_demo = fields.Boolean(string="Is Financial Advisor")
+    is_financial_advisor = fields.Boolean(string="Is Financial Advisor")
     user_employee_roles_ids = fields.One2many('user.employee.roles','user_id')
 
-
-    @api.onchange('is_financialadvisor')
-    def onchange_is_financialadvisor(self):
-        if self.is_financialadvisor:
+    @api.multi
+    @api.onchange('is_financial_advisor')
+    def onchange_is_financial_advisor(self):
+        if self.is_financial_advisor:
             self.user_employee_roles_ids = False
             user_employee_role_lst = []
             for each in self.env['employee.roles'].search([]):

@@ -286,6 +286,7 @@ class CRM(models.Model):
     attachment_count = fields.Integer(compute="_compute_attachment_count", string="Attachments")
 
     spouse_id = fields.Many2one('res.partner', 'Spouse')
+    is_duplicate_id = fields.Boolean(string="duplicate")
 
 
     def _compute_attachment_count(self):

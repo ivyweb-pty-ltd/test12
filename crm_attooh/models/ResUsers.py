@@ -4,7 +4,7 @@ from odoo import models, fields, api, _
 class Users(models.Model):
     _inherit = 'res.users'
 
-    is_financialadvisor = fields.Boolean(string="Is Financial Advisor")
+    is_demo = fields.Boolean(string="Is Financial Advisor")
     user_employee_roles_ids = fields.One2many('user.employee.roles','user_id')
 
 # class res_users(models.Model):

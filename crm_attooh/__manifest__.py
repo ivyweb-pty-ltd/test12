@@ -19,7 +19,7 @@
     'version': '0.2',
 
     # any module necessary for this one to work correctly
-    'depends': ['crm', 'sale_management', 'website_sign', 'website_quote', 
+    'depends': ['crm', 'sale_management', 'website_sign', 'website_quote',
     'website_form', 'helpdesk', 'base_automation', 'portal', 'hr', 'marketing_automation', 'attooh_sms'],
 
     # always loaded

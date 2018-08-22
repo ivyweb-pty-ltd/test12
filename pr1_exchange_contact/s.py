@@ -165,7 +165,41 @@ where ex_validated=true and syn_e=true and ad_e is not null
         sync_obj=self.env['pr1_exchange_contact.syn']
         sync_obj.go_syn_email(from_scheduler=False)
         
+    @api.one
+    def ex_sync(self):
+        u_obj=self.env['res.users']
+        user_ids=u_obj.search([('syn_e','=',True),('ex_validated','=',True)]).ids
+        data={}
+        user_list=[]
+        if(len(user_ids)==0):
+            raise UserError(_('No Users to force a sync for!'))
+            
+        for user in u_obj.browse(user_ids):
+            if(user.ad_e!=False):
+                usr={}
+                usr['o_id']=user.id
+                usr['ad_e']=user.ad_e
+                usr['login']=user.login
+                user_list.append(usr)
+        if(len(user_list)==0):
+            raise UserError(_('No Users to force a sync for!'))
         
+        data['ou']=user_list
+        connection=self.get_connection()
+        data['user_name']=connection.user_name
+        data['access_code']=connection.access_code
+        data['Param']='exsync'
+        params = json.dumps(data).encode('utf8')
+        req = Request(connection.url, data=params)
+        req.add_header('Content-Type', 'application/json')
+        response = urlopen(req)
+        response_data=response.read().decode('utf8')
+        data2 = json.loads(response_data) 
+        if(data2['ErrorMessage']=="Success!"):
+            raise UserError(_("Data has been sync'd from Exchange to the profile, please sync calendars now."))
+        elif(data2['ErrorMessage']!="Success"):
+            raise UserError(data2['ErrorMessage'])
+            
     @api.one 
     def validate_users(self):
         u_obj=self.env['res.users']

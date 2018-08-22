@@ -36,7 +36,6 @@ class SmsCompose(models.Model):
 
         gateway_model = self.from_mobile_id.account_id.account_gateway_id.gateway_model_name
         my_sms = self.from_mobile_id.account_id.send_message(self.from_mobile_id.mobile_number, self.to_number, self.sms_content.encode('utf-8'), self.model, self.record_id, self.media_id)[0]
-        print ('\n\nmy_sms', my_sms)
         error_message = my_sms['error']
 
         #display the screen with an error code if the sms/mms was not successfully sent

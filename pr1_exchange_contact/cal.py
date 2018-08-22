@@ -61,7 +61,7 @@ class calendar_attendee(models.Model):
     syn=fields.Boolean('SYN',default=False)
     
     @api.multi
-    def write(self):
+    def write(self,vals):
         if(self.env.context and 'state' in self.env.context and self.env.context['state']=='accepted'):
             vals['syn']=False
             for record in self.browse(self.ids):

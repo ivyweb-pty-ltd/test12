@@ -294,11 +294,17 @@ p.zip, p.title, p.function, p.phone,p.type, p.email, p.vat, p.website, '' as fax
             return ""
        
         try:
-            res=datetime.fromtimestamp(float(datestring.split('(')[1][:-5])).strftime('%Y-%m-%d %H:%M:%S')
+            res=datetime.utcfromtimestamp(float(datestring.split('(')[1][:-5])).strftime('%Y-%m-%d %H:%M:%S')
         except:
-            res=datetime.fromtimestamp(float(datestring.split('(')[1][:-5])).strftime('%Y-%m-%d')
+            res=datetime.utcfromtimestamp(float(datestring.split('(')[1][:-5])).strftime('%Y-%m-%d')
         return res
     
+    @api.model
+    def go_ex_syn(self):
+        s_obj=self.env['pr1_exchange_contact.settings']
+        connection=s_obj.sudo().get_connection()
+        connection.ex_sync()
+        
     @api.model
     def go_cal_syn(self,  automatic=False, use_new_cursor=False):
         s_obj=self.env['pr1_exchange_contact.settings']

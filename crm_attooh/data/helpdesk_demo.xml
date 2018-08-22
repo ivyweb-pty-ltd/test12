@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
 
-    <delete id="helpdesk.type_question" model="helpdesk.ticket.type"/>
-    <delete id="helpdesk.type_incident" model="helpdesk.ticket.type"/>
+<!--     <delete id="helpdesk.type_question" model="helpdesk.ticket.type"/> -->
+<!--     <delete id="helpdesk.type_incident" model="helpdesk.ticket.type"/> -->
 
     <record id="type_change_of_address" model="helpdesk.ticket.type">
         <field name="name">Change of Address</field>

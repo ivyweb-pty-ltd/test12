@@ -16,7 +16,7 @@
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.2',
+    'version': '0.4',
 
     # any module necessary for this one to work correctly
     'depends': ['crm', 'sale_management', 'website_sign', 'website_quote',
@@ -58,4 +58,5 @@
         'views/res_users.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
+    'post_init_hook':'post_init_check'
 }

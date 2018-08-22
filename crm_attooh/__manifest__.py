@@ -16,7 +16,7 @@
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.1',
+    'version': '0.2',
 
     # any module necessary for this one to work correctly
     'depends': ['crm', 'sale_management', 'website_sign', 'website_quote', 
@@ -34,6 +34,7 @@
         'data/ticket_type_activity_data.xml',
         'data/sales_team_demo.xml',
         'data/hr_employee_roles_data.xml',
+        'data/product_area_data.xml',
         'views/crm_views.xml',
         'views/hr_views.xml',
         'views/res_partner_views.xml',
@@ -54,6 +55,7 @@
         'views/helpdesk_ticket_view.xml',
         'views/helpdesk_portal_templates.xml',
         'views/crm_reporting_view.xml',
+        'views/res_users.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
 }

@@ -87,21 +87,21 @@ class SignatureRequest(models.Model):
                 value = value.value
 
                 if item.type_id.type == "text":
-                    can.setFont(font, height*item.height*0.8)
-                    can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
+                    can.setFont(font, height * item.height * 0.8)
+                    can.drawString(width * item.posX, height * (1 - item.posY - item.height * 0.9), value)
 
                 elif item.type_id.type == "textarea":
-                    can.setFont(font, height*normalFontSize*0.8)
+                    can.setFont(font, height * normalFontSize * 0.8)
                     lines = value.split('\n')
-                    y = (1-item.posY)
+                    y = (1 - item.posY)
                     for line in lines:
-                        y -= normalFontSize*0.9
-                        can.drawString(width*item.posX, height*y, line)
-                        y -= normalFontSize*0.1
+                        y -= normalFontSize * 0.9
+                        can.drawString(width * item.posX, height * y, line)
+                        y -= normalFontSize * 0.1
 
                 elif item.type_id.type == "signature" or item.type_id.type == "initial":
-                    img = base64.b64decode(value[value.find(',')+1:])
-                    can.drawImage(ImageReader(io.BytesIO(img)), width*item.posX, height*(1-item.posY-item.height), width*item.width, height*item.height, 'auto', True)
+                    img = base64.b64decode(value[value.find(',') + 1:])
+                    can.drawImage(ImageReader(io.BytesIO(img)), width * item.posX, height * (1 - item.posY - item.height), width * item.width, height * item.height, 'auto', True)
 
                 elif item.type_id.type == "checkbox":
                     symboia_font_family = get_module_resource('crm_attooh', 'fonts', 'Symbola_hint.ttf')
@@ -143,13 +143,14 @@ class CRM(models.Model):
                                    string='Services')
     signature_requests_count = fields.Integer("# Signature Requests", compute='_compute_signature_requests')
     signature_ids = fields.One2many('signature.request', 'lead_id')
-    product_area = fields.Selection([
-        ('financial_planning', 'Financial Planning'),
-        ('short_term', 'Short Term'),
-        ('health', 'Health'),
-        ('investments', 'Investments'),
-        ('risk', 'Risk')
-        ], default="financial_planning", string="Product Area")
+#     product_area = fields.Selection([
+#         ('financial_planning', 'Financial Planning'),
+#         ('short_term', 'Short Term'),
+#         ('health', 'Health'),
+#         ('investments', 'Investments'),
+#         ('risk', 'Risk')
+#         ], default="financial_planning", string="Product Area")
+    product_area_id = fields.Many2one('product.area', string="Product Area")
     referred = fields.Many2one('res.partner', 'Referred By')
 
     submission_data = fields.Date('Submission Date')
@@ -174,16 +175,33 @@ class CRM(models.Model):
     phone = fields.Char('Work Phone')
     # team_id = fields.Many2one(string='Sales to New Business')
 
+    @api.multi
+    def get_user_id(self, activity):
+        user_id = False
+        user_id = activity.employee_role_id.employee_id and activity.employee_role_id.employee_id.id or False
+        return user_id
+
     @api.onchange('stage_id')
     def onchanhge_stage_id(self):
         user_id = False
         for activity in self.stage_id.stage_activity_ids:
-            if self.team_id and activity.team_ids and self.team_id.id in activity.team_ids.ids:
+            if self._origin.team_id and activity.team_ids and self._origin.team_id.id in activity.team_ids.ids:
                 date_deadline = datetime.today() + timedelta(days=activity.activity_date)
                 if activity.assign_to_owner:
                     user_id = self.user_id and self.user_id.id or False
                 else:
-                    user_id = activity.employee_role_id.employee_id and activity.employee_role_id.employee_id.id or False
+                    if self.user_id.is_financial_advisor:
+                        role_ids = self.user_id.user_employee_roles_ids
+                        if not role_ids:
+                            user_id = self.get_user_id(activity)
+                        else:
+                            emp_role_id = role_ids.filtered(lambda l: l.employee_role_id.id == activity.employee_role_id.id)
+                            if emp_role_id:
+                                user_id = emp_role_id.employee_id.id
+                            else:
+                                user_id = self.get_user_id(activity)
+                    else:
+                        user_id = self.get_user_id(activity)
                 activities = self.env['mail.activity'].search(
                     [('res_id', '=', self._origin.id), ('stage_activity_id', '=', activity.id)])
                 if not activities:
@@ -235,19 +253,18 @@ class CRM(models.Model):
         return res
 
     @api.multi
-    @api.onchange('product_area')
+    @api.onchange('product_area_id')
     def onchanhge_product_area(self):
-        if self.product_area == 'short_term':
+        if self.product_area_id.id == self.env.ref('crm_attooh.product_short_term').id:
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_1')
-        elif self.product_area == 'health':
+        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_health').id:
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_2')
-        elif self.product_area == 'investments':
+        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_investments').id:
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_3')
-        elif self.product_area == 'risk':
+        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_risk').id:
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_4')
-        elif self.product_area == 'financial_planning':
+        else:
             self.team_id = self.env.ref('crm_attooh.crm_team_attooh_5')
-        else: pass
 
     @api.multi
     def _compute_signature_requests(self):
@@ -268,3 +285,9 @@ class CrmTeamAttooh(models.Model):
     @api.returns('self', lambda value: value.id if value else False)
     def _get_default_team_id(self, user_id=None):
         return self.env.ref('crm_attooh.crm_team_attooh_5')
+
+
+class ProductArea(models.Model):
+    _name = 'product.area'
+
+    name = fields.Char(string="Product Area")

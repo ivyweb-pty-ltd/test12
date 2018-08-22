@@ -52,6 +52,7 @@ class CrmAutomatedEmails(models.Model):
     email_template_id = fields.Many2one('mail.template', domain=[('model', '=', 'crm.lead')], string='Email Templates', request=True)
     user_id = fields.Many2one('res.users', string='Users', required=True)
 
+
 class CrmSignatureRequest(models.Model):
     _name = "crm.signature.request"
 

@@ -168,6 +168,7 @@ class CRM(models.Model):
     issued_commission_year_1 = fields.Float('Issued 1st year Commission')
     issued_commission_year_2 = fields.Float('Issued 2nd year Commission')
     issued_monthly_commission = fields.Float('Issued Monthly Ongoing Commission')
+    contract_policy_number = fields.Char('Contract/Policy Number')
     book_notes = fields.Text('Production Book Notes')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.user.company_id.currency_id.id)
 

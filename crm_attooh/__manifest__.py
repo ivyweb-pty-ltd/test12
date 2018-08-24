@@ -16,7 +16,7 @@
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.4',
+    'version': '0.5',
 
     # any module necessary for this one to work correctly
     'depends': ['crm', 'sale_management', 'website_sign', 'website_quote',
@@ -56,6 +56,7 @@
         'views/helpdesk_portal_templates.xml',
         'views/crm_reporting_view.xml',
         'views/res_users.xml',
+        'views/crm_reporting_activity.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'post_init_hook':'post_init_check'

@@ -151,7 +151,7 @@ class CRM(models.Model):
         ('4_y_d', '4 Year Dipl/Degr'),
     ], 'Qualification')
     gross_month_salary = fields.Float('Gross Monthly Salary')
-    employer = fields.Char('Employer')
+    employer = fields.Many2one('res.partner', string='Employer')
     occupation = fields.Char('Occupation')
     gross_retirement_fund = fields.Boolean('Group Retirement Fund')
     fund_value = fields.Float('Fund Value')
@@ -288,7 +288,6 @@ class CRM(models.Model):
     spouse_id = fields.Many2one('res.partner', 'Spouse')
     is_duplicate_id = fields.Boolean(string="duplicate")
 
-
     def _compute_attachment_count(self):
         Attachment = self.env['ir.attachment']
         for partner in self:
@@ -305,13 +304,14 @@ class CRM(models.Model):
 
     @api.onchange('first_name')
     def on_change_first_name(self):
-        if self.name:
-            name = self.name
-            first_name = name.split(' ')
-            first_name[0] = self.first_name
-            self.name = ' '.join(first_name)
-        else:
-            self.name = self.first_name
+        if not self.preferred_name:
+            if self.name:
+                name = self.name
+                first_name = name.split(' ')
+                first_name[0] = self.first_name
+                self.name = ' '.join(first_name)
+            else:
+                self.name = self.first_name
 
     @api.onchange('surname')
     def on_change_surname(self):
@@ -325,6 +325,24 @@ class CRM(models.Model):
                 self.name = '%s %s' % (self.name, self.surname)
         else:
             self.name = self.surname
+
+    @api.onchange('preferred_name')
+    def on_change_preffre_name(self):
+        if self.name:
+            name = self.name
+            preferred_name = name.split(' ')
+            preferred_name[0] = self.preferred_name
+            self.name = ' '.join(preferred_name)
+        else:
+            self.name = self.preferred_name
+        if not self.preferred_name:
+            if self.name:
+                name = self.name
+                first_name = name.split(' ')
+                first_name[0] = self.first_name
+                self.name = ' '.join(first_name)
+            else:
+                self.name = self.first_name
 
     @api.multi
     @api.onchange('id_rsa', 'id_type')

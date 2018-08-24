@@ -34,6 +34,7 @@
                     <page string="Production Book">
                         <group>
                             <group>
+                                <field name="contract_policy_number" />
                                 <field name="submission_data" />
                                 <field name="date_of_issue"/>
                                 <field name="doc"/>
@@ -90,27 +91,27 @@
         </record>
 
         <!-- inherit view of Lead Form : adding the "Signature state button" -->
-        <!-- <record id="crm_lead_view_form_state_btn" model="ir.ui.view"> <field 
-            name="name">crm.lead.form</field> <field name="model">crm.lead</field> <field 
-            name="inherit_id" ref="crm.crm_case_form_view_oppor" /> <field name="arch" 
-            type="xml"> <xpath expr="//div[hasclass('oe_button_box')]" position="inside"> 
-            <button name="open_lead_signature" class="oe_stat_button" icon="fa-file-text" 
-            type="object"> <field string="Signature Requests" name="signature_requests_count" 
+        <!-- <record id="crm_lead_view_form_state_btn" model="ir.ui.view"> <field
+            name="name">crm.lead.form</field> <field name="model">crm.lead</field> <field
+            name="inherit_id" ref="crm.crm_case_form_view_oppor" /> <field name="arch"
+            type="xml"> <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+            <button name="open_lead_signature" class="oe_stat_button" icon="fa-file-text"
+            type="object"> <field string="Signature Requests" name="signature_requests_count"
             widget="statinfo"/> </button> </xpath> </field> </record> -->
 
         <!-- inherit view of Lead Form : adding the "Signature Request page" -->
-        <!-- <record id="crm_lead_view_form_request_page" model="ir.ui.view"> <field 
-            name="name">crm.lead.form</field> <field name="model">crm.lead</field> <field 
-            name="inherit_id" ref="crm.crm_case_form_view_oppor" /> <field name="arch" 
-            type="xml"> <xpath expr="//notebook/page[@name='lead']" position="after"> 
-            <page string="Signature Request"> <field name="signature_ids"/> </page> </xpath> 
+        <!-- <record id="crm_lead_view_form_request_page" model="ir.ui.view"> <field
+            name="name">crm.lead.form</field> <field name="model">crm.lead</field> <field
+            name="inherit_id" ref="crm.crm_case_form_view_oppor" /> <field name="arch"
+            type="xml"> <xpath expr="//notebook/page[@name='lead']" position="after">
+            <page string="Signature Request"> <field name="signature_ids"/> </page> </xpath>
             </field> </record> -->
 
         <template id="assets_backend_crm_attooh" inherit_id="web.assets_backend">
             <xpath expr="script[last()]" position="after">
                 <script type="text/javascript" src="/crm_attooh/static/src/js/crm_sign.js"></script>
             </xpath>
-            <!-- <xpath expr="link[last()]" position="after"> <link rel="stylesheet" 
+            <!-- <xpath expr="link[last()]" position="after"> <link rel="stylesheet"
                 href="/website_sign/static/src/less/website_sign_backend.less"/> </xpath> -->
         </template>
         <template id="assets_common" inherit_id="web.assets_common">
@@ -118,6 +119,6 @@
                 <script type="text/javascript" src="/crm_attooh/static/src/js/website_sign_override.js"></script>
             </xpath>
         </template>
-        
+
     </data>
 </odoo>

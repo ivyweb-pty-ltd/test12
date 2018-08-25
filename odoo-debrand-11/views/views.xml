@@ -149,9 +149,11 @@
         </xpath>
     </template>
     <!-- removing social icons -->
-    <template id="footer_extend" inherit_id="website.footer_custom">
-        <xpath position="replace" expr="//h2"/>
-    </template>
+
+<!--     <template id="footer_extend" inherit_id="website.footer_custom"> -->
+<!--         <xpath position="replace" expr="//h2"/> -->
+<!--     </template> -->
+
     <!--put teh company logo or the fav icons path here in href-->
     <template id="web_layout_extend" inherit_id="web.layout">
         <xpath expr="//title" position="replace">

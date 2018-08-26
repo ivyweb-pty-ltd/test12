@@ -22,8 +22,8 @@ class MailTemplate(models.Model):
     @api.model
     def _debrand_body(self, body):
         using_word = _('using')
-#         odoo_word = _('Odoo')
-        odoo_word = _('XLR8')
+        odoo_word = _('Odoo')
+#        odoo_word = _('XLR8')
         return re.sub(
             using_word + "(.*)[\r\n]*(.*)>" + odoo_word + r"</a>", "", body,
         )

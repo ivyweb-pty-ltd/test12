@@ -33,7 +33,6 @@ class SmsCompose(models.Model):
     def send_entity(self):
         """Attempt to send the sms, if any error comes back show it to the user and only log the smses that successfully sent"""
         self.ensure_one()
-
         gateway_model = self.from_mobile_id.account_id.account_gateway_id.gateway_model_name
         my_sms = self.from_mobile_id.account_id.send_message(self.from_mobile_id.mobile_number, self.to_number, self.sms_content.encode('utf-8'), self.model, self.record_id, self.media_id)[0]
         error_message = my_sms['error']

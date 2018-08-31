@@ -24,7 +24,8 @@ class res_partner(models.Model):
                                                  'from_mobile_verified_id': self.env('sms_frame.sms_number_default').id,
                                                  'from_mobile': '0000000000',
                                                  'template_body': ""})
-                    sms_body = sms_template_id.template_body
+                    sms_body = self.env['sms.template'].render_template(sms_template_id.template_body, sms_template_id.model_id.model, each.id)
+#                     sms_body = sms_template_id.template_body
     #                 sms_body = each.name + ' ,We have noticed that we dont have your email address kindly reply with your email address. attooh'
                     my_sms = sms_number_id.account_id.send_message(sms_number_id.mobile_number, each.mobile, sms_body.encode('utf-8'), self._context.get('active_model'), each.id, False)[0]
                     error_message = my_sms['error']

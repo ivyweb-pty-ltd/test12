@@ -21,7 +21,6 @@ class mail_activity(models.Model):
 #         for each in self:
 #             if each.date_deadline:
 #                 each.activity_date = (fields.Date.from_string(each.date_deadline) - date.today()).days
-#                 print ('\n\neach.activity_date', each.activity_date)
 
 
 class MailActivity(models.Model):

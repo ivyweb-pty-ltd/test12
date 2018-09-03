@@ -446,11 +446,6 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>Employer</td>
-                                                <td><input class="form-control" name="employer" t-att-value="partner.employer_name"/></td>
-                                                <td><input class="form-control" name="spouse_employer" t-att-value="spouse.employer_name"/></td>
-                                            </tr>
-                                            <tr>
                                                 <td>Address</td>
                                                 <td>
                                                     <input class="form-control" name="street"  placeholder="Street..." t-att-value="partner.street"/>
@@ -585,11 +580,6 @@
                                             <td>Qualification</td>
                                             <td><span t-field="partner.qualification"/></td>
                                             <td><span t-field="spouse.qualification"/></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Employer</td>
-                                            <td><span t-field="partner.employer_name"/></td>
-                                            <td><span t-field="spouse.employer_name"/></td>
                                         </tr>
                                         <tr>
                                             <td>Address</td>

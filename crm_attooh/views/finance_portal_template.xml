@@ -447,8 +447,8 @@
                                             </tr>
                                             <tr>
                                                 <td>Employer</td>
-                                                <td><input class="form-control" name="employer" t-att-value="partner.employer"/></td>
-                                                <td><input class="form-control" name="spouse_employer" t-att-value="spouse.employer"/></td>
+                                                <td><input class="form-control" name="employer" t-att-value="partner.employer_name"/></td>
+                                                <td><input class="form-control" name="spouse_employer" t-att-value="spouse.employer_name"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Address</td>
@@ -588,8 +588,8 @@
                                         </tr>
                                         <tr>
                                             <td>Employer</td>
-                                            <td><span t-field="partner.employer"/></td>
-                                            <td><span t-field="spouse.employer"/></td>
+                                            <td><span t-field="partner.employer_name"/></td>
+                                            <td><span t-field="spouse.employer_name"/></td>
                                         </tr>
                                         <tr>
                                             <td>Address</td>
@@ -708,7 +708,7 @@
                                                         </t>
                                                     </select>
                                                     <!-- <input class="form-control" name="id_type"/> -->
-                                                
+
                                                 </td>
                                                 <td><input class="form-control" name="id_rsa"  pattern="\d*"  title="This must be a number"/></td>
                                                 <td>
@@ -787,8 +787,8 @@
                                 <a href="/my/personalfinancial?edit_mode=dependent" class="btn btn-primary">Edit</a>
                             </div>
                         </div>
-                        
-                        
+
+
 
                         <div class="panel panel-default" t-if="edit_mode != 'bugdet_income'">
                             <div class="panel-heading">Personal Budget Income</div>
@@ -818,7 +818,7 @@
                                 <a href="/my/personalfinancial?edit_mode=bugdet_income" class="btn btn-primary">Edit</a>
                             </div>
                         </div>
-                        
+
                         <div class="panel panel-default" t-if="edit_mode == 'bugdet_income'">
                             <form action="/website_form/" method="post" data-force_action="bugdet_income" class="s_website_attooh_form form-horizontal container-fluid mt32" data-editable-form="true" data-success_page="/my/personalfinancial">
                                 <div class="panel-heading">Income</div>
@@ -878,7 +878,7 @@
                                 </div>
                             </form>
                         </div>
-                        
+
                         <div class="panel panel-default" t-if="edit_mode != 'bugdet_expense'">
                             <div class="panel-heading">Personal Budget Expense</div>
                             <div class="container">
@@ -907,7 +907,7 @@
                                 <a href="/my/personalfinancial?edit_mode=bugdet_expense" class="btn btn-primary">Edit</a>
                             </div>
                         </div>
-                        
+
                         <div class="panel panel-default" t-if="edit_mode == 'bugdet_expense'">
                             <form action="/website_form/" method="post" data-force_action="bugdet_expense" class="s_website_attooh_form form-horizontal container-fluid mt32" data-editable-form="true" data-success_page="/my/personalfinancial">
                                 <div class="panel-heading">Personal Budget Expense</div>
@@ -972,7 +972,7 @@
                 </div>
             </t>
         </template>
-        
+
         <template id="my_beneficiaries" name="Personal and Financial Detail">
             <t t-call="portal.portal_layout">
                 <div class="panel panel-default" t-if="edit_mode == 'dependent'">
@@ -1017,7 +1017,7 @@
                                                 </t>
                                             </select>
                                             <!-- <input class="form-control" name="id_type"/> -->
-                                        
+
                                         </td>
                                         <td><input class="form-control" name="id_rsa"  pattern="\d*"  title="This must be a number"/></td>
                                         <td>

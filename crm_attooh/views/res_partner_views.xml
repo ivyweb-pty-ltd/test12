@@ -85,20 +85,21 @@
                         <h2>Additional Information</h2>
                         <separator/>
                         <group>
-                            
+
                             <field name="date_of_birth"/>
                             <field name="gender" widget="radio" options="{'horizontal': true}"/>
                             <field name="marrige_date"/>
                             <field name="country_of_birth"/>
                             <field name="home_language"/>
                             <field name="employer" domain="[('customer', '=', True),('is_company','=',True)]"/>
+                            <field name="employer_name"/>
                             <field name="smokes_status" widget="radio" options="{'horizontal': true}"/>
                             <field name="medical_aid_company"/>
                             <field name="medical_aid_plan"/>
                             <field name="spouse_id"/>
                         </group>
                         <group>
-                            
+
                             <field name="retirement_age"/>
                             <field name="health"/>
                             <field name="marital_status"/>
@@ -373,4 +374,4 @@
         </record>
 
     </data>
-</odoo> 
+</odoo>

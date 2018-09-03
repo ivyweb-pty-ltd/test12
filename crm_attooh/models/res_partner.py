@@ -152,6 +152,7 @@ class CRM(models.Model):
     ], 'Qualification')
     gross_month_salary = fields.Float('Gross Monthly Salary')
     employer = fields.Many2one('res.partner', string='Employer')
+    employer_name = fields.Char('Employer Name')
     occupation = fields.Char('Occupation')
     gross_retirement_fund = fields.Boolean('Group Retirement Fund')
     fund_value = fields.Float('Fund Value')

@@ -14,6 +14,9 @@
                         <field name="attachment_count" widget="statinfo" string="Documents"/>
                     </button>
                 </button>
+                <field name="parent_id" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', '|', ('company_name', '=', False), ('company_name', '=', ''), ('is_company', '=', True)]}</attribute>
+                </field>
                 <xpath expr="//sheet/group" position="replace">
                     <group>
                         <group>
@@ -60,7 +63,6 @@
                         <group>
                             <field name="id_type"/>
                             <field name="id_rsa"/>
-                            <field name="is_duplicate_id" invisible="True"/>
                             <field name="phone" widget="phone" string="Work Phone"/>
                             <field name="email" widget="email" context="{'gravatar_image': True}" attrs="{'required': [('user_ids','!=', [])]}"/>
                             <field name="lang"/>

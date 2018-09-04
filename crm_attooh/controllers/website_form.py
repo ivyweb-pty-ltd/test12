@@ -91,6 +91,7 @@ class WebsiteAttoohForm(http.Controller):
                 else:
                     partner[key] = value
             data = self.extract_data(model_record, partner)
+            print ("\n\n\ data-------->",data)
             spouse_data = self.extract_data(model_record, spouse)
         # If we encounter an issue while extracting data
         except ValidationError as e:

@@ -447,7 +447,7 @@
                                             </tr>
     
                                             <tr>
-                                                <td>Employer New</td>
+                                                <td>Employer</td>
                                                 <td><input class="form-control" name="employer_name" t-att-value="partner.employer_name"/></td>
                                                 <td><input class="form-control" name="spouse_employer_name" t-att-value="spouse.employer_name"/></td>
                                             </tr>

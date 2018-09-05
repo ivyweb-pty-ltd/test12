@@ -19,7 +19,7 @@
             <field name="name">Prospect</field>
         </record>
     </data>
-    
+
     <record id="base.model_res_partner" model="ir.model">
         <field name="website_form_access">True</field>
         <field name="website_form_label">Customer</field>
@@ -40,7 +40,7 @@ portal = PortalWiard.create({
         'user_id': env.user.id
     })]
 })
-portal.action_apply()  
+portal.action_apply()
         </field>
     </record>
 
@@ -94,7 +94,7 @@ if not record.user_id.active:
             'city', 'zip', 'street', 'street2', 'state_id', 'country_id',
             'vat', 'company_name',
             'surname', 'mobile',
-            'employer',
+            'employer_name',
             'fund_value',
             'gross_month_salary',
             'id_rsa',

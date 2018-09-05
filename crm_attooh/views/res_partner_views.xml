@@ -14,6 +14,9 @@
                         <field name="attachment_count" widget="statinfo" string="Documents"/>
                     </button>
                 </button>
+                <field name="parent_id" position="attributes">
+                    <attribute name="attrs">{'invisible': ['|', '|', ('company_name', '=', False), ('company_name', '=', ''), ('is_company', '=', True)]}</attribute>
+                </field>
                 <xpath expr="//sheet/group" position="replace">
                     <group>
                         <group>
@@ -60,7 +63,6 @@
                         <group>
                             <field name="id_type"/>
                             <field name="id_rsa"/>
-                            <field name="is_duplicate_id" invisible="True"/>
                             <field name="phone" widget="phone" string="Work Phone"/>
                             <field name="email" widget="email" context="{'gravatar_image': True}" attrs="{'required': [('user_ids','!=', [])]}"/>
                             <field name="lang"/>
@@ -85,20 +87,21 @@
                         <h2>Additional Information</h2>
                         <separator/>
                         <group>
-                            
+
                             <field name="date_of_birth"/>
                             <field name="gender" widget="radio" options="{'horizontal': true}"/>
                             <field name="marrige_date"/>
                             <field name="country_of_birth"/>
                             <field name="home_language"/>
                             <field name="employer" domain="[('customer', '=', True),('is_company','=',True)]"/>
+                            <field name="employer_name"/>
                             <field name="smokes_status" widget="radio" options="{'horizontal': true}"/>
                             <field name="medical_aid_company"/>
                             <field name="medical_aid_plan"/>
                             <field name="spouse_id"/>
                         </group>
                         <group>
-                            
+
                             <field name="retirement_age"/>
                             <field name="health"/>
                             <field name="marital_status"/>
@@ -373,4 +376,4 @@
         </record>
 
     </data>
-</odoo> 
+</odoo>

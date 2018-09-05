@@ -15,9 +15,10 @@ class CRM(models.Model):
 
     @api.onchange('company_type')
     def onchange_company_type(self):
+        super(CRM, self).onchange_company_type()
         self.id_type = False
         if self.company_type == 'person':
-             self.id_type = 'rsa_id'
+            self.id_type = 'rsa_id'
 
     # fields added for Individual
     first_name = fields.Char('First Name')
@@ -152,6 +153,7 @@ class CRM(models.Model):
     ], 'Qualification')
     gross_month_salary = fields.Float('Gross Monthly Salary')
     employer = fields.Many2one('res.partner', string='Employer')
+    employer_name = fields.Char('Employer Name')
     occupation = fields.Char('Occupation')
     gross_retirement_fund = fields.Boolean('Group Retirement Fund')
     fund_value = fields.Float('Fund Value')
@@ -286,7 +288,6 @@ class CRM(models.Model):
     attachment_count = fields.Integer(compute="_compute_attachment_count", string="Attachments")
 
     spouse_id = fields.Many2one('res.partner', 'Spouse')
-    is_duplicate_id = fields.Boolean(string="duplicate")
 
     def _compute_attachment_count(self):
         Attachment = self.env['ir.attachment']

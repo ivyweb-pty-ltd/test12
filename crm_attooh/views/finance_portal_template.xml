@@ -388,7 +388,7 @@
                                             <tr>
                                                 <td>Identity Number</td>
                                                 <td><input class="form-control" required="required" pattern="\d*"  title="This must be a number"  name="id_rsa" t-att-value="partner.id_rsa"/></td>
-                                                <td><input class="form-control" required="required" pattern="\d*"  title="This must be a number"  name="spouse_id_rsa" t-att-value="spouse.id_rsa"/></td>
+                                                <td><input class="form-control" pattern="\d*"  title="This must be a number"  name="spouse_id_rsa" t-att-value="spouse.id_rsa"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Marital Status</td>
@@ -445,7 +445,7 @@
                                                     </select>
                                                 </td>
                                             </tr>
-    
+
                                             <tr>
                                                 <td>Employer</td>
                                                 <td><input class="form-control" name="employer_name" t-att-value="partner.employer_name"/></td>
@@ -497,7 +497,7 @@
                                             <tr>
                                                 <td>Gross Monthly Salary</td>
                                                 <td><input class="form-control" name="gross_month_salary" t-att-value="partner.gross_month_salary" required="required" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
-                                                <td><input class="form-control" name="spouse_gross_month_salary" t-att-value="spouse.gross_month_salary" required="required" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
+                                                <td><input class="form-control" name="spouse_gross_month_salary" t-att-value="spouse.gross_month_salary" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Gross Retierment Fund</td>
@@ -507,7 +507,7 @@
                                             <tr>
                                                 <td>Fund Value</td>
                                                 <td><input class="form-control" name="fund_value" t-att-value="partner.fund_value" required="required" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
-                                                <td><input class="form-control" name="spouse_fund_value" t-att-value="spouse.fund_value" required="required" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
+                                                <td><input class="form-control" name="spouse_fund_value" t-att-value="spouse.fund_value" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
                                             </tr>
                                             <tr>
                                                 <td>Smoker Status</td>

@@ -149,8 +149,11 @@ class CRM(models.Model):
     qualification = fields.Selection([
         ('no_matric', 'No Matric'),
         ('matric', 'Matric'),
-        ('3_y_d', '3 Year Dipl/Degr'),
-        ('4_y_d', '4 Year Dipl/Degr'),
+        ('3_y_diploma', '3 Year Diploma'),
+        ('4_y_diploma', '4 Year Diploma'),
+        ('3_y_d', '3 Year Degree'),
+        ('4_y_d', '4 Year Degree'),
+        ('professional', 'Professional'),
     ], 'Qualification')
     gross_month_salary = fields.Float('Gross Monthly Salary')
     employer = fields.Many2one('res.partner', string='Employer')

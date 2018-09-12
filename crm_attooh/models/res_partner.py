@@ -289,6 +289,22 @@ class CRM(models.Model):
 
     spouse_id = fields.Many2one('res.partner', 'Spouse')
 
+    @api.model
+    def create(self, vals):
+        res = super(CRM, self).create(vals)
+        if vals.get('spouse_id'):
+            spouse = self.browse(vals.get('spouse_id'))
+            spouse.spouse_id = res.id
+        return res
+
+    @api.multi
+    def write(self, vals):
+        if vals.get('spouse_id') and not self.env.context.get('no_write'):
+            spouse = self.browse(vals.get('spouse_id'))
+            for record in self:
+                spouse.with_context(no_write=True).write({'spouse_id': record.id})
+        return super(CRM, self).write(vals)
+
     def _compute_attachment_count(self):
         Attachment = self.env['ir.attachment']
         for partner in self:

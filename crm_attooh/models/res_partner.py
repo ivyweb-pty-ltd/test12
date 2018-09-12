@@ -28,6 +28,7 @@ class CRM(models.Model):
     surname = fields.Char('Surname')
     initials = fields.Char('Initials')
     second_name = fields.Char('Second Name')
+    home_phone = fields.Char('Home Phone')
     date_of_birth = fields.Date('Date of Birth')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     marrige_date = fields.Date('Marriage Date')

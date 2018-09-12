@@ -395,6 +395,11 @@ class CRM(models.Model):
                 self.gender = 'female'
             else:
                 self.gender = 'male'
+
+            if month < 10:
+                month = '0%s' % (month)
+            if day < 10:
+                day = '0%s' % (day)
             self.date_of_birth = '%s-%s-%s' % (year, month, day)
             if resident_status == 1:
                 self.resident_status = 'permanent'

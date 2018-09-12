@@ -203,9 +203,9 @@ class CRM(models.Model):
     last_prev_name = fields.Char('Last Previous Name')
     tax_office = fields.Char('Tax Office')
     income_tax_number = fields.Char('Income Tax Number')
-    client_adviser_id = fields.Many2one('res.users', 'Client Adviser')
-    admin_id = fields.Many2one('res.users', 'Administrator')
-    portfolio_analyst_id = fields.Many2one('res.users', 'Portfolio Analyst')
+    client_adviser_id = fields.Many2one('res.users', 'Client Adviser', domain=[('share', '=', False)])
+    admin_id = fields.Many2one('res.users', 'Administrator', domain=[('share', '=', False)])
+    portfolio_analyst_id = fields.Many2one('res.users', 'Portfolio Analyst', domain=[('share', '=', False)])
     entity_status = fields.Many2many('entity.status', 'res_partner_entity_rel', 'partner_id', 'entity_id', string='Entity Status')
     category = fields.Selection([
         ('diamond_first', 'Diamond / First'),

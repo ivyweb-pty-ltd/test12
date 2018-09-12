@@ -2,11 +2,9 @@
 {
     'name': "crm_attooh",
 
-    'summary': """
-        Customimsation for attooh""",
+    'summary': """Customimsation for attooh""",
 
     'description': """
-        ...
     """,
 
     'author': "Strategic Dimensions",

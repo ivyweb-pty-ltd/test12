@@ -354,7 +354,10 @@
                                             <tr>
                                                 <th>Detail</th>
                                                 <th>Primary Client</th>
-                                                <th>Spouse</th>
+                                                <th>
+                                                    <div>Add a Spouse <input class="ml4 spouse_checkbox" t-att-checked="'checked' if edit_spouse else None"  type="checkbox"></input></div>
+                                                    <div>Spouse</div>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -367,28 +370,32 @@
                                                         <input type="text" class="form-control" name="surname" t-att-value="partner.surname" placeholder="Surname"/>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td t-if="edit_spouse">
                                                     <div class="input-group">
                                                         <input type="text" class="form-control" name="spouse_name" t-att-value="spouse.name" placeholder="Name"/>
                                                         <span class="input-group-addon">-</span>
                                                         <input type="text" class="form-control" name="spouse_surname" t-att-value="spouse.surname" placeholder="Surname"/>
                                                     </div>
                                                 </td>
+                                                 <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Maiden Name</td>
                                                 <td><input class="form-control" name="maiden_name" t-att-value="partner.maiden_name"/></td>
-                                                <td><input class="form-control" name="spouse_maiden_name" t-att-value="spouse.maiden_name"/></td>
+                                                <td t-if="edit_spouse"><input class="form-control" name="spouse_maiden_name" t-att-value="spouse.maiden_name"/></td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Known as</td>
                                                 <td><input class="form-control" name="preferred_name" t-att-value="partner.preferred_name"/></td>
-                                                <td><input class="form-control" name="spouse_preferred_name" t-att-value="spouse.preferred_name"/></td>
+                                                <td t-if="edit_spouse"><input class="form-control" name="spouse_preferred_name" t-att-value="spouse.preferred_name"/></td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Identity Number</td>
                                                 <td><input class="form-control" required="required" pattern="\d*"  title="This must be a number"  name="id_rsa" t-att-value="partner.id_rsa"/></td>
-                                                <td><input class="form-control" pattern="\d*"  title="This must be a number"  name="spouse_id_rsa" t-att-value="spouse.id_rsa"/></td>
+                                                <td t-if="edit_spouse"><input class="form-control" pattern="\d*"  title="This must be a number"  name="spouse_id_rsa" t-att-value="spouse.id_rsa"/></td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Marital Status</td>
@@ -401,7 +408,7 @@
                                                         </t>
                                                     </select>
                                                 </td>
-                                                <td>
+                                                <td t-if="edit_spouse">
                                                     <select name="spouse_marital_status" class="form-control">
                                                         <t t-foreach="partner._fields['marital_status'].selection or []" t-as="type">
                                                             <option t-att-value="type[0]" t-att-selected="spouse.marital_status == type[0]">
@@ -410,6 +417,7 @@
                                                         </t>
                                                     </select>
                                                 </td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Date of Marriage</td>
@@ -418,11 +426,12 @@
                                                         <input type="text" class="form-control o_website_form_date" t-att-value="partner.marrige_date" name="marrige_date"/>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td t-if="edit_spouse">
                                                     <div class='col-md-12'>
                                                         <input type="text" class="form-control o_website_form_date" t-att-value="spouse.marrige_date" name="spouse_marrige_date"/>
                                                     </div>
                                                 </td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Qualification</td>
@@ -435,7 +444,7 @@
                                                         </t>
                                                     </select>
                                                 </td>
-                                                <td>
+                                                <td t-if="edit_spouse">
                                                     <select name="spouse_qualification" class="form-control">
                                                         <t t-foreach="partner._fields['qualification'].selection or []" t-as="type">
                                                             <option t-att-value="type[0]" t-att-selected="spouse.qualification == type[0]">
@@ -444,12 +453,14 @@
                                                         </t>
                                                     </select>
                                                 </td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
 
                                             <tr>
                                                 <td>Employer</td>
                                                 <td><input class="form-control" name="employer_name" t-att-value="partner.employer_name"/></td>
-                                                <td><input class="form-control" name="spouse_employer_name" t-att-value="spouse.employer_name"/></td>
+                                                <td t-if="edit_spouse"><input class="form-control" name="spouse_employer_name" t-att-value="spouse.employer_name"/></td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
 
                                             <tr>
@@ -462,42 +473,49 @@
                                                     <!-- <span t-field="partner.state_id"/>
                                                     <span t-field="partner.country_id"/> -->
                                                 </td>
-                                                <td>
+                                                <td t-if="edit_spouse">
                                                     <input class="form-control" name="spouse_street" placeholder="Street..." t-att-value="spouse.street"/>
                                                     <input class="form-control" name="spouse_street2" placeholder="Street 2..." t-att-value="spouse.street2"/>
                                                     <input class="form-control" name="spouse_city" placeholder="City" t-att-value="spouse.city"/>
                                                     <input class="form-control" name="spouse_zip" placeholder="ZIP" t-att-value="spouse.zip"/>
                                                 </td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Occupation</td>
                                                 <td><input class="form-control" name="occupation" t-att-value="partner.occupation"/></td>
-                                                <td><input class="form-control" name="spouse_occupation" t-att-value="spouse.occupation"/></td>
+                                                <td t-if="edit_spouse"><input class="form-control" name="spouse_occupation" t-att-value="spouse.occupation"/></td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Tax Number</td>
                                                 <td><input class="form-control" name="income_tax_number" t-att-value="partner.income_tax_number"/></td>
-                                                <td><input class="form-control" name="spouse_income_tax_number" t-att-value="spouse.income_tax_number"/></td>
+                                                <td t-if="edit_spouse"><input class="form-control" name="spouse_income_tax_number" t-att-value="spouse.income_tax_number"/></td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Madical Aid: Company</td>
                                                 <td><input class="form-control" name="medical_aid_company" t-att-value="partner.medical_aid_company"/></td>
-                                                <td><input class="form-control" name="spouse_medical_aid_company" t-att-value="spouse.medical_aid_company"/></td>
+                                                <td t-if="edit_spouse"><input class="form-control" name="spouse_medical_aid_company" t-att-value="spouse.medical_aid_company"/></td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Madical Aid: Plan</td>
                                                 <td><input class="form-control" name="medical_aid_plan" t-att-value="partner.medical_aid_plan"/></td>
-                                                <td><input class="form-control" name="spouse_medical_aid_plan" t-att-value="spouse.medical_aid_plan"/></td>
+                                                <td t-if="edit_spouse"><input class="form-control" name="spouse_medical_aid_plan" t-att-value="spouse.medical_aid_plan"/></td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Madical Aid: Number</td>
                                                 <td><input class="form-control" name="medical_aid_number" t-att-value="partner.medical_aid_number"/></td>
-                                                <td><input class="form-control" name="spouse_medical_aid_number" t-att-value="spouse.medical_aid_number"/></td>
+                                                <td t-if="edit_spouse"><input class="form-control" name="spouse_medical_aid_number" t-att-value="spouse.medical_aid_number"/></td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Gross Monthly Salary</td>
                                                 <td><input class="form-control" name="gross_month_salary" t-att-value="partner.gross_month_salary" required="required" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
-                                                <td><input class="form-control" name="spouse_gross_month_salary" t-att-value="spouse.gross_month_salary" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
+                                                <td t-if="edit_spouse"><input class="form-control" name="spouse_gross_month_salary" t-att-value="spouse.gross_month_salary" pattern="[0-9]+(\.[0-9]{0,2})?%?" title="This must be a number with up to 2 decimal places"/></td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                             <tr>
                                                 <td>Smoker Status</td>
@@ -506,11 +524,12 @@
                                                     <input type="radio" name="smokes_status" value="no" t-att-checked="partner.smokes_status == 'no'">
                                                         No</input>
                                                 </td>
-                                                <td>
+                                                <td t-if="edit_spouse">
                                                     <input type="radio" name="spouse_smokes_status" value="yes" t-att-checked="spouse.smokes_status == 'yes'">YES</input>
                                                     <input type="radio" name="spouse_smokes_status" value="no" t-att-checked="spouse.smokes_status == 'no'">
                                                         No</input>
                                                 </td>
+                                                <td t-if="not edit_spouse"></td>
                                             </tr>
                                         </tbody>
                                     </table>

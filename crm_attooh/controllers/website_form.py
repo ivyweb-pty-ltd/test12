@@ -287,5 +287,5 @@ class WebsiteAttoohForm(http.Controller):
             else:
                 value['file_type'] = 'other'
                 src = "/web/content/%s?download=true"%(attachment.id)
-                value['src'] = src      
+                value['src'] = src
             return value

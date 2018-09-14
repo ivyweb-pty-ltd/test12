@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <template id="demo_registration_attendee_details" name="Registration Attendee Details" inherit_id="website_event.registration_attendee_details">
+    <xpath expr="//div" position="replace">
+           <div id="modal_attendees_registration" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <form id="attendee_registration" t-attf-action="/event/#{slug(event)}/registration/confirm" method="post" class="js_website_submit_form">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        <h4 class="modal-title" id="myModalLabel"><strong>Attendees</strong></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <t t-set="counter_type" t-value="1"/>
+                            <t t-set="counter" t-value="0"/>
+                            <t t-foreach="tickets" t-as="ticket">
+                                <h4 class="page-header mt16">
+                                    <strong>
+                                        Ticket Type #<t t-raw="counter_type"/>: <t t-esc="ticket['name']"/>
+                                        <t t-if="ticket['price'] == 0">(Free)</t>
+                                    </strong>
+                                </h4>
+<!--                                 <div class="row"> -->
+<!--                                     <div class="col-md-4"><strong>Name</strong></div> -->
+<!--                                     <div class="col-md-5"><strong>Email</strong></div> -->
+<!--                                     <div class="col-md-3"><strong>Phone</strong> <span class="text-muted">(Optional)</span></div> -->
+<!--                                 </div> -->
+                                <t t-foreach="range(1, ticket['quantity'] + 1)" t-as="att_counter" name="attendee_loop">
+                                    <t t-set="counter" t-value="counter + 1"/>
+                                    <div class="row mb4">
+                                        <t t-set="attendee_placeholder">Attendee #%s</t>
+                                        <t t-set="attendee_placeholder_email"> Email</t>
+                                        <t t-set="attendee_placeholder_phone"> Phone</t>
+                                        <div class="col-md-4"><strong>Name</strong><p></p><input class='form-control' type='text' t-attf-name="#{counter}-name" required="This field is required" t-att-placeholder="attendee_placeholder %counter"/></div>
+                                        <div class="col-md-5"><p><strong>Email</strong></p><input class='form-control' type='email' t-attf-name="#{counter}-email" required="This field is required" t-att-placeholder="attendee_placeholder %counter + attendee_placeholder_email"/></div>
+                                        <div class="col-md-3"><p><strong>Phone</strong></p><input class='form-control' type='tel' t-attf-name="#{counter}-phone" t-att-placeholder="attendee_placeholder %counter + attendee_placeholder_phone"/></div>
+                                        <input class='hidden' type='text' t-attf-name="#{counter}-ticket_id" t-attf-value="#{ticket['id']}"/>
+                                    </div>
+                                </t>
+                                <t t-set="counter_type" t-value="counter_type + 1"/>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="pull-left">
+                            <button type="submit" class="btn btn-primary">Continue</button>
+                            <button type="button" class="btn btn-default js_goto_event" data-dismiss="modal">Cancel Registration</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </xpath>
+ 
+</template>
+    
+</odoo>

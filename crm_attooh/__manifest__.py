@@ -56,6 +56,7 @@
         'views/res_users.xml',
         'views/crm_reporting_activity.xml',
         'views/mail_activity_views.xml',
+        'views/event_template.xml'
     ],
     'qweb': ['static/src/xml/*.xml'],
     'post_init_hook':'post_init_check'

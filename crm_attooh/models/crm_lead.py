@@ -11,6 +11,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from odoo.modules.module import get_module_resource
 
 from odoo import models, fields, api, _
+from odoo.http import request
 from datetime import datetime, timedelta
 from odoo.exceptions import UserError
 
@@ -292,3 +293,26 @@ class ProductArea(models.Model):
     _name = 'product.area'
 
     name = fields.Char(string="Product Area")
+
+class SignatureItem(models.Model):
+
+    _inherit = 'signature.request.item'
+
+    ip_address = fields.Char('Ip Address')
+    country_name = fields.Char()
+    country_code = fields.Char()
+    city = fields.Char()
+    region = fields.Char()
+    time_zone = fields.Char()
+
+    @api.multi
+    def action_completed(self):
+        self.write({
+            'country_name': request.session.get('geoip', {}).get('country_name'),
+            'country_code': request.session.get('geoip', {}).get('country_code'),
+            'city': request.session.get('geoip', {}).get('city'),
+            'region': request.session.get('geoip', {}).get('region'),
+            'time_zone': request.session.get('geoip', {}).get('time_zone'),
+            'ip_address': request.httprequest.remote_addr
+        })
+        return super(SignatureItem, self).action_completed()

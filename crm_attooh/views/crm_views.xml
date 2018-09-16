@@ -119,6 +119,22 @@
                 <script type="text/javascript" src="/crm_attooh/static/src/js/website_sign_override.js"></script>
             </xpath>
         </template>
+        
+        <record id="signature_request_items" model="ir.ui.view">
+            <field name="name">signature.request.item.form</field>
+            <field name="model">signature.request.item</field>
+            <field name="inherit_id" ref="website_sign.signature_request_item_view_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='longitude']" position="after">
+                    <field name="ip_address"/>
+                    <field name="time_zone"/>
+                    <field name="region"/>
+                    <field name="country_name"/>
+                    <field name="country_code"/>
+                    <field name="city"/>
+                </xpath>
+            </field>
+        </record>
 
     </data>
 </odoo>

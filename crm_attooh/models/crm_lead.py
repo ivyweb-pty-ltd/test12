@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import base64
 import io
+import random
 from PyPDF2 import PdfFileReader, PdfFileWriter
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfgen import canvas
@@ -14,6 +15,7 @@ from odoo import models, fields, api, _
 from odoo.http import request
 from datetime import datetime, timedelta
 from odoo.exceptions import UserError
+from odoo.addons.website_sign.models.signature_request import SignatureRequestItem
 
 
 class CrmAttooh(models.Model):
@@ -294,8 +296,7 @@ class ProductArea(models.Model):
 
     name = fields.Char(string="Product Area")
 
-class SignatureItem(models.Model):
-
+class SignatureItemAtooh(models.Model):
     _inherit = 'signature.request.item'
 
     ip_address = fields.Char('Ip Address')
@@ -304,6 +305,7 @@ class SignatureItem(models.Model):
     city = fields.Char()
     region = fields.Char()
     time_zone = fields.Char()
+    opt = fields.Char()
 
     @api.multi
     def action_completed(self):
@@ -315,4 +317,26 @@ class SignatureItem(models.Model):
             'time_zone': request.session.get('geoip', {}).get('time_zone'),
             'ip_address': request.httprequest.remote_addr
         })
-        return super(SignatureItem, self).action_completed()
+        return super(SignatureItemAtooh, self).action_completed()
+
+    @api.multi
+    def send_sms(self):
+        self.ensure_one()
+        otp = random.randint(11111, 99999)
+        self.sudo().write({
+           'otp': otp
+        })
+        import pdb; pdb.set_trace()
+        if not self.partner_id.mobile:
+            return {
+                'error': 'Partner Mobile number not set. Please contact administrator'
+            }
+        sms_compose = self.env['sms.compose'].create({
+           'from_mobile_id': self.env.ref('sms_frame.sms_number_default').id,
+           'to_number': self.partner_id.mobile,
+           'sms_content': "Your One time password is %s" % otp,
+           'model': 'signature.request.item',
+           'record_id': self.id
+        })
+
+        return sms_compose.send_entity()

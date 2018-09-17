@@ -929,27 +929,36 @@ odoo.define('website_sign.document_signing_NEW', function (require) {
                 }
 
                 var self = this;
-                ajax.jsonRpc('/sign/sign/' + this.requestID + '/' + this.accessToken, 'call', {
-                    signature: signatureValues,
-                }).then(function(success) {
-                    if(!success) {
-                        setTimeout(function() { // To be sure this dialog opens after the thank you dialog below
-                            Dialog.alert(self, _t("Sorry, an error occured, please try to fill the document again."), {
-                                title: _t("Error"),
-                                confirm_callback: function() {
-                                    window.location.reload();
-                                },
-                            });
-                        }, 500);
+                var def_send_sms = ajax.jsonRpc('/send_sms/' + this.requestID + '/' + this.accessToken, 'call', {});
+                def_send_sms.then(function (res) {
+                    if (res && res.error) {
+                        Dialog.alert(self, res.error, {
+                               title: _t("Error"),
+                        });
                     }
-                    if (success === true) {
-                        self.iframeWidget.disableItems();
-                        (new (self.get_thankyoudialog_class())(self)).open();
-                    }
-                    if (typeof success === 'object' && success.url) {
-                        document.location.pathname = success['url'];
-                    }
+                    // debugger;
                 });
+                // ajax.jsonRpc('/sign/sign/' + this.requestID + '/' + this.accessToken, 'call', {
+                //     signature: signatureValues,
+                // }).then(function(success) {
+                //     if(!success) {
+                //         setTimeout(function() { // To be sure this dialog opens after the thank you dialog below
+                //             Dialog.alert(self, _t("Sorry, an error occured, please try to fill the document again."), {
+                //                 title: _t("Error"),
+                //                 confirm_callback: function() {
+                //                     window.location.reload();
+                //                 },
+                //             });
+                //         }, 500);
+                //     }
+                //     if (success === true) {
+                //         self.iframeWidget.disableItems();
+                //         (new (self.get_thankyoudialog_class())(self)).open();
+                //     }
+                //     if (typeof success === 'object' && success.url) {
+                //         document.location.pathname = success['url'];
+                //     }
+                // });
             }
         },
 

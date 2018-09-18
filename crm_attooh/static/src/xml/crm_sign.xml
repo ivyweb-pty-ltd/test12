@@ -20,5 +20,16 @@
         </t>
     </t>
     
-    
+    <div t-name="crm_attooh.otp_dialog_box">
+        <div class="o_thankyou_message">
+            <input type="text" class="form-control" id="otp_data" name="otp" placeholder="Enter OTP..."/>
+        </div>
+    </div>
+
+    <div t-name="crm_attooh.re_otp_dialog_box">
+        <div class="o_thankyou_message">
+            <button class="btn btn-primary" id="ReGenerateOTP">Re-Generate OTP</button>
+        </div>
+    </div>
+
 </odoo>

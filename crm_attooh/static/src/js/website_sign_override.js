@@ -735,6 +735,97 @@ odoo.define('website_sign.document_signing_NEW', function (require) {
         },
     });
 
+    var ReOTPBox = Dialog.extend({
+        template: "crm_attooh.re_otp_dialog_box",
+        events: {
+            'click #ReGenerateOTP': 'ReGenerateOTP'
+        },
+        ReGenerateOTP: function () {
+            var self = this;
+            var signatureValues = {};
+            var request_id = $(document).find('#o_sign_input_signature_request_id').val();
+            var request_token = $(document).find('#o_sign_input_access_token').val();
+            var sign_value = JSON.parse($(document).find('#signature_value').val());
+            ajax.jsonRpc('/generate_otp/' + request_id + '/' + request_token, 'call', {
+                signature: signatureValues,
+            }).then(function (success) {
+                self.close();
+                (new (OTPBox)(self)).open();
+            });
+        },
+        init: function (parent, options) {
+            options = (options || {});
+            options.title = options.title || _t("OTP") + "<br/>";
+            options.subtitle = options.subtitle || _t("Invalid OTP.");
+            options.size = options.size || "medium";
+
+            this._super(parent, options);
+
+            this.on('closed', this, this.on_closed);
+        },
+
+        on_closed: function () {
+        },
+    });
+
+    var OTPBox = Dialog.extend({
+        template: "crm_attooh.otp_dialog_box",
+
+        init: function (parent, options) {
+            options = (options || {});
+            options.title = options.title || _t("OTP") + "<br/>";
+            options.subtitle = options.subtitle || _t("OTP is sent to your register mobile number.");
+            options.size = options.size || "medium";
+
+            this._super(parent, options);
+
+            this.on('closed', this, this.on_closed);
+        },
+        on_closed: function (e) {
+            var self = this;
+            var signatureValues = {};
+            var otp = this.$el.find('#otp_data').val();
+            var request_id = $(document).find('#o_sign_input_signature_request_id').val();
+            var request_token = $(document).find('#o_sign_input_access_token').val();
+            var sign_value = JSON.parse($(document).find('#signature_value').val());
+            if (!otp) {
+                alert("Please Enter OTP");
+                return false;
+
+            } else {
+                ajax.jsonRpc('/check_otp/' + request_id + '/' + request_token + '/' + otp, 'call', {
+                    signature: sign_value,
+                }).then(function (success) {
+                    if (success) {
+                        ajax.jsonRpc('/sign/sign/' + request_id + '/' + request_token, 'call', {
+                            signature: sign_value,
+                        }).then(function (success) {
+                            if (!success) {
+                                setTimeout(function () { // To be sure this dialog opens after the thank you dialog below
+                                    Dialog.alert(self, _t("Sorry, an error occured, please try to fill the document again."), {
+                                        title: _t("Error"),
+                                        confirm_callback: function () {
+                                            window.location.reload();
+                                        },
+                                    });
+                                }, 500);
+                            }
+                            if (success === true) {
+                                (new (ThankYouDialog)(self)).open();
+                            }
+                            if (typeof success === 'object' && success.url) {
+                                document.location.pathname = success['url'];
+                            }
+                        });
+                    } else {
+                        (new (ReOTPBox)(self)).open();
+                    }
+                });
+            }
+
+        },
+    });
+
     var SignablePDFIframe = PDFIframe.extend({
         init: function() {
             this._super.apply(this, arguments);
@@ -882,6 +973,9 @@ odoo.define('website_sign.document_signing_NEW', function (require) {
         get_thankyoudialog_class: function () {
             return ThankYouDialog;
         },
+        get_otp_class: function () {
+            return OTPBox;
+        },
 
         signItemDocument: function(e) {
             var mail = "";
@@ -927,16 +1021,18 @@ odoo.define('website_sign.document_signing_NEW', function (require) {
                         signatureValues[parseInt($elem.data('item-id'))] = value;
                     }
                 }
-
+                var html = "<input type='hidden' value='" + JSON.stringify(signatureValues) + "' id='signature_value'/>";
+                $(document).find('body').append(html);
                 var self = this;
-                var def_send_sms = ajax.jsonRpc('/send_sms/' + this.requestID + '/' + this.accessToken, 'call', {});
-                def_send_sms.then(function (res) {
-                    if (res && res.error) {
-                        Dialog.alert(self, res.error, {
-                               title: _t("Error"),
-                        });
+                ajax.jsonRpc('/generate_otp/' + this.requestID + '/' + this.accessToken, 'call', {
+                    signature: signatureValues,
+                }).then(function (success) {
+                    if (success) {
+                        (new (self.get_otp_class())(self)).open();
+                    } else {
+                        alert("Please Update Mobile Number.")
                     }
-                    // debugger;
+
                 });
                 // ajax.jsonRpc('/sign/sign/' + this.requestID + '/' + this.accessToken, 'call', {
                 //     signature: signatureValues,

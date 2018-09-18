@@ -3,6 +3,8 @@
 
 import base64
 import json
+import random
+
 import pytz
 
 from datetime import datetime
@@ -14,6 +16,7 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMA
 from odoo.tools.translate import _
 from odoo.exceptions import ValidationError
 from odoo.addons.base.ir.ir_qweb.fields import nl2br
+
 
 class WebsiteAttoohForm(http.Controller):
     # Dict of dynamically called filters following type of field to be fault tolerent
@@ -289,3 +292,35 @@ class WebsiteAttoohForm(http.Controller):
                 src = "/web/content/%s?download=true"%(attachment.id)
                 value['src'] = src
             return value
+
+    @http.route(['/generate_otp/<int:id>/<token>'], type='json', auth='public')
+    def generate_otp(self, id, token, signature=None):
+        request_item = http.request.env['signature.request.item'].sudo().search(
+            [('signature_request_id', '=', id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
+        if request_item.partner_id.mobile:
+            otp = random.randint(111111, 999999)
+            request_item.partner_id.sudo().write({
+                'otp': otp
+            })
+            sms_compose = request.env['sms.compose'].sudo().create({
+                'from_mobile_id': request.env.ref('sms_frame.sms_number_default').id,
+                'to_number': request_item.sudo().partner_id.mobile,
+                'sms_content': "Your One time password is %s" % otp,
+                'model': 'signature.request.item',
+                'record_id': request_item.sudo().id
+            })
+            if sms_compose:
+                sms_compose.sudo().send_entity()
+            print("\n\n\n otp======", otp)
+            return True
+        else:
+            return False
+
+    @http.route(['/check_otp/<int:id>/<token>/<otp>'], type='json', auth='public')
+    def check_otp(self, id, token, otp, signature=None):
+        request_item = http.request.env['signature.request.item'].sudo().search(
+            [('signature_request_id', '=', id)], limit=1)
+        if request_item.partner_id.otp == otp:
+            return True
+        else:
+            return False

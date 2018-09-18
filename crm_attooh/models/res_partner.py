@@ -292,6 +292,7 @@ class CRM(models.Model):
     attachment_count = fields.Integer(compute="_compute_attachment_count", string="Attachments")
 
     spouse_id = fields.Many2one('res.partner', 'Spouse')
+    otp = fields.Char(string="OTP")
 
     @api.model
     def create(self, vals):

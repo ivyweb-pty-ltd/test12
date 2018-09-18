@@ -774,7 +774,7 @@ odoo.define('website_sign.document_signing_NEW', function (require) {
         init: function (parent, options) {
             options = (options || {});
             options.title = options.title || _t("OTP") + "<br/>";
-            options.subtitle = options.subtitle || _t("OTP is sent to your register mobile number.");
+            options.subtitle = options.subtitle || _t("You OTP has been sent to your registered mobile number.");
             options.size = options.size || "medium";
 
             this._super(parent, options);

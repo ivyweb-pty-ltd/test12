@@ -78,7 +78,7 @@ class WebsiteAttoohForm(http.Controller):
             # I couldn't find a cleaner way to pass data to an exception
             return json.dumps({'error_fields': e.args[0]})
         model_record.write(data['record'])
-        
+
         return json.dumps({'id': model_record.id})
 
     @http.route('/website_form/personal_detail', type='http', auth="user", methods=['POST'], website=True)
@@ -217,7 +217,7 @@ class WebsiteAttoohForm(http.Controller):
                 final_data.append([0, 0, data])
         for id in res['to_delete']:
             final_data.append([2, id])
-            
+
         model_record.write({'expense_ids': final_data})
         return json.dumps({'id': model_record.id})
 
@@ -271,7 +271,7 @@ class WebsiteAttoohForm(http.Controller):
         if any(error_fields):
             raise ValidationError(error_fields + missing_required_fields)
         return data
-    
+
     @http.route(['/get_helpdesk_attachment_id'], type='json', auth="public",website=True)
     def get_helpdesk_attachment_id(self, id=0, **kw):
         if id:
@@ -286,7 +286,7 @@ class WebsiteAttoohForm(http.Controller):
                     value['file_type'] = 'img'
                     img_src = "/web/image/%s?unique=1"%(attachment.id)
                     value['src'] = img_src
-                
+
             else:
                 value['file_type'] = 'other'
                 src = "/web/content/%s?download=true"%(attachment.id)
@@ -305,7 +305,7 @@ class WebsiteAttoohForm(http.Controller):
             sms_compose = request.env['sms.compose'].sudo().create({
                 'from_mobile_id': request.env.ref('sms_frame.sms_number_default').id,
                 'to_number': request_item.sudo().partner_id.mobile,
-                'sms_content': "Your One time password is %s" % otp,
+                'sms_content': "Your attooh! Online Document Signature One Time PIN is %s" % otp,
                 'model': 'res.partner',
                 'record_id': request_item.sudo().partner_id.id
             })

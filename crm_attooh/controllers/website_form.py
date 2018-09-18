@@ -306,8 +306,8 @@ class WebsiteAttoohForm(http.Controller):
                 'from_mobile_id': request.env.ref('sms_frame.sms_number_default').id,
                 'to_number': request_item.sudo().partner_id.mobile,
                 'sms_content': "Your One time password is %s" % otp,
-                'model': 'signature.request.item',
-                'record_id': request_item.sudo().id
+                'model': 'res.partner',
+                'record_id': request_item.sudo().partner_id.id
             })
             if sms_compose:
                 sms_compose.sudo().send_entity()

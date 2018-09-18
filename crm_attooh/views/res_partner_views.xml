@@ -68,6 +68,7 @@
                             <field name="phone" widget="phone" string="Work Phone"/>
                             <field name="home_phone" widget="phone" attrs="{'invisible': [('is_company', '=', True)]}"/>
                             <field name="email" widget="email" context="{'gravatar_image': True}" attrs="{'required': [('user_ids','!=', [])]}"/>
+                            <field name="email_2" widget="email" context="{'gravatar_image': True}" attrs="{'required': [('user_ids','!=', [])]}"/>
                             <field name="lang"/>
                             <field name="qualification" attrs="{'invisible': [('is_company', '=', True)]}"/>
                             <field name="occupation" attrs="{'invisible': [('is_company', '=', True)]}"/>

@@ -14,7 +14,7 @@
     # Check https://github.com/odoo/odoo/blob/master/odoo/addons/base/module/module_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '3.0',
+    'version': '3.1',
 
     # any module necessary for this one to work correctly
     'depends': ['crm', 'sale_management', 'website_sign', 'website_quote', 'website_event',

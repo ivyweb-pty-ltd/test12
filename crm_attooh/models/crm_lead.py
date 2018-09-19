@@ -178,6 +178,15 @@ class CRM(models.Model):
     # string changes on existing fields
     phone = fields.Char('Work Phone')
     # team_id = fields.Many2one(string='Sales to New Business')
+    color = fields.Integer('Color', compute='_compute_color')
+
+    @api.depends('stage_id', 'stage_id.stage_automated_email_ids')
+    def _compute_color(self):
+        for lead in self:
+            if lead.stage_id.stage_automated_email_ids:
+                lead.color = 4
+            else:
+                lead.color = 2
 
     @api.multi
     def get_user_id(self, activity):

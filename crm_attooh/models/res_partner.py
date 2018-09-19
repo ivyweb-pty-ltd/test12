@@ -294,6 +294,11 @@ class CRM(models.Model):
 
     spouse_id = fields.Many2one('res.partner', 'Spouse')
     otp = fields.Char(string="OTP")
+    dependent = fields.Boolean(compute="_compute_dependent")
+
+    def _compute_dependent(self):
+        for partner in self:
+            partner.dependent = True if partner.dependent_ids else False
 
     @api.model
     def create(self, vals):

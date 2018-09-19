@@ -6,8 +6,16 @@
             <field name="model">helpdesk.ticket</field>
             <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
             <field name="arch" type="xml">
+                <button name="assign_ticket_to_self" position="after">
+                    <button name="sms_action" string="Send SMS" type="object"
+                            help="Send SMS" class="oe_highlight" attrs="{'invisible': [('sms_on_ticket', '=', False)]}"/>
+                </button>
+                <field name="partner_email" position="after">
+                    <field name="mobile"/>
+                </field>
                 <xpath expr="//field[@name='tag_ids']" position="after">
                     <field name="activites_created" invisible="1"/>
+                    <field name="sms_on_ticket" invisible="1"/>
                 </xpath>
             </field>
         </record>

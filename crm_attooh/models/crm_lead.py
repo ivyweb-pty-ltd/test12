@@ -179,6 +179,8 @@ class CRM(models.Model):
     phone = fields.Char('Work Phone')
     # team_id = fields.Many2one(string='Sales to New Business')
     color = fields.Integer('Color', compute='_compute_color')
+    sms_on_lead = fields.Boolean(compute="_compute_sms_on_lead")
+    sms_on_opportunity = fields.Boolean(compute="_compute_sms_on_opportunity")
 
     @api.depends('stage_id', 'stage_id.stage_automated_email_ids')
     def _compute_color(self):
@@ -187,6 +189,34 @@ class CRM(models.Model):
                 lead.color = 4
             else:
                 lead.color = 2
+
+    def _compute_sms_on_lead(self):
+        ICPSudo = self.env['ir.config_parameter'].sudo()
+        sms_on_lead = ICPSudo.get_param('crm_attooh.sms_on_lead')
+        for lead in self:
+            lead.sms_on_lead = sms_on_lead
+
+    def _compute_sms_on_opportunity(self):
+        ICPSudo = self.env['ir.config_parameter'].sudo()
+        sms_on_opportunity = ICPSudo.get_param('crm_attooh.sms_on_opportunity')
+        for lead in self:
+            lead.sms_on_opportunity = sms_on_opportunity
+
+    @api.multi
+    def sms_action(self):
+        self.ensure_one()
+        if not self.mobile:
+            raise UserError(_("Please enter mobile number."))
+        default_mobile = self.env.ref('sms_frame.sms_number_default')
+        return {
+            'name': 'SMS Compose',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'sms.compose',
+            'target': 'new',
+            'type': 'ir.actions.act_window',
+            'context': {'default_from_mobile_id': default_mobile.id, 'default_to_number': self.mobile, 'default_record_id': self.id, 'default_model': 'crm.lead'}
+        }
 
     @api.multi
     def get_user_id(self, activity):

@@ -13,6 +13,10 @@ class EntitySatus(models.Model):
 class CRM(models.Model):
     _inherit = 'res.partner'
 
+    @api.model
+    def _default_entity_status(self):
+        return self.env.ref('crm_attooh.entity_1')
+
     @api.onchange('company_type')
     def onchange_company_type(self):
         super(CRM, self).onchange_company_type()
@@ -211,7 +215,7 @@ class CRM(models.Model):
     client_adviser_id = fields.Many2one('res.users', 'Client Adviser', domain=[('share', '=', False)])
     admin_id = fields.Many2one('res.users', 'Administrator', domain=[('share', '=', False)])
     portfolio_analyst_id = fields.Many2one('res.users', 'Portfolio Analyst', domain=[('share', '=', False)])
-    entity_status = fields.Many2many('entity.status', 'res_partner_entity_rel', 'partner_id', 'entity_id', string='Entity Status')
+    entity_status = fields.Many2many('entity.status', 'res_partner_entity_rel', 'partner_id', 'entity_id', string='Entity Status', default=_default_entity_status)
     category = fields.Selection([
         ('diamond_first', 'Diamond / First'),
         ('platinum_business', 'Platinum / Business'),

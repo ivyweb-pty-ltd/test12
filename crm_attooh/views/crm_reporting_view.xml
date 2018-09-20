@@ -6,23 +6,13 @@
         <field name="arch" type="xml">
             <pivot string="Opportunities" display_quantity="true">
                 <field name="submission_data" type="row" interval="day"/>
-                <field name="partner_id" type="measure"/>
-                <field name="product_provider_id" type="measure"/>
-                <field name="product_id" type="measure"/>
-                <field name="user_id" type="measure"/>
                 <field name="premium" type="measure"/>
                 <field name="commission_year_1" type="measure"/>
                 <field name="commission_year_2" type="measure"/>
                 <field name="monthly_commission" type="measure"/>
-                <field name="date_of_issue" type="measure"/>
-                <field name="vitality" type="measure"/>
-                <field name="doc" type="measure"/>
-                <field name="complience_mail" type="measure"/>
-                <field name="fica" type="measure"/>
                 <field name="issued_commission_year_1" type="measure"/>
                 <field name="issued_commission_year_2" type="measure"/>
                 <field name="issued_monthly_commission" type="measure"/>
-                <field name="book_notes" type="measure"/>
             </pivot>
         </field>
     </record>

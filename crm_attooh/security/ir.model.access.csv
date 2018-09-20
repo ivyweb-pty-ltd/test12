@@ -4,8 +4,8 @@ access_entity_status,access_entity_status,model_entity_status,,1,0,0,0
 access_partner_income,access_partner_income,model_partner_income,,1,0,0,0
 access_partner_deduction,access_partner_deduction,model_partner_deduction,,1,0,0,0
 access_partner_expense,access_partner_expense,model_partner_expense,,1,0,0,0
-access_debt_obligations,access_debt_obligations,model_debt_obligations,,1,0,0,0
-access_partner_asset,access_partner_asset,model_partner_asset,,1,0,0,0
+access_debt_obligations,access_debt_obligations,model_debt_obligations,,1,1,1,1
+access_partner_asset,access_partner_asset,model_partner_asset,,1,1,1,1
 access_document_type,access_document_type,model_document_type,,1,1,0,0
 access_res_partner,access_res_partner,model_res_partner,,1,1,0,0
 access_ir_attachment,access_ir_attachment,model_ir_attachment,,1,1,1,0

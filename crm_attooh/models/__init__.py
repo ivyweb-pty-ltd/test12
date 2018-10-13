@@ -17,3 +17,4 @@ from . import helpdesk_portal
 from . import ticket_type_activity
 from . import employee
 from . import res_users
+from . import report_production_book

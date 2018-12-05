@@ -62,4 +62,43 @@
         <field name="name">Premium in Arrears</field>
     </record>
 
+    <record id="ccm_account" model="helpdesk.ticket.type">
+        <field name="name">CCM Account</field>
+    </record>
+    <record id="change_premium" model="helpdesk.ticket.type">
+        <field name="name">Change Premium</field>
+    </record>
+    <record id="vitality" model="helpdesk.ticket.type">
+        <field name="name">Vitality</field>
+    </record>
+    <record id="change_policy_schedule" model="helpdesk.ticket.type">
+        <field name="name">Change POLICY SCHEDULE REQUEST option to Portfolio Summary</field>
+    </record>
+    <record id="general_query" model="helpdesk.ticket.type">
+        <field name="name">General Query</field>
+    </record>
+
+    <record id="helpdesk_vendor_engagement" model="helpdesk.stage">
+        <field name="name">Vendor Engagement</field>
+        <field name="team_ids" eval="[(4, ref('helpdesk.helpdesk_team1'))]"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="helpdesk_stage_submission" model="helpdesk.stage">
+        <field name="name">Submission</field>
+        <field name="team_ids" eval="[(4, ref('helpdesk.helpdesk_team1'))]"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="helpdesk.stage_solved" model="helpdesk.stage">
+        <field name="name">Solved</field>
+        <field name="team_ids" eval="[(4, ref('helpdesk.helpdesk_team1'))]"/>
+        <field name="sequence">100</field>
+    </record>
+    <record id="helpdesk.stage_cancelled" model="helpdesk.stage">
+        <field name="name">Cancelled</field>
+        <field name="team_ids" eval="[(4, ref('helpdesk.helpdesk_team1'))]"/>
+        <field name="sequence">110</field>
+    </record>
+
 </odoo>

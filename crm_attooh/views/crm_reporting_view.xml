@@ -5,7 +5,7 @@
         <field name="model">crm.lead</field>
         <field name="arch" type="xml">
             <pivot string="Opportunities" display_quantity="true">
-                <field name="submission_data" type="row" interval="day"/>
+                <field name="submission_date" type="row" interval="day"/>
                 <field name="partner_id" type="measure"/>
                 <field name="product_provider_id" type="measure"/>
                 <field name="product_id" type="measure"/>

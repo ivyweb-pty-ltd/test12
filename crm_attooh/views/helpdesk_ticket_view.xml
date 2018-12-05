@@ -6,11 +6,25 @@
             <field name="model">helpdesk.ticket</field>
             <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="description" position="before">
                     <field name="activites_created" invisible="1"/>
-                </xpath>
+                    <field name="ticket_activity_ids"/>
+                </field>
             </field>
         </record>
+
+        <record id="helpdesk_ticket_activity_activity_form" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.activity</field>
+            <field name="model">helpdesk.ticket.activity</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name" readonly="1"/>
+                    <field name="completed"/>
+                </tree>
+            </field>
+        </record>
+
         <record id="helpdesk_ticket_type_view_tree_inherit" model="ir.ui.view">
             <field name="name">helpdesk.ticket.type.tree</field>
             <field name="model">helpdesk.ticket.type</field>

@@ -348,7 +348,7 @@ class CRM(models.Model):
             self.name = self.surname
 
     @api.onchange('preferred_name')
-    def on_change_preffre_name(self):
+    def on_change_preferred_name(self):
         if self.name:
             name = self.name
             preferred_name = name.split(' ')

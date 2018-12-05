@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+       TODO: Preliminary Fin Planning
+       TODO: Risk
+       TODO: Investment
+       TODO: Wills
+       TODO: Business Planning:
+       TODO: Short Term
+       TODO: Health
+       TODO: Trusts
+       TODO GPOA
+       TODO: Replace the delete stage with code to fix stages.
+       -->
+    <data noupdate="0">
+<!--        <delete model="crm.stage" id="crm.stage_lead1"/>
+        <delete model="crm.stage" id="crm.stage_lead2"/>
+        <delete model="crm.stage" id="crm.stage_lead3"/>
+        <delete model="crm.stage" id="crm.stage_lead4"/>
+-->
+
+        <record model="crm.stage" id="crm.stage_lead1">
+            <field name="name">Preparation</field>
+            <field name="sequence">10</field>
+        </record>
+        <record model="crm.stage" id="crm.stage_lead2">
+            <field name="name">1st engagement</field>
+            <field name="sequence">20</field>
+        </record>
+        <record model="crm.stage" id="crm.stage_lead3">
+            <field name="name">Proposal</field>
+            <field name="sequence">30</field>
+        </record>
+        <record model="crm.stage" id="crm_stage_second_engagement">
+            <field name="name">2nd engagement</field>
+            <field name="sequence">30</field>
+        </record>
+        <record model="crm.stage" id="crm_stage_submission">
+            <field name="name">Submission</field>
+            <field name="sequence">40</field>
+        </record>
+        <record model="crm.stage" id="crm.stage_lead4">
+            <field name="name">Finalisation</field>
+            <field name="sequence">50</field>
+        </record>
+    </data>
+</odoo>

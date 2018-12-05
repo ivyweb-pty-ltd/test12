@@ -143,17 +143,9 @@ class CRM(models.Model):
                                    string='Services')
     signature_requests_count = fields.Integer("# Signature Requests", compute='_compute_signature_requests')
     signature_ids = fields.One2many('signature.request', 'lead_id')
-#     product_area = fields.Selection([
-#         ('financial_planning', 'Financial Planning'),
-#         ('short_term', 'Short Term'),
-#         ('health', 'Health'),
-#         ('investments', 'Investments'),
-#         ('risk', 'Risk')
-#         ], default="financial_planning", string="Product Area")
-    product_area_id = fields.Many2one('product.area', string="Product Area")
     referred = fields.Many2one('res.partner', 'Referred By')
 
-    submission_data = fields.Date('Submission Date')
+    submission_date = fields.Date('Submission Date')
     product_provider_id = fields.Many2one('res.partner', string='Product Provider', domain="[('supplier', '=', True)]")
     product_id = fields.Many2one('product.template', 'Product')
     premium = fields.Float('Premium')
@@ -183,7 +175,7 @@ class CRM(models.Model):
         return user_id
 
     @api.onchange('stage_id')
-    def onchanhge_stage_id(self):
+    def onchange_stage_id(self):
         user_id = False
         for activity in self.stage_id.stage_activity_ids:
             if self._origin.team_id and activity.team_ids and self._origin.team_id.id in activity.team_ids.ids:
@@ -254,20 +246,6 @@ class CRM(models.Model):
         return res
 
     @api.multi
-    @api.onchange('product_area_id')
-    def onchanhge_product_area(self):
-        if self.product_area_id.id == self.env.ref('crm_attooh.product_short_term').id:
-            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_1')
-        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_health').id:
-            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_2')
-        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_investments').id:
-            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_3')
-        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_risk').id:
-            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_4')
-        else:
-            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_5')
-
-    @api.multi
     def _compute_signature_requests(self):
         self.ensure_one()
         self.signature_requests_count = len(self.signature_ids)
@@ -282,13 +260,24 @@ class CRM(models.Model):
 class CrmTeamAttooh(models.Model):
     _inherit = "crm.team"
 
-    @api.model
-    @api.returns('self', lambda value: value.id if value else False)
-    def _get_default_team_id(self, user_id=None):
-        return self.env.ref('crm_attooh.crm_team_attooh_5')
+#TODO: Build Product Type Manager
+#TODO: Build data for product Types
 
+class product_type_activity(models.Model):
+    _name = 'product.type.activity'
+    _description = 'Product Type Activity'
 
-class ProductArea(models.Model):
-    _name = 'product.area'
+    name = fields.Char(string='Summary', required=True)
+    activity_date = fields.Integer(string="Activity Date")
+    assign_to_owner = fields.Boolean(string="Assign to Owner?")
+    activity_type_id = fields.Many2one('mail.activity.type', string="Activity Type")
+    user_id = fields.Many2one('res.users', string="Assigned To")
+    employee_role_id = fields.Many2one('employee.roles', string="Assigned To")
+    product_type_id = fields.Many2one('product.product.type', string="Ticket Type")
+    active = fields.Boolean(default=True)
 
-    name = fields.Char(string="Product Area")
+#    @api.model
+#    @api.returns('self', lambda value: value.id if value else False)
+#    def _get_default_team_id(self, user_id=None):
+#        return self.env.ref('crm_attooh.crm_team_attooh_5')
+

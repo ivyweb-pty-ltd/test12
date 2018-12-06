@@ -19,27 +19,27 @@
         <delete model="crm.stage" id="crm.stage_lead4"/>
 -->
 
-        <record model="crm.stage" id="crm.stage_lead1">
+        <record model="crm.stage" id="stage_preparation">
             <field name="name">Preparation</field>
             <field name="sequence">10</field>
         </record>
-        <record model="crm.stage" id="crm.stage_lead2">
+        <record model="crm.stage" id="stage_first_engagement">
             <field name="name">1st engagement</field>
             <field name="sequence">20</field>
         </record>
-        <record model="crm.stage" id="crm.stage_lead3">
+        <record model="crm.stage" id="stage_proposal">
             <field name="name">Proposal</field>
             <field name="sequence">30</field>
         </record>
-        <record model="crm.stage" id="crm_stage_second_engagement">
+        <record model="crm.stage" id="stage_second_engagement">
             <field name="name">2nd engagement</field>
             <field name="sequence">30</field>
         </record>
-        <record model="crm.stage" id="crm_stage_submission">
+        <record model="crm.stage" id="stage_submission">
             <field name="name">Submission</field>
             <field name="sequence">40</field>
         </record>
-        <record model="crm.stage" id="crm.stage_lead4">
+        <record model="crm.stage" id="stage_compliance">
             <field name="name">Finalisation</field>
             <field name="sequence">50</field>
         </record>

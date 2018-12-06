@@ -14,11 +14,14 @@ from odoo import models, fields, api, _
 from datetime import datetime, timedelta
 from odoo.exceptions import UserError
 
+#TODO: Load Data for all the possible product_types
 
-class CrmAttooh(models.Model):
-    _name = 'crm_attooh.service'
+class crm_attooh_service_type(models.Model):
+    _name = 'crm_attooh.service_type'
 
-    name = fields.Char()
+    name = fields.Char('Name')
+    #product_type_activity_ids = fields.One2many('crm_attooh.service_type.activity','crm_attooh_service_type_id')
+
 
 class SignatureRequest(models.Model):
     _inherit = 'signature.request'
@@ -139,8 +142,9 @@ class SignatureItemTypeAttooh(models.Model):
 class CRM(models.Model):
     _inherit = 'crm.lead'
 
-    service_ids = fields.Many2many('crm_attooh.service', 'crm_lead_service_rel', 'lead_id', 'service_id',
+    service_ids = fields.Many2many('crm_attooh.service_type', 'crm_lead_service_rel', 'lead_id', 'service_id',
                                    string='Services')
+    activity_type_ids = fields.Many2one('crm_attooh.service_type.activity')
     signature_requests_count = fields.Integer("# Signature Requests", compute='_compute_signature_requests')
     signature_ids = fields.One2many('signature.request', 'lead_id')
     referred = fields.Many2one('res.partner', 'Referred By')
@@ -263,9 +267,9 @@ class CrmTeamAttooh(models.Model):
 #TODO: Build Product Type Manager
 #TODO: Build data for product Types
 
-class product_type_activity(models.Model):
-    _name = 'product.type.activity'
-    _description = 'Product Type Activity'
+class crm_attooh_service_type_activity(models.Model):
+    _name = 'crm_attooh.service_type.activity'
+    _description = 'Service Type Activity'
 
     name = fields.Char(string='Summary', required=True)
     activity_date = fields.Integer(string="Activity Date")
@@ -273,7 +277,8 @@ class product_type_activity(models.Model):
     activity_type_id = fields.Many2one('mail.activity.type', string="Activity Type")
     user_id = fields.Many2one('res.users', string="Assigned To")
     employee_role_id = fields.Many2one('employee.roles', string="Assigned To")
-    product_type_id = fields.Many2one('product.product.type', string="Ticket Type")
+    crm_attooh_service_type_id = fields.Many2one('crm_attooh.service_type', string="Service Type")
+    stage_id = fields.Many2one('crm.stage',string='Applicable Stage')
     active = fields.Boolean(default=True)
 
 #    @api.model

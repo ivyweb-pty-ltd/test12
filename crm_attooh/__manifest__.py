@@ -31,6 +31,8 @@
         'data/crm_demo.xml',
         'data/ticket_type_activity_data.xml',
         'data/crm_stage_data.xml',
+        'data/crm_attooh.service_type.csv',
+        'data/crm_attooh.service_type.activity.csv',
         'data/hr_employee_roles_data.xml',
         'views/crm_views.xml',
         'views/hr_views.xml',

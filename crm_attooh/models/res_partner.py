@@ -220,7 +220,7 @@ class CRM(models.Model):
         ('supplier', 'Supplier'),
         ('unknown', 'Unknown'),
     ], string="Category")
-    services = fields.Many2many('crm_attooh.service', 'res_partner_service_rel', 'partner_id', 'service_id', string='Services')
+    services = fields.Many2many('crm_attooh.service_type', 'res_partner_service_rel', 'partner_id', 'service_id', string='Services')
     privacy = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Privacy")
 
     # change string of existing field

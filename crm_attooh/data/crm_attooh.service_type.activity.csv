@@ -1,0 +1,99 @@
+id,crm_attooh_service_type_id:id,stage_id:id,name
+A1.1,prelim_fin_planning,stage_preparation,Capture & Qualify leads
+A1.2,prelim_fin_planning,stage_preparation,Schedule Appointment
+A1.3,prelim_fin_planning,stage_preparation,Thank referring party
+A1.4,prelim_fin_planning,stage_preparation,Personal info to fill online/ hard copy
+A1.5,prelim_fin_planning,stage_preparation,"Draw schedules from Astute, 3rd party"
+A1.6,prelim_fin_planning,stage_preparation,Confirm meeting
+A1.7,prelim_fin_planning,stage_preparation,Prepare for client meeting at office
+A2.1,prelim_fin_planning,stage_first_engagement,Personal info to fill online/ hard copy (if not received)
+A2.2,prelim_fin_planning,stage_first_engagement,Define client needs
+A2.3,prelim_fin_planning,stage_first_engagement,Send decision letter
+A2.4,prelim_fin_planning,stage_first_engagement,Send Client fee and mandate proposal
+A2.5,prelim_fin_planning,stage_first_engagement,Client accept or reject
+A3.1,prelim_fin_planning,stage_proposal,Capture Personal & FNA information on system
+A3.2,prelim_fin_planning,stage_proposal,"Financial analysis (FNA/BNA, current schedules)"
+A3.3,prelim_fin_planning,stage_proposal,Prepare product quotes
+R1.1,risk,stage_second_engagement,Fill product vendor apps
+R1.2,risk,stage_second_engagement,Generate RoA
+R1.3,risk,stage_second_engagement,Collect documentation from client/ self upload on system
+R1.4,risk,stage_second_engagement,Scan/ save documents to file
+R2.1,risk,stage_submission,Submit documents and app to product vendor
+R2.2,risk,stage_submission,Manage COL
+R2.3,risk,stage_submission,Manage NTU
+R2.4,risk,stage_submission,Receive confirmation from product vendor
+R3.1,risk,stage_compliance,Update RoA
+R3.2,risk,stage_compliance,Send confirmation to client
+R3.3,risk,stage_compliance,Notification sent to compliance
+I1.1,investment,stage_second_engagement,Client acceptance of proposal
+I1.2,investment,stage_second_engagement,Fill investment house apps
+I1.3,investment,stage_second_engagement,Collect documentation from client/ self upload on sytem
+I1.4,investment,stage_second_engagement,Scan to file
+I2.1,investment,stage_submission,Submit documents and app to investment house
+I2.2,investment,stage_submission,Confirm transfer of funds to investment house
+I2.3,investment,stage_submission,Confirmation from investment house
+I3.1,investment,stage_compliance,Complete RoA
+I3.2,investment,stage_compliance,Send confirmation of investment to client
+I3.3,investment,stage_compliance,Notification sent to compliance
+W1.1,wills,stage_first_engagement,Collect relevant information from client
+W2.1a,wills,stage_proposal,Refer complex will to associate company for processing
+W2.2a,wills,stage_proposal,Send Will Specialist invoice to client for payment
+W2.3a,wills,stage_proposal,Send confirmation of payment to Will Specialist
+W2.1b,wills,stage_proposal,Generates simple will from template
+W3.1,wills,stage_second_engagement,"Will document to client for perusal, approval or alteration"
+W3.2,wills,stage_second_engagement,"Client signs off two hard copies of the will, retains one"
+W4.1,wills,stage_compliance,Scan and save copy of the will to client file
+W4.2,wills,stage_compliance,Process original for safekeeping
+B1.1,business_planning,stage_second_engagement,Client acceptance of proposal
+B1.2,business_planning,stage_second_engagement,Fill product vendor apps
+B1.3,business_planning,stage_second_engagement,Collect documentation from client/ self upload on sytem
+B1.4,business_planning,stage_second_engagement,Scan documents to file
+B2.1,business_planning,stage_submission,Submit documents and app to product vendors
+B2.2,business_planning,stage_submission,Manage COL
+B2.3,business_planning,stage_submission,Manage NTU
+B2.4,business_planning,stage_submission,Receive confirmation from product vendors
+B3.1,business_planning,stage_compliance,Complete RoA
+B3.2,business_planning,stage_compliance,Send confirmation client
+B3.3,business_planning,stage_compliance,Provide access to compliance auditor
+S1.1,short_term,stage_first_engagement,Client requests cover
+S1.2,short_term,stage_first_engagement,Client provides current cover schedule
+S2.1,short_term,stage_proposal,Prepare quotes/ alternative quotes
+S2.2,short_term,stage_proposal,Propose add-ons
+S3.1,short_term,stage_second_engagement,Present proposal and quotes to client
+S3.2,short_term,stage_second_engagement,Collect documentation from client/ self upload on sytem
+S4.1,short_term,stage_submission,Submit documents and app to product vendor
+S4.2,short_term,stage_submission,Manage COL
+S4.3,short_term,stage_submission,Manage NTU
+S4.4,short_term,stage_submission,Receive confirmation from product vendor
+S5.1,short_term,stage_compliance,Send confirmation client
+S5.2,short_term,stage_compliance,Provide access to compliance auditor
+H1.1,health,stage_second_engagement,Client acceptance of proposal
+H1.2,health,stage_second_engagement,Fill product vendor apps Incl Vitality
+H1.3,health,stage_second_engagement,Collect documentation from client/ self upload on sytem
+H1.4,health,stage_second_engagement,Scan to file
+H2.1,health,stage_submission,Submit documents and app to product vendor
+H2.2,health,stage_submission,Manage COL
+H2.3,health,stage_submission,Manage NTU
+H2.4,health,stage_submission,Receive confirmation from product vendor
+H3.1,health,stage_compliance,Complete RoA
+H3.2,health,stage_compliance,Send confirmation to client
+H3.3,health,stage_compliance,Provide access to compliance auditor
+H4.1,health,stage_compliance,Send certificateof medical cover and Vitality to client
+H4.2,health,stage_compliance,Notificaiton to Comliance division
+T1.1,trusts,stage_second_engagement,Fill trust specialist application
+T1.2,trusts,stage_second_engagement,Collect documentation from client
+T1.3,trusts,stage_second_engagement,Scan to file
+T2.1,trusts,stage_submission,Submit documents and app to trust specialist
+T2.2,trusts,stage_submission,Trust specialist invoice provided to client
+T2.3,trusts,stage_submission,Receive payment confirmation
+T2.4,trusts,stage_submission,Receive prepared documents from trust specialist
+T2.5,trusts,stage_submission,Client to sign two hard copies and return to trust specialist
+T2.6,trusts,stage_submission,Trust documents submitted to Master of the Court
+T3.1,trusts,stage_compliance,Send confirmation to client when trust is registered
+T3.2,trusts,stage_compliance,Save scanned stamped trust deed to file
+T3.3,trusts,stage_compliance,Send originally stamped trust deed to client
+G1.1,gpoa,stage_first_engagement,Complete first and second agent information
+G2.1,gpoa,stage_proposal,Generate GPOA from template
+G3.1,gpoa,stage_second_engagement,"GPOA document provided to client for perusal, approval or alteration"
+G3.2,gpoa,stage_second_engagement,Client signs off one copy of the GPOA
+G4.1,gpoa,stage_compliance,Scan and save copy of the GPOA to client file

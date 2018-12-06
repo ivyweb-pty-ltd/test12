@@ -25,6 +25,8 @@
                             widget="statinfo" />
                     </button>
                 </xpath>
+                <xpath expr="//notebook/page[1]" position='replace'>
+                </xpath>
                 <xpath expr="//notebook/page[@name='lead']" position="after">
                     <page string="Signature Request">
                         <field name="signature_ids" />

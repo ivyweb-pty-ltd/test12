@@ -47,6 +47,6 @@
     'qweb': ['static/src/xml/base.xml'],
     'images': ["static/description/banner.gif"],
     'license': "AGPL-3",
-    'installable': True,
+    'installable': False,
     'application': True,
 }

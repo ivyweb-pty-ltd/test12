@@ -16,4 +16,5 @@
         'views/payment_mygateglobal_templates.xml',
         'data/payment_acquirer_data.xml',
     ],
+    'installable' : False,
 }

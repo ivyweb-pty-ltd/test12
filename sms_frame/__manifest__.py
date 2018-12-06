@@ -34,5 +34,5 @@
         'static/description/3.jpg',
     ],
     'qweb': ['static/src/xml/sms_compose.xml'],
-    'installable': True,
+    'installable': False,
 }

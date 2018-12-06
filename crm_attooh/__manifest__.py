@@ -59,5 +59,6 @@
         'views/mail_activity_views.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
-    'post_init_hook':'post_init_check'
+    'post_init_hook':'post_init_check',
+    'installable' : False,
 }

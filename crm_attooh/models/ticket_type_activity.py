@@ -1,4 +1,4 @@
-from odoo import models, fields, api, _
+from odoo import api, fields, models
 
 
 class ticket_type_activity(models.Model):

@@ -84,7 +84,8 @@
                 </xpath>
 
                 <!--Additional Information  -->
-                <xpath expr="//notebook" position="after" >
+                <xpath expr="//notebook/page[1]" position="before" >
+                    <page string="Additional Information" autofocus="True">
                     <group attrs="{'invisible': [('is_company', '=', True)]}">
                         <h2>Additional Information</h2>
                         <separator/>
@@ -138,6 +139,7 @@
                             <field name="firm_name"/>
                         </group>
                     </group>
+                    </page>
                 </xpath>
 
                 <!--added is beneficiary field -->

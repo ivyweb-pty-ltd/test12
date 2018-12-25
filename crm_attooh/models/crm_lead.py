@@ -17,11 +17,14 @@ from datetime import datetime, timedelta
 from odoo.exceptions import UserError
 from odoo.addons.website_sign.models.signature_request import SignatureRequestItem
 
+#TODO: Load Data for all the possible product_types
 
-class CrmAttooh(models.Model):
-    _name = 'crm_attooh.service'
+class crm_attooh_service_type(models.Model):
+    _name = 'crm_attooh.service_type'
 
-    name = fields.Char()
+    name = fields.Char('Name')
+    #product_type_activity_ids = fields.One2many('crm_attooh.service_type.activity','crm_attooh_service_type_id')
+
 
 class SignatureRequest(models.Model):
     _inherit = 'signature.request'
@@ -142,21 +145,14 @@ class SignatureItemTypeAttooh(models.Model):
 class CRM(models.Model):
     _inherit = 'crm.lead'
 
-    service_ids = fields.Many2many('crm_attooh.service', 'crm_lead_service_rel', 'lead_id', 'service_id',
+    service_ids = fields.Many2many('crm_attooh.service_type', 'crm_lead_service_rel', 'lead_id', 'service_id',
                                    string='Services')
+    activity_type_ids = fields.Many2one('crm_attooh.service_type.activity')
     signature_requests_count = fields.Integer("# Signature Requests", compute='_compute_signature_requests')
     signature_ids = fields.One2many('signature.request', 'lead_id')
-#     product_area = fields.Selection([
-#         ('financial_planning', 'Financial Planning'),
-#         ('short_term', 'Short Term'),
-#         ('health', 'Health'),
-#         ('investments', 'Investments'),
-#         ('risk', 'Risk')
-#         ], default="financial_planning", string="Product Area")
-    product_area_id = fields.Many2one('product.area', string="Product Area")
     referred = fields.Many2one('res.partner', 'Referred By')
 
-    submission_data = fields.Date('Submission Date')
+    submission_date = fields.Date('Submission Date')
     product_provider_id = fields.Many2one('res.partner', string='Product Provider', domain="[('supplier', '=', True)]")
     product_id = fields.Many2one('product.template', 'Product')
     premium = fields.Float('Premium')
@@ -225,7 +221,7 @@ class CRM(models.Model):
         return user_id
 
     @api.onchange('stage_id')
-    def onchanhge_stage_id(self):
+    def onchange_stage_id(self):
         user_id = False
         for activity in self.stage_id.stage_activity_ids:
             if self._origin.team_id and activity.team_ids and self._origin.team_id.id in activity.team_ids.ids:
@@ -296,20 +292,6 @@ class CRM(models.Model):
         return res
 
     @api.multi
-    @api.onchange('product_area_id')
-    def onchanhge_product_area(self):
-        if self.product_area_id.id == self.env.ref('crm_attooh.product_short_term').id:
-            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_1')
-        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_health').id:
-            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_2')
-        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_investments').id:
-            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_3')
-        elif self.product_area_id.id == self.env.ref('crm_attooh.product_area_risk').id:
-            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_4')
-        else:
-            self.team_id = self.env.ref('crm_attooh.crm_team_attooh_5')
-
-    @api.multi
     def _compute_signature_requests(self):
         self.ensure_one()
         self.signature_requests_count = len(self.signature_ids)
@@ -324,58 +306,24 @@ class CRM(models.Model):
 class CrmTeamAttooh(models.Model):
     _inherit = "crm.team"
 
-    @api.model
-    @api.returns('self', lambda value: value.id if value else False)
-    def _get_default_team_id(self, user_id=None):
-        return self.env.ref('crm_attooh.crm_team_attooh_5')
+#TODO: Build Product Type Manager
+#TODO: Build data for product Types
 
+class crm_attooh_service_type_activity(models.Model):
+    _name = 'crm_attooh.service_type.activity'
+    _description = 'Service Type Activity'
 
-class ProductArea(models.Model):
-    _name = 'product.area'
+    name = fields.Char(string='Summary', required=True)
+    activity_date = fields.Integer(string="Activity Date")
+    assign_to_owner = fields.Boolean(string="Assign to Owner?")
+    activity_type_id = fields.Many2one('mail.activity.type', string="Activity Type")
+    user_id = fields.Many2one('res.users', string="Assigned To")
+    employee_role_id = fields.Many2one('employee.roles', string="Assigned To")
+    crm_attooh_service_type_id = fields.Many2one('crm_attooh.service_type', string="Service Type")
+    stage_id = fields.Many2one('crm.stage',string='Applicable Stage')
+    active = fields.Boolean(default=True)
 
-    name = fields.Char(string="Product Area")
-
-class SignatureItemAtooh(models.Model):
-    _inherit = 'signature.request.item'
-
-    ip_address = fields.Char('Ip Address')
-    country_name = fields.Char()
-    country_code = fields.Char()
-    city = fields.Char()
-    region = fields.Char()
-    time_zone = fields.Char()
-    opt = fields.Char()
-
-    @api.multi
-    def action_completed(self):
-        self.write({
-            'country_name': request.session.get('geoip', {}).get('country_name'),
-            'country_code': request.session.get('geoip', {}).get('country_code'),
-            'city': request.session.get('geoip', {}).get('city'),
-            'region': request.session.get('geoip', {}).get('region'),
-            'time_zone': request.session.get('geoip', {}).get('time_zone'),
-            'ip_address': request.httprequest.remote_addr
-        })
-        return super(SignatureItemAtooh, self).action_completed()
-
-    @api.multi
-    def send_sms(self):
-        self.ensure_one()
-        otp = random.randint(11111, 99999)
-        self.sudo().write({
-           'otp': otp
-        })
-        import pdb; pdb.set_trace()
-        if not self.partner_id.mobile:
-            return {
-                'error': 'Partner Mobile number not set. Please contact administrator'
-            }
-        sms_compose = self.env['sms.compose'].create({
-           'from_mobile_id': self.env.ref('sms_frame.sms_number_default').id,
-           'to_number': self.partner_id.mobile,
-           'sms_content': "Your One time password is %s" % otp,
-           'model': 'signature.request.item',
-           'record_id': self.id
-        })
-
-        return sms_compose.send_entity()
+#    @api.model
+#    @api.returns('self', lambda value: value.id if value else False)
+#    def _get_default_team_id(self, user_id=None):
+#        return self.env.ref('crm_attooh.crm_team_attooh_5')crms

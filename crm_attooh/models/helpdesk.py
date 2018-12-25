@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models, _
+from odoo import api, fields, models,_
 from datetime import datetime, timedelta
 from odoo.exceptions import UserError, ValidationError
 
-
 class HelpdeskTicket(models.Model):
+    _name = 'helpdesk.ticket'
     _inherit = 'helpdesk.ticket'
 
     activites_created = fields.Boolean(string="Activites Created")
@@ -39,17 +39,48 @@ class HelpdeskTicket(models.Model):
             'context': {'default_from_mobile_id': default_mobile.id, 'default_to_number': self.mobile, 'default_record_id': self.id, 'default_model': 'helpdesk.ticket'}
         }
 
-    @api.multi
-    def write(self, val):
-        if self.stage_id and self.stage_id.name in ('New'):
-            if val.get('stage_id') and self.env['helpdesk.stage'].browse(val.get('stage_id')).name in ('In Progress'):
-                if not self.user_id:
-                    raise ValidationError(_("Please assign the ticket to proceed"))
-                return super(HelpdeskTicket, self.with_context(custom_context=True)).write(val)
-        return super(HelpdeskTicket, self).write(val)
+    #TODO: Activities should have deadlines
+    #TODO: Turn acrtivity green when all items are done
+    #TODO: Add interface to control activity types
 
-    @api.onchange('stage_id')
-    def onchanhge_stage_id(self):
+    ticket_activity_ids = fields.One2many('helpdesk.ticket.activity','ticket_id')
+
+
+    #,domain="[(['ticket_type_id','=',ticket_type_id])])")
+
+#    @api.multi
+#    def write(self, val):
+#        if self.stage_id and self.stage_id.name in ('New'):
+#            if val.get('stage_id') and self.env['helpdesk.stage'].browse(val.get('stage_id')).name in ('In Progress'):
+#                if not self.user_id:
+#                    raise ValidationError(_("Please assign the ticket to proceed"))
+#                return super(HelpdeskTicket, self.with_context(custom_context=True)).write(val)
+#        return super(HelpdeskTicket, self).write(val)
+
+    @api.multi
+    def write(self,vals):
+        #TODO: Delete all tasks that is not completed yet.
+        #TODO: Uncompleted tasks
+        #TODO: Add all relevant tasks for ticket Type
+
+        print("So there was a change to the ticket type")
+        print("Ticket type",self.ticket_type_id.name)
+        print(self.ticket_activity_ids.search([('completed','=',False)]))
+
+        operation_list=[]
+        for remove_activity in self.ticket_activity_ids.search([('completed','=',False)]):
+            operation_list.append((2,remove_activity.id))
+        if 'ticket_type_id' in vals:
+            ticket_type_id=self.env['helpdesk.ticket.type'].browse(vals['ticket_type_id'])
+            for add_activity in ticket_type_id.ticket_type_activity_ids:
+                operation_list.append((0,0,{'ticket_type_activity_id':add_activity.id,
+                                         'ticket_id':self.id,
+                                                 }))
+            vals['ticket_activity_ids']=operation_list
+        return super(HelpdeskTicket,self).write(vals)
+
+#    @api.onchange('stage_id')
+    def onchange_stage_id(self):
         user_id = False
         if self.stage_id.name == 'In Progress':
             for activity in self.ticket_type_id.ticket_type_activity_ids:
@@ -71,7 +102,7 @@ class HelpdeskTicket(models.Model):
                         'res_model': 'helpdesk.ticket',
 #                         'stage_activity_id': activity.id, #Edited by Dhruvil
                         #It's not correct, here someone tries to put value of ticket.type.activity object in stage.activity
-                        #both objects are different 
+                        #both objects are different
 
                     })
 
@@ -256,8 +287,18 @@ class HelpdeskTicket(models.Model):
                 if isinstance(each, str):
                     day_count += 1
 
+class HelpdeskTicketActivity(models.Model):
+    _name = "helpdesk.ticket.activity"
+#    _inherits = { "ticket.type.activity": "ticket_type_activity_id" }
+
+    sequence = fields.Integer('Sequence')
+    completed = fields.Boolean('Completed')
+    ticket_id = fields.Many2one("helpdesk.ticket")
+    ticket_type_activity_id = fields.Many2one('ticket.type.activity',required=True,delegate=True)
+
 class HelpdeskTicketType(models.Model):
     _inherit = 'helpdesk.ticket.type'
+
 
     ticket_type_activity_ids = fields.One2many('ticket.type.activity', 'ticket_type_id',
                                                string="Ticket Type Activities")

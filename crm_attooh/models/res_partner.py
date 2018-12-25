@@ -225,7 +225,7 @@ class CRM(models.Model):
         ('supplier', 'Supplier'),
         ('unknown', 'Unknown'),
     ], string="Category")
-    services = fields.Many2many('crm_attooh.service', 'res_partner_service_rel', 'partner_id', 'service_id', string='Services')
+    services = fields.Many2many('crm_attooh.service_type', 'res_partner_service_rel', 'partner_id', 'service_id', string='Services')
     privacy = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Privacy")
 
     # change string of existing field
@@ -359,7 +359,7 @@ class CRM(models.Model):
             self.name = self.surname
 
     @api.onchange('preferred_name')
-    def on_change_preffre_name(self):
+    def on_change_preferred_name(self):
         if self.name:
             name = self.name
             preferred_name = name.split(' ')

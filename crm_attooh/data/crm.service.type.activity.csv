@@ -1,4 +1,4 @@
-id,crm_attooh_service_type_id:id,stage_id:id,name
+id,service_type_id:id,stage_id:id,name
 A1.1,prelim_fin_planning,stage_preparation,Capture & Qualify leads
 A1.2,prelim_fin_planning,stage_preparation,Schedule Appointment
 A1.3,prelim_fin_planning,stage_preparation,Thank referring party

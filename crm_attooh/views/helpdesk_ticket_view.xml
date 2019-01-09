@@ -38,6 +38,7 @@
                 </xpath>
             </field>
         </record>
+
         <record id="helpdesk_ticket_type_view_form" model="ir.ui.view">
             <field name="name">helpdesk.ticket.type.form</field>
             <field name="model">helpdesk.ticket.type</field>
@@ -85,6 +86,7 @@
                 </form>
             </field>
         </record>
+
         <record id="mail_message_action_custom" model="ir.actions.act_window">
             <field name="name">Mail Message</field>
             <field name="res_model">mail.message</field>

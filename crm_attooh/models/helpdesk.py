@@ -63,10 +63,6 @@ class HelpdeskTicket(models.Model):
         #TODO: Uncompleted tasks
         #TODO: Add all relevant tasks for ticket Type
 
-        print("So there was a change to the ticket type")
-        print("Ticket type",self.ticket_type_id.name)
-        print(self.ticket_activity_ids.search([('completed','=',False)]))
-
         operation_list=[]
         for remove_activity in self.ticket_activity_ids.search([('completed','=',False)]):
             operation_list.append((2,remove_activity.id))

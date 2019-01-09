@@ -1,5 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_crm_attooh_service,access_crm_attooh_service,model_crm_attooh_service,,1,0,0,0
 access_entity_status,access_entity_status,model_entity_status,,1,0,0,0
 access_partner_income,access_partner_income,model_partner_income,,1,0,0,0
 access_partner_deduction,access_partner_deduction,model_partner_deduction,,1,0,0,0
@@ -18,5 +17,4 @@ access_crm_signature_request_sales,access_crm_signature_request_sales,model_crm_
 access_ticket_type_activity,access_ticket_type_activity,model_ticket_type_activity,,1,0,0,0
 access_crm_automated_email,access_crm_automated_email,model_crm_automated_email,base.group_user,1,1,1,0
 access_employee_roles,access_employee_roles,model_employee_roles,base.group_user,1,0,0,0
-access_product_area,access_product_area,model_product_area,base.group_user,1,0,0,0
 access_user_employee_roles,access_user_employee_roles,model_user_employee_roles,,1,0,0,0

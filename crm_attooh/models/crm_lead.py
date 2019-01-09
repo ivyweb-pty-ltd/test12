@@ -15,16 +15,9 @@ from odoo import models, fields, api, _
 from odoo.http import request
 from datetime import datetime, timedelta
 from odoo.exceptions import UserError
-from odoo.addons.website_sign.models.signature_request import SignatureRequestItem
+#from odoo.addons.website_sign.models.signature_request import SignatureRequestItem
 
 #TODO: Load Data for all the possible product_types
-
-class crm_attooh_service_type(models.Model):
-    _name = 'crm_attooh.service_type'
-
-    name = fields.Char('Name')
-    #product_type_activity_ids = fields.One2many('crm_attooh.service_type.activity','crm_attooh_service_type_id')
-
 
 class SignatureRequest(models.Model):
     _inherit = 'signature.request'
@@ -142,14 +135,17 @@ class SignatureItemTypeAttooh(models.Model):
     type = fields.Selection(selection_add=[('checkbox', 'Checkbox')])
 
 
-class CRM(models.Model):
+class crm_lead(models.Model):
     _inherit = 'crm.lead'
 
-    service_ids = fields.Many2many('crm_attooh.service_type', 'crm_lead_service_rel', 'lead_id', 'service_id',
-                                   string='Services')
-    activity_type_ids = fields.Many2one('crm_attooh.service_type.activity')
+    service_ids = fields.Many2many('crm.service.type', related='partner_id.service_ids',string='Provided Services')
+    activity_type_ids = fields.Many2one('crm.service.type.activity')
     signature_requests_count = fields.Integer("# Signature Requests", compute='_compute_signature_requests')
     signature_ids = fields.One2many('signature.request', 'lead_id')
+    product_area_id = fields.Many2one('crm.service.type',string='Product Area')
+
+
+    service_activity_ids = fields.One2many('crm.service.activity','lead_id')
     referred = fields.Many2one('res.partner', 'Referred By')
 
     submission_date = fields.Date('Submission Date')
@@ -177,6 +173,7 @@ class CRM(models.Model):
     color = fields.Integer('Color', compute='_compute_color')
     sms_on_lead = fields.Boolean(compute="_compute_sms_on_lead")
     sms_on_opportunity = fields.Boolean(compute="_compute_sms_on_opportunity")
+    crm_activity_ids = fields.One2many('crm.service.activity','lead_id')
 
     @api.depends('stage_id', 'stage_id.stage_automated_email_ids')
     def _compute_color(self):
@@ -256,7 +253,22 @@ class CRM(models.Model):
 
     @api.multi
     def write(self, vals):
-        res = super(CRM, self).write(vals)
+        # TODO: Delete all tasks that is not completed yet.
+        # TODO: Uncompleted tasks
+        # TODO: Add all relevant tasks for ticket Type
+
+        operation_list = []
+        for remove_activity in self.service_activity_ids.search([('completed', '=', False)]):
+            operation_list.append((2, remove_activity.id))
+        if 'product_area_id' in vals:
+            product_area_id = self.env['crm.service.type'].browse(vals['product_area_id'])
+            for add_activity in product_area_id.service_type_activity_ids:
+                operation_list.append((0, 0, {'service_type_activity_id': add_activity.id,
+                                              'lead_id': self.id,
+                                              }))
+            vals['service_activity_ids'] = operation_list
+
+        res = super(crm_lead, self).write(vals)
         if vals.get('stage_id'):
             for record in self:
                 if not record.partner_id:
@@ -309,21 +321,67 @@ class CrmTeamAttooh(models.Model):
 #TODO: Build Product Type Manager
 #TODO: Build data for product Types
 
-class crm_attooh_service_type_activity(models.Model):
-    _name = 'crm_attooh.service_type.activity'
+class SignatureItemAtooh(models.Model):
+    _inherit = 'signature.request.item'
+
+    ip_address = fields.Char('Ip Address')
+    country_name = fields.Char()
+    country_code = fields.Char()
+    city = fields.Char()
+    region = fields.Char()
+    time_zone = fields.Char()
+    opt = fields.Char()
+
+    @api.multi
+    def action_completed(self):
+        self.write({
+            'country_name': request.session.get('geoip', {}).get('country_name'),
+            'country_code': request.session.get('geoip', {}).get('country_code'),
+            'city': request.session.get('geoip', {}).get('city'),
+            'region': request.session.get('geoip', {}).get('region'),
+            'time_zone': request.session.get('geoip', {}).get('time_zone'),
+            'ip_address': request.httprequest.remote_addr
+        })
+        return super(SignatureItemAtooh, self).action_completed()
+
+
+class CRMAttoohLeadType(models.Model):
+    _name = "crm.service.type"
+
+    name = fields.Char("Name")
+    service_type_activity_ids =  fields.One2many('crm.service.type.activity','service_type_id')
+
+
+class CRMActivity(models.Model):
+    _name = "crm.service.activity"
+
+    lead_id = fields.Many2one('crm.lead')
+    sequence = fields.Integer('Sequence')
+    completed = fields.Boolean('Completed')
+    service_type_activity_id = fields.Many2one('crm.service.type.activity',required=True,delegate=True)
+    user_id = fields.Many2one('res.users',string='Assigned to User')
+#                              domain=(['user_employee_roles_ids','in',service_type_activity_id.employee_role_id]))
+    date_completed = fields.Datetime('Completed on')
+
+    @api.onchange('completed')
+    def set_date_completed(self):
+        for i in self:
+            if not i.completed:
+                i.date_completed=""
+            if i.completed and not i.date_completed:
+                print(i)
+                i.date_completed=fields.datetime.now()
+
+class crm_service_type_activity(models.Model):
+    _name = 'crm.service.type.activity'
     _description = 'Service Type Activity'
 
     name = fields.Char(string='Summary', required=True)
     activity_date = fields.Integer(string="Activity Date")
     assign_to_owner = fields.Boolean(string="Assign to Owner?")
     activity_type_id = fields.Many2one('mail.activity.type', string="Activity Type")
-    user_id = fields.Many2one('res.users', string="Assigned To")
+    user_id = fields.Many2one('res.users', string="User Assigned To")
     employee_role_id = fields.Many2one('employee.roles', string="Assigned To")
-    crm_attooh_service_type_id = fields.Many2one('crm_attooh.service_type', string="Service Type")
-    stage_id = fields.Many2one('crm.stage',string='Applicable Stage')
+    service_type_id = fields.Many2one('crm.service.type', string="Service Type")
     active = fields.Boolean(default=True)
-
-#    @api.model
-#    @api.returns('self', lambda value: value.id if value else False)
-#    def _get_default_team_id(self, user_id=None):
-#        return self.env.ref('crm_attooh.crm_team_attooh_5')crms
+    stage_id = fields.Many2one('crm.stage', string='Stage', track_visibility='onchange', index=True)

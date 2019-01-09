@@ -23,7 +23,6 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
-        'data/crm_service_data.xml',
         'data/res_partner_data.xml',
         'data/signature_item_type_data.xml',
         'data/helpdesk_data.xml',
@@ -31,9 +30,11 @@
         'data/crm_demo.xml',
         'data/ticket_type_activity_data.xml',
         'data/crm_stage_data.xml',
-        'data/crm_attooh.service_type.csv',
-        'data/crm_attooh.service_type.activity.csv',
+        'data/crm.service.type.csv',
+        'data/crm.service.type.activity.csv',
         'data/hr_employee_roles_data.xml',
+        'data/partner.relationship_type.xml',
+        'data/partner.relationship_type.csv',
         'views/crm_views.xml',
         'views/hr_views.xml',
         'views/res_partner_views.xml',
@@ -61,5 +62,6 @@
         'views/report_production_book.xml'
     ],
     'qweb': ['static/src/xml/*.xml'],
-    'post_init_hook':'post_init_check'
+    'post_init_hook':'post_init_check',
+    'application': True,
 }

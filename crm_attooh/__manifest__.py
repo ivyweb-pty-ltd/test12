@@ -59,7 +59,8 @@
         'views/crm_reporting_activity.xml',
         'views/mail_activity_views.xml',
         'views/event_template.xml',
-        'views/report_production_book.xml'
+        'views/report_production_book.xml',
+        'views/financial_product_view.xml',
     ],
     'qweb': ['static/src/xml/*.xml'],
     'post_init_hook':'post_init_check',

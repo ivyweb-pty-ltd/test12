@@ -13,6 +13,13 @@
                         type="object">
                         <field name="attachment_count" widget="statinfo" string="Documents"/>
                     </button>
+                    <button name="%(crm_attooh.financial_product_action)d"
+                            class="oe_stat_button"
+                            icon="fa-book"
+                            type="action"
+                            context="{'search_default_partner_id': active_id}">
+                        <field name="financial_product_count" widget="statinfo" string="Financial Products"/>
+                    </button>
                 </button>
                 <field name="parent_id" position="attributes">
                     <attribute name="attrs">{'invisible': ['|', '|', ('company_name', '=', False), ('company_name', '=', ''), ('is_company', '=', True)]}</attribute>
@@ -337,7 +344,7 @@
             <field name="model">partner.relationship</field>
             <field name="arch" type="xml">
                 <tree string="Relationship" editable="bottom">
-                    <field name="relationship_id"/>
+                    <field name="relationship_type_id"/>
                     <field name="related_id"/>
                 </tree>
             </field>

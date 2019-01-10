@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="financial_product_list">
+            <field name="name">Financial Product List</field>
+            <field name="model">financial_product</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="user_id"/>
+                    <field name="partner_id"/>
+                    <field name="contract_policy_number"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="financial_product_search">
+            <field name="name">Financial Product Search</field>
+            <field name="model">financial_product</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="contract_policy_number"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="financial_product_action">
+            <field name="name">Financial Product Action</field>
+            <field name="res_model">financial_product</field>
+            <field name="views">tree,form</field>
+        </record>
+
+        <menuitem id="financial_product_menu" name="Financial Product List" action="financial_product_action"/>
+    </data>
+</odoo>

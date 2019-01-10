@@ -46,7 +46,7 @@
                                 <field name="submission_date" />
                                 <field name="date_of_issue"/>
                                 <field name="doc"/>
-                                <field name="complience_mail"/>
+                                <field name="compliance_mail"/>
                                 <field name="product_provider_id"/>
                                 <field name="product_id"/>
                                 <field name="premium"/>
@@ -121,6 +121,8 @@
                     <field name="completed"/>
                     <field name="user_id"/>
                     <field name="date_completed"/>
+                    <button name="toggle_completed" type="object" string="Complete" class="oe_highlight"/>
+
                 </tree>
             </field>
         </record>

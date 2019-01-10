@@ -18,3 +18,4 @@ from . import ticket_type_activity
 from . import employee
 from . import res_users
 from . import report_production_book
+from . import financial_product

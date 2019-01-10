@@ -249,6 +249,8 @@ class res_partner(models.Model):
     spouse_id = fields.Many2one('res.partner', 'Spouse')
     otp = fields.Char(string="OTP")
     dependent = fields.Boolean(compute="_compute_dependent")
+    financial_product_ids = fields.One2many('financial_product','partner_id')
+    financial_product_count = fields.Integer(compute="_compute_financial_product_count")
 
     def _compute_dependent(self):
         for partner in self:
@@ -274,6 +276,10 @@ class res_partner(models.Model):
         Attachment = self.env['ir.attachment']
         for partner in self:
             partner.attachment_count = Attachment.search_count([('res_model', '=', 'res.partner'), ('res_id', '=', partner.id)])
+
+    def _compute_financial_product_count(self):
+        for partner in self:
+            partner.financial_product_count = partner.financial_product_ids.search_count([('partner_id','=',partner.id)])
 
     @api.multi
     def view_attachments(self):
@@ -568,19 +574,27 @@ class partner_relationship(models.Model):
 
     partner_id = fields.Many2one("res.partner")
     related_id = fields.Many2one("res.partner")
-    relationship_id = fields.Many2one('partner.relationship_type')
+    relationship_type_id = fields.Many2one('partner.relationship_type')
+    opposite_relationship_id = fields.Many2one('partner.relationship')
 
-    @api.onchange('relationship_id')
-    def relationship_change(self):
-        for item in self:
-            #TODO: Replace current relationship
-            new_relationship=self.env('partner.relationship').new()
-            new_relationship.partner_id=item.related_id
-            new_relationship.related_id=item.partner_id
-            new_relationship.relationship=item.relationship_id.opposite_id
 
-        print(self)
-        #TODO: Setup opposite relationship on partner2
+#    def write(self,vals):
+#        if "related_id" in vals:
+#            rvals={}
+#            rvals["partner_id"]=vals['related_id']
+#            if 'partner_id' in vals:
+#                rvals["related_id"]=vals['partner_id']
+#            if 'relationship_type_id' in vals:
+#
+#                rvals["relationship_type_id"]=self.env['partner.relations_type'].browse(vals['relationship_type_id'].opposite_id)
+#            vals['opposite_relationship_id']=self.id
+#            if not item.opposite_relationship_id:
+#                item.opposite_relationship_id=self.env('partner.relationship').create(vals)
+#            else:
+#                item.opposite_relatioship_id.write(vals)
+#        return super(partner_relationship, self).write(vals)
+
+
 
 class partner_relationship_type(models.Model):
     _name = "partner.relationship_type"

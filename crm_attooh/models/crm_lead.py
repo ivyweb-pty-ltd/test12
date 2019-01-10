@@ -147,25 +147,28 @@ class crm_lead(models.Model):
 
     service_activity_ids = fields.One2many('crm.service.activity','lead_id')
     referred = fields.Many2one('res.partner', 'Referred By')
+    financial_product_id = fields.Many2one('financial_product')
 
-    submission_date = fields.Date('Submission Date')
-    product_provider_id = fields.Many2one('res.partner', string='Product Provider', domain="[('supplier', '=', True)]")
-    product_id = fields.Many2one('product.template', 'Product')
-    premium = fields.Float('Premium')
-    commission_year_1 = fields.Float('1st year Commission')
-    commission_year_2 = fields.Float('2nd year Commission')
-    monthly_commission = fields.Float(' Monthly Ongoing Commission')
-    date_of_issue = fields.Date('Date of Issue')
-    vitality = fields.Boolean('Vitality')
-    doc = fields.Date('DOC')
-    complience_mail = fields.Date('Compliance Mail')
-    fica = fields.Boolean('FICA')
-    issued_commission_year_1 = fields.Float('Issued 1st year Commission')
-    issued_commission_year_2 = fields.Float('Issued 2nd year Commission')
-    issued_monthly_commission = fields.Float('Issued Monthly Ongoing Commission')
-    contract_policy_number = fields.Char('Contract/Policy Number')
-    book_notes = fields.Text('Production Book Notes')
-    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.user.company_id.currency_id.id)
+    contract_policy_number = fields.Char('Contract/Policy Number',related="financial_product_id.contract_policy_number")
+    submission_date = fields.Date('Submission Date',related="financial_product_id.submission_date")
+    date_of_issue = fields.Date('Date of Issue',related="financial_product_id.date_of_issue")
+    doc = fields.Date('DOC',related="financial_product_id.doc")
+    compliance_mail = fields.Date('Compliance Mail',related="financial_product_id.compliance_mail")
+    product_provider_id = fields.Many2one('res.partner', related="financial_product_id.product_provider_id")
+    product_id = fields.Many2one('product.template', 'Product',related="financial_product_id.product_id")
+    premium = fields.Float('Premium',related="financial_product_id.premium")
+    vitality = fields.Boolean('Vitality',related="financial_product_id.vitality")
+    fica = fields.Boolean('FICA',related="financial_product_id.fica")
+    commission_year_1 = fields.Float('1st year Commission',related="financial_product_id.commission_year_1")
+    commission_year_2 = fields.Float('2nd year Commission',related="financial_product_id.commission_year_2")
+    monthly_commission = fields.Float(' Monthly Ongoing Commission',related="financial_product_id.monthly_commission")
+    issued_commission_year_1 = fields.Float('Issued 1st year Commission',related="financial_product_id.issued_commission_year_1")
+    issued_commission_year_2 = fields.Float('Issued 2nd year Commission',related="financial_product_id.issued_commission_year_2")
+    issued_monthly_commission = fields.Float('Issued Monthly Ongoing Commission',related="financial_product_id.issued_monthly_commission")
+    currency_id = fields.Many2one('res.currency', string='Currency',
+                                  default=lambda self: self.env.user.company_id.currency_id.id,related="financial_product_id.currency_id")
+    book_notes = fields.Text('Production Book Notes',related="financial_product_id.book_notes")
+
 
     # string changes on existing fields
     phone = fields.Char('Work Phone')
@@ -174,6 +177,17 @@ class crm_lead(models.Model):
     sms_on_lead = fields.Boolean(compute="_compute_sms_on_lead")
     sms_on_opportunity = fields.Boolean(compute="_compute_sms_on_opportunity")
     crm_activity_ids = fields.One2many('crm.service.activity','lead_id')
+
+
+#    @api.onchange('partner_id')
+    def set_partner_id(self):
+        for item in self:
+            if not item.financial_product_id:
+                financial_product_id=item.financial_product_id.create({"partner_id":item.partner_id.id})
+            else:
+                financial_product_id=item.financial_product_id
+            financial_product_id.write({"partner_id": item.partner_id.id})
+            item.write({'financial_product_id':financial_product_id.id})
 
     @api.depends('stage_id', 'stage_id.stage_automated_email_ids')
     def _compute_color(self):
@@ -251,11 +265,25 @@ class crm_lead(models.Model):
                         'stage_activity_id': activity.id,
                         })
 
+    @api.model
+    def create(self,vals={}):
+        fp_vals={}
+        if 'partner_id' in vals:
+            fp_vals['partner_id']=vals['partner_id']
+        if 'user_id' in vals:
+            fp_vals['user_id']=vals['user_id']
+        financial_product_id=self.env['financial_product'].create(fp_vals)
+        vals['financial_product_id']=financial_product_id.id
+        res = super(crm_lead, self).create(vals)
+        financial_product_id.crm_lead_id=res.id
+        return res
+
     @api.multi
     def write(self, vals):
         # TODO: Delete all tasks that is not completed yet.
         # TODO: Uncompleted tasks
         # TODO: Add all relevant tasks for ticket Type
+        # TODO: Set partner_id correctly on write for financial_service_product
 
         operation_list = []
         for remove_activity in self.service_activity_ids.search([('completed', '=', False)]):
@@ -267,6 +295,14 @@ class crm_lead(models.Model):
                                               'lead_id': self.id,
                                               }))
             vals['service_activity_ids'] = operation_list
+
+        if ('partner_id' in vals):
+            self.financial_product_id.partner_id=vals['partner_id']
+
+        self.financial_product_id.crm_lead_id=self.id
+
+        if ('user_id' in vals):
+            self.financial_product_id.user_id=vals['user_id']
 
         res = super(crm_lead, self).write(vals)
         if vals.get('stage_id'):
@@ -363,14 +399,15 @@ class CRMActivity(models.Model):
 #                              domain=(['user_employee_roles_ids','in',service_type_activity_id.employee_role_id]))
     date_completed = fields.Datetime('Completed on')
 
-    @api.onchange('completed')
-    def set_date_completed(self):
-        for i in self:
-            if not i.completed:
-                i.date_completed=""
-            if i.completed and not i.date_completed:
-                print(i)
-                i.date_completed=fields.datetime.now()
+    def toggle_completed(self):
+        for item in self:
+            item.completed=not item.completed
+            if not item.completed:
+                item.date_completed=""
+            if item.completed and not item.date_completed:
+                print(item)
+                item.date_completed=fields.datetime.now()
+
 
 class crm_service_type_activity(models.Model):
     _name = 'crm.service.type.activity'

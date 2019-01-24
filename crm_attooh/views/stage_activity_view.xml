@@ -24,7 +24,6 @@
                             <field name="activity_type_id" />
                             <field name="user_id" attrs="{'invisible': [('assign_to_owner', '!=', False)]}" invisible="1"/>
                             <field name="employee_role_id" attrs="{'invisible': [('assign_to_owner', '!=', False)]}"/>
-                            <field name="team_ids" widget="many2many_tags" />
                             <field name="crm_stage_id" />
                         </group>
                     </sheet>
@@ -44,7 +43,6 @@
                     <field name="user_id" attrs="{'invisible': [('assign_to_owner', '!=', False)]}" invisible="1"/>
                     <field name="employee_role_id" attrs="{'invisible': [('assign_to_owner', '!=', False)]}"/>
                     <field name="crm_stage_id" />
-                    <field name="team_ids" />
                 </tree>
             </field>
         </record>
@@ -68,21 +66,10 @@
                 <xpath expr="//field[@name='team_id']" position="after">
                     <field name="has_portal_access"/>
                 </xpath>
-                <xpath expr="//field[@name='team_id']" position="replace">
-                    <field name="team_ids" widget="many2many_tags" />
-                </xpath>
                 <xpath expr="//separator" position="before">
                     <notebook>
                         <page string="Stage Activities">
                             <field name="stage_activity_ids"/>
-                        </page>
-                        <page string="Stage Automated Emails">
-                            <field name="stage_automated_email_ids">
-                                <tree editable="top">
-                                    <field name="email_template_id"/>
-                                    <field name="user_id"/>
-                                </tree>
-                            </field>
                         </page>
                         <page string="Stage Signature Request">
                             <field name="stage_signature_request_ids">

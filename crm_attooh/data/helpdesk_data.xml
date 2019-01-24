@@ -80,24 +80,20 @@
 
     <record id="helpdesk_vendor_engagement" model="helpdesk.stage">
         <field name="name">Vendor Engagement</field>
-        <field name="team_ids" eval="[(4, ref('helpdesk.helpdesk_team1'))]"/>
         <field name="sequence">10</field>
     </record>
 
     <record id="helpdesk_stage_submission" model="helpdesk.stage">
         <field name="name">Submission</field>
-        <field name="team_ids" eval="[(4, ref('helpdesk.helpdesk_team1'))]"/>
         <field name="sequence">20</field>
     </record>
 
     <record id="helpdesk.stage_solved" model="helpdesk.stage">
         <field name="name">Solved</field>
-        <field name="team_ids" eval="[(4, ref('helpdesk.helpdesk_team1'))]"/>
         <field name="sequence">100</field>
     </record>
     <record id="helpdesk.stage_cancelled" model="helpdesk.stage">
         <field name="name">Cancelled</field>
-        <field name="team_ids" eval="[(4, ref('helpdesk.helpdesk_team1'))]"/>
         <field name="sequence">110</field>
     </record>
 

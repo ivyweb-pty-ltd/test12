@@ -43,6 +43,7 @@ class SignatureRequest(models.Model):
                 lambda r: r.partner_id == self.env.user.partner_id).access_token,
         }
 
+
     @api.one
     def generate_completed_document(self):
         if len(self.template_id.signature_item_ids) <= 0:
@@ -173,10 +174,10 @@ class crm_lead(models.Model):
     # string changes on existing fields
     phone = fields.Char('Work Phone')
     # team_id = fields.Many2one(string='Sales to New Business')
-    color = fields.Integer('Color', compute='_compute_color')
     sms_on_lead = fields.Boolean(compute="_compute_sms_on_lead")
     sms_on_opportunity = fields.Boolean(compute="_compute_sms_on_opportunity")
-    crm_activity_ids = fields.One2many('crm.service.activity','lead_id')
+    crm_activity_ids = fields.One2many('crm.service.activity','lead_id',track_visibility='onchange')
+    responsible_id = fields.Many2one('res.users','Responsible')
 
 
 #    @api.onchange('partner_id')
@@ -188,14 +189,6 @@ class crm_lead(models.Model):
                 financial_product_id=item.financial_product_id
             financial_product_id.write({"partner_id": item.partner_id.id})
             item.write({'financial_product_id':financial_product_id.id})
-
-    @api.depends('stage_id', 'stage_id.stage_automated_email_ids')
-    def _compute_color(self):
-        for lead in self:
-            if lead.stage_id.stage_automated_email_ids:
-                lead.color = 4
-            else:
-                lead.color = 2
 
     def _compute_sms_on_lead(self):
         ICPSudo = self.env['ir.config_parameter'].sudo()
@@ -231,40 +224,6 @@ class crm_lead(models.Model):
         user_id = activity.employee_role_id.employee_id and activity.employee_role_id.employee_id.id or False
         return user_id
 
-    @api.onchange('stage_id')
-    def onchange_stage_id(self):
-        user_id = False
-        for activity in self.stage_id.stage_activity_ids:
-            if self._origin.team_id and activity.team_ids and self._origin.team_id.id in activity.team_ids.ids:
-                date_deadline = datetime.today() + timedelta(days=activity.activity_date)
-                if activity.assign_to_owner:
-                    user_id = self.user_id and self.user_id.id or False
-                else:
-                    if self.user_id.is_financial_advisor:
-                        role_ids = self.user_id.user_employee_roles_ids
-                        if not role_ids:
-                            user_id = self.get_user_id(activity)
-                        else:
-                            emp_role_id = role_ids.filtered(lambda l: l.employee_role_id.id == activity.employee_role_id.id)
-                            if emp_role_id:
-                                user_id = emp_role_id.employee_id.id
-                            else:
-                                user_id = self.get_user_id(activity)
-                    else:
-                        user_id = self.get_user_id(activity)
-                activities = self.env['mail.activity'].search(
-                    [('res_id', '=', self._origin.id), ('stage_activity_id', '=', activity.id)])
-                if not activities:
-                    self.env['mail.activity'].sudo().create({
-                        'activity_type_id': activity.activity_type_id and activity.activity_type_id.id or False,
-                        'res_id': self._origin.id,
-                        'res_model_id': self.env.ref('crm.model_crm_lead').id,
-                        'date_deadline': date_deadline,
-                        'summary': activity.name,
-                        'user_id': user_id,
-                        'stage_activity_id': activity.id,
-                        })
-
     @api.model
     def create(self,vals={}):
         fp_vals={}
@@ -290,9 +249,13 @@ class crm_lead(models.Model):
             operation_list.append((2, remove_activity.id))
         if 'product_area_id' in vals:
             product_area_id = self.env['crm.service.type'].browse(vals['product_area_id'])
+            #TODO: Assign user in activity
+            #TODO: Assign all fields necessary
+            #TODO: Assign mail activities
             for add_activity in product_area_id.service_type_activity_ids:
                 operation_list.append((0, 0, {'service_type_activity_id': add_activity.id,
                                               'lead_id': self.id,
+                                              'name': add_activity.name,
                                               }))
             vals['service_activity_ids'] = operation_list
 
@@ -305,38 +268,6 @@ class crm_lead(models.Model):
             self.financial_product_id.user_id=vals['user_id']
 
         res = super(crm_lead, self).write(vals)
-        if vals.get('stage_id'):
-            for record in self:
-                if not record.partner_id:
-                    raise UserError(_('Please select customer on opportunity'))
-                automate_emails = self.stage_id.stage_automated_email_ids.filtered(lambda r: r.user_id == self.user_id)
-                for email in automate_emails:
-                    record.message_post_with_template(email.email_template_id.id)
-                signature_requests = self.stage_id.stage_signature_request_ids.filtered(lambda r: r.user_id == self.user_id)
-                for request in signature_requests:
-                    template = request.signature_request_template_id
-                    signers = [{
-                        'partner_id': record.partner_id.id,
-                        'role': 1
-                    }]
-                    message = _('Signature Request for %s ') % record.stage_id.name
-                    subject = _('Signature Request - %s') % template.attachment_id.name
-                    Request = self.env['signature.request']
-                    Request.initialize_sign_new(template.id, signers, [], record.id,
-                        template.attachment_id.name, subject, message, record, True)
-                if self.stage_id.has_portal_access:
-                    PortalWiard = self.env['portal.wizard']
-                    portal = PortalWiard.create({
-                        'user_ids': [(0, 0, {
-                            'partner_id': record.partner_id.id,
-                            'email': record.partner_id.email,
-                            'in_portal': True,
-                            'user_id': self.env.user.id
-                        })]
-                    })
-                    portal.action_apply()
-                    body = _('Portal invitation has been send to %s') % record.partner_id.name
-                    self.message_post(body, message_type='comment')
         return res
 
     @api.multi
@@ -350,6 +281,30 @@ class crm_lead(models.Model):
         action = self.env['ir.actions.act_window'].for_xml_id('website_sign', 'signature_request_action')
         action['domain'] = [('id', 'in', self.signature_ids.ids)]
         return action
+
+    @api.onchange('product_area_id','activity_ids')
+    def next_activity(self,activity_id=None):
+        if activity_id:
+            items=self.crm_activity_ids.search([('mail_activity_id','=',activity_id.id)])
+            for item in items:
+                item.completed = True
+                item.date_completed = fields.datetime.now()
+                item.lead_id.stage_id = item.service_type_activity_id.stage_id
+
+        for item in self.crm_activity_ids.search([('completed','=',False)],order='sequence',limit=1):
+            #TODO: Open next activity
+            if not item.mail_activity_id:
+                new_activity_id=item.mail_activity_id.create({
+                    'activity_type_id': item.service_type_activity_id.activity_type_id.id,
+                    'res_id': item.lead_id.id,
+                    'res_model_id': self.env.ref('crm.model_crm_lead').id,
+                    'date_deadline': fields.datetime.now()+timedelta(hours=item.service_type_activity_id.lead_time),
+                    'summary': item.name,
+                    #TODO: Choose the right user to assign
+                    'user_id': (item.service_type_activity_id.employee_role_id.employee_id.id | item.user_id.id | item.lead_id.responsible_id.id | item.lead_id.user_id.id ),
+                    'service_activity_id': item.id,
+                })
+                item.mail_activity_id=new_activity_id
 
 class CrmTeamAttooh(models.Model):
     _inherit = "crm.team"
@@ -391,34 +346,38 @@ class CRMAttoohLeadType(models.Model):
 class CRMActivity(models.Model):
     _name = "crm.service.activity"
 
+    name = fields.Char('Process')
     lead_id = fields.Many2one('crm.lead')
     sequence = fields.Integer('Sequence')
     completed = fields.Boolean('Completed')
-    service_type_activity_id = fields.Many2one('crm.service.type.activity',required=True,delegate=True)
+    service_type_activity_id = fields.Many2one('crm.service.type.activity',required=True)
     user_id = fields.Many2one('res.users',string='Assigned to User')
 #                              domain=(['user_employee_roles_ids','in',service_type_activity_id.employee_role_id]))
+    mail_activity_id = fields.Many2one('mail.activity')
     date_completed = fields.Datetime('Completed on')
+    stage_id = fields.Many2one('crm.stage',related='service_type_activity_id.stage_id')
 
     def toggle_completed(self):
         for item in self:
-            item.completed=not item.completed
-            if not item.completed:
-                item.date_completed=""
-            if item.completed and not item.date_completed:
-                print(item)
-                item.date_completed=fields.datetime.now()
-
+            if item.mail_activity_id:
+                item.mail_activity_id.unlink()
+            else:
+                item.completed = True
+                item.date_completed = fields.datetime.now()
+                item.lead_id.next_activity(activity_id=self)
 
 class crm_service_type_activity(models.Model):
     _name = 'crm.service.type.activity'
     _description = 'Service Type Activity'
 
-    name = fields.Char(string='Summary', required=True)
-    activity_date = fields.Integer(string="Activity Date")
-    assign_to_owner = fields.Boolean(string="Assign to Owner?")
-    activity_type_id = fields.Many2one('mail.activity.type', string="Activity Type")
-    user_id = fields.Many2one('res.users', string="User Assigned To")
-    employee_role_id = fields.Many2one('employee.roles', string="Assigned To")
-    service_type_id = fields.Many2one('crm.service.type', string="Service Type")
-    active = fields.Boolean(default=True)
     stage_id = fields.Many2one('crm.stage', string='Stage', track_visibility='onchange', index=True)
+    reference = fields.Char(string='Reference', required=True)
+    name = fields.Char(string='Process', required=True)
+    employee_role_id = fields.Many2one('employee.roles','Responsible')
+    lead_time = fields.Float('Lead time',size=5)
+    time_allocation = fields.Float('Time Allocation',size=5)
+    activity_type_id = fields.Many2one('mail.activity.type', string="Activity Type")
+    service_type_id = fields.Many2one('crm.service.type', string="Service Type")
+    document_ids = fields.Many2many('signature.request.template',relation='service_activity_type_documents',
+                                    column1='service_type_activity_id',column2='signature_request_template_id')
+    active = fields.Boolean(default=True)

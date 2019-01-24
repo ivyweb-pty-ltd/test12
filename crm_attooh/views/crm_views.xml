@@ -14,11 +14,6 @@
                 <field name="stage_id" widget="statusbar" clickable="True"
                     options="{'fold_field': 'fold'}" domain="['|', ('team_id', '=', team_id), ('team_id', '=', False)]"
                     attrs="{'invisible': [('active', '=', False)]}" />
-                <xpath expr="//field[@name='stage_id']" position="attributes">
-                    <attribute name="domain">['|', ('team_ids', 'in', [team_id]),
-                        ('team_ids', '=', False)]
-                    </attribute>
-                </xpath>
 
                 <xpath expr="//field[@name='date_deadline']" position="after">
                     <field name="service_ids" widget="many2many_tags" options="{'no_create_edit': True}" />
@@ -69,10 +64,11 @@
                 <field name="team_id" position="replace"/>
                 <xpath expr="//field[@name='user_id']" position="replace">
                     <field name="user_id" domain="[('is_financial_advisor','=',1)]"/>
+                    <field name="responsible_id"/>
                     <field name="product_area_id" widget="selection"/>
                 </xpath>
                 <xpath expr="//field[@name='user_id']/ancestor::group" position="after">
-                    <field name="service_activity_ids" colspan="4"/>
+                    <field name="service_activity_ids" colspan="4" domain="[('stage_id','=',stage_id)]"/>
                 </xpath>
                 <xpath expr="//page[@name='lead']//field[@name='source_id']" position="after">
                     <field name="team_id"/>
@@ -87,6 +83,20 @@
                 </xpath>
             </field>
         </record>
+
+        <record id="crm_case_opp_filter_attooh" model="ir.ui.view">
+            <field name="name">crm.lead.search Attooh</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.view_crm_case_opportunities_filter" />
+            <field name="arch" type="xml">
+                <filter name="assigned_to_me" position="replace">
+                    <filter string="My Pipeline" name="assigned_to_me"
+                            domain="[('responsible_id', '=', uid)]"
+                            help="Opportunities that are assigned to me"/>
+                </filter>
+            </field>
+        </record>
+
 
         <record id="crm_lead_view_form_service_lead" model="ir.ui.view">
             <field name="name">crm.lead.form</field>
@@ -111,21 +121,102 @@
             </field>
         </record>
 
-        <record id="crm_lead_service_activity_form" model="ir.ui.view">
+        <record id="crm_lead_service_activity_list" model="ir.ui.view">
             <field name="name">crm.service.activity</field>
             <field name="model">crm.service.activity</field>
             <field name="arch" type="xml">
-                <tree editable="bottom">
+                <tree limit="10" default_order="completed,sequence">
                     <field name="sequence" widget="handle"/>
                     <field name="name"/>
-                    <field name="completed"/>
                     <field name="user_id"/>
-                    <field name="date_completed"/>
-                    <button name="toggle_completed" type="object" string="Complete" class="oe_highlight"/>
-
+                    <field name="mail_activity_id"/>
+                    <field name="completed"/>
                 </tree>
             </field>
         </record>
+
+        <record id="crm_service_type_activity_tree" model="ir.ui.view">
+            <field name="name">crm.service.type.activity List</field>
+            <field name="model">crm.service.type.activity</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="stage_id"/>
+                    <field name="reference"/>
+                    <field name="name"/>
+                    <field name="employee_role_id"/>
+                    <field name="lead_time" widget="float_time"/>
+                    <field name="time_allocation" widget="float_time"/>
+                    <field name="activity_type_id"/>
+                    <field name="service_type_id"/>
+                    <field name="document_ids" widget="many2many_tags"/>
+                    <field name="active"/>
+                    <button name="toggle_completed" type="object" string="Complete" class="oe_highlight"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="crm_service_type_activity_form" model="ir.ui.view">
+            <field name="name">crm.service.type.activity Form</field>
+            <field name="model">crm.service.type.activity</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="stage_id"/>
+                        <field name="reference"/>
+                        <field name="name"/>
+                        <field name="employee_role_id"/>
+                        <field name="lead_time" widget="float_time"/>
+                        <field name="time_allocation" widget="float_time"/>
+                        <field name="activity_type_id"/>
+
+                        <field name="service_type_id"/>
+                        <field name="document_ids"/>
+                        <field name="active"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+            <record id="crm_service_type_activity_search" model="ir.ui.view">
+            <field name="name">crm.service.type.activity Search</field>
+            <field name="model">crm.service.type.activity</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="stage_id"/>
+                    <field name="reference"/>
+                    <field name="employee_role_id"/>
+                    <field name="service_type_id"/>
+                    <filter string="Stage" context="{'group_by':'stage_id'}"/>
+                    <filter string="Service Type" context="{'group_by':'service_type_id'}"/>
+                    <filter string="Responsible" context="{'group_by':'employee_role_id'}"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="crm_service_type_list" model="ir.ui.view">
+            <field name="name">crm.service.type List</field>
+            <field name="model">crm.service.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="service_type_activity_ids"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="crm_service_type_form" model="ir.ui.view">
+            <field name="name">crm.service.type Form</field>
+            <field name="model">crm.service.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="name"/>
+                        <field name="service_type_activity_ids"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
 
         <!-- inherit view of Lead Form : adding the "Signature state button" -->
         <!-- <record id="crm_lead_view_form_state_btn" model="ir.ui.view"> <field
@@ -157,7 +248,7 @@
             </xpath>
         </template>
         
- <!--       <record id="signature_request_items" model="ir.ui.view">
+        <record id="signature_request_items" model="ir.ui.view">
             <field name="name">signature.request.item.form</field>
             <field name="model">signature.request.item</field>
             <field name="inherit_id" ref="website_sign.signature_request_item_view_form" />
@@ -171,7 +262,24 @@
                     <field name="city"/>
                 </xpath>
             </field>
-        </record> -->
+        </record>
 
+        <record id="action_service_type" model="ir.actions.act_window">
+            <field name="name">Service Type</field>
+            <field name="res_model">crm.service.type</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_service_type_activity" model="ir.actions.act_window">
+             <field name="name">Service Type Activity</field>
+             <field name="res_model">crm.service.type.activity</field>
+             <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Supplied Services" id="crm.services_menu" parent="crm.crm_menu_config"/>
+        <menuitem name="Service Type" id="crm.service_type_menu" parent="crm.services_menu"
+                action="action_service_type"/>
+        <menuitem name="Service Type Activities" id="crm.service_type_activities_menu" parent="crm.services_menu"
+                action="action_service_type_activity"/>
     </data>
 </odoo>

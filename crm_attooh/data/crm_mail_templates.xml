@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="referral_mail_template" model="mail.template">
+
+        <field name="name">Thank you for referral</field>
+        <field name="email_from">${object.user_id.email_formatted | safe}</field>
+        <field name="subject">Thank you for your referral</field>
+        <field name="model_id" ref="model_crm_lead"/>
+        <field name="email_to">${object.referred.email}</field>
+        <field name="body_html" type="xml">
+           <div>
+               <p>Dear ${object.referred.display_name},</p>
+
+            <p>Thank you for the client reference received from you. We have followed up and an appointment was made.
+                We value our client relationships and endeavor to provide your contact with the same
+                level of service.</p>
+
+            <p>Regards</p>
+
+            <p>${object.user_id.display_name}</p>
+           </div>
+        </field>
+    </record>
+
+    <record id="referral_mail_action" model="ir.actions.act_window">
+            <field name="name">Send Mail (Thank you for referral)</field>
+            <field name="res_model">mail.compose.message</field>
+            <field name="src_model">crm.lead</field>
+            <field name="binding_model_id" ref="model_crm_lead"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">form,tree</field>
+            <field name="view_id" ref="mail.email_compose_message_wizard_form"/>
+            <field name="context" eval="{'default_composition_mode': 'mass_mail', 'default_template_id' : ref('referral_mail_template'), 'default_use_template': True}"></field>
+            <field name="target">new</field>
+        </record>
+
+</odoo>

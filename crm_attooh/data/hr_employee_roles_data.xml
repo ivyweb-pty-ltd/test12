@@ -34,4 +34,9 @@
         <field name="name">Client</field>
         <field name="employee_id" ref="base.user_root"></field>
     </record>
+
+    <record id="hr_employee_role_8" model="employee.roles">
+        <field name="name">Paraplanner</field>
+        <field name="employee_id" ref="base.user_root"></field>
+    </record>
 </odoo>

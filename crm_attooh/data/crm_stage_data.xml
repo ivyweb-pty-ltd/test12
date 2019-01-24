@@ -33,15 +33,15 @@
         </record>
         <record model="crm.stage" id="stage_second_engagement">
             <field name="name">2nd engagement</field>
-            <field name="sequence">30</field>
+            <field name="sequence">40</field>
         </record>
         <record model="crm.stage" id="stage_submission">
             <field name="name">Submission</field>
-            <field name="sequence">40</field>
+            <field name="sequence">50</field>
         </record>
         <record model="crm.stage" id="stage_compliance">
-            <field name="name">Finalisation</field>
-            <field name="sequence">50</field>
+            <field name="name">Accepted</field>
+            <field name="sequence">60</field>
         </record>
     </data>
 </odoo>

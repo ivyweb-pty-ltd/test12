@@ -24,13 +24,15 @@ class MailActivity(models.Model):
                 {'type': 'activity_updated', 'activity_created': True})
         return activity_user
 
-    @api.model
-    def unlink(self):
-        if self.service_activity_id:
-            self.service_activity_id.completed=True
-            self.service_activity_id.date_completed=fields.datetime.now()
-            self.service_activity_id.lead_id.next_activity(activity_id=self)
-        return super(MailActivity,self).unlink()
+    @api.multi
+    def action_feedback(self, feedback=False):
+        for item in self:
+            if item.service_activity_id:
+                item.service_activity_id.completed=True
+                item.service_activity_id.date_completed=fields.datetime.now()
+            if item.service_activity_id.lead_id:
+                item.service_activity_id.lead_id.next_activity()
+        return super(MailActivity,self).action_feedback(feedback)
 
 
 

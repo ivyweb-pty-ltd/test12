@@ -176,7 +176,6 @@ class crm_lead(models.Model):
     # team_id = fields.Many2one(string='Sales to New Business')
     sms_on_lead = fields.Boolean(compute="_compute_sms_on_lead")
     sms_on_opportunity = fields.Boolean(compute="_compute_sms_on_opportunity")
-    crm_activity_ids = fields.One2many('crm.service.activity','lead_id',track_visibility='onchange')
     responsible_id = fields.Many2one('res.users','Responsible')
 
 
@@ -237,7 +236,7 @@ class crm_lead(models.Model):
         financial_product_id.crm_lead_id=res.id
         return res
 
-    @api.multi
+    @api.one
     def write(self, vals):
         # TODO: Delete all tasks that is not completed yet.
         # TODO: Uncompleted tasks
@@ -245,27 +244,15 @@ class crm_lead(models.Model):
         # TODO: Set partner_id correctly on write for financial_service_product
 
         operation_list = []
-        for remove_activity in self.service_activity_ids.search([('completed', '=', False)]):
-            operation_list.append((2, remove_activity.id))
-        if 'product_area_id' in vals:
-            product_area_id = self.env['crm.service.type'].browse(vals['product_area_id'])
-            #TODO: Assign user in activity
-            #TODO: Assign all fields necessary
-            #TODO: Assign mail activities
-            for add_activity in product_area_id.service_type_activity_ids:
-                operation_list.append((0, 0, {'service_type_activity_id': add_activity.id,
-                                              'lead_id': self.id,
-                                              'name': add_activity.name,
-                                              }))
-            vals['service_activity_ids'] = operation_list
 
-        if ('partner_id' in vals):
-            self.financial_product_id.partner_id=vals['partner_id']
+        if self.financial_product_id:
+            if ('partner_id' in vals):
+                self.financial_product_id.partner_id=vals['partner_id']
 
-        self.financial_product_id.crm_lead_id=self.id
+            self.financial_product_id.crm_lead_id=self.id
 
-        if ('user_id' in vals):
-            self.financial_product_id.user_id=vals['user_id']
+            if ('user_id' in vals):
+                self.financial_product_id.user_id=vals['user_id']
 
         res = super(crm_lead, self).write(vals)
         return res
@@ -282,29 +269,77 @@ class crm_lead(models.Model):
         action['domain'] = [('id', 'in', self.signature_ids.ids)]
         return action
 
-    @api.onchange('product_area_id','activity_ids')
-    def next_activity(self,activity_id=None):
-        if activity_id:
-            items=self.crm_activity_ids.search([('mail_activity_id','=',activity_id.id)])
-            for item in items:
-                item.completed = True
-                item.date_completed = fields.datetime.now()
-                item.lead_id.stage_id = item.service_type_activity_id.stage_id
+    @api.onchange('product_area_id')
+    def change_product_area(self):
 
-        for item in self.crm_activity_ids.search([('completed','=',False)],order='sequence',limit=1):
-            #TODO: Open next activity
-            if not item.mail_activity_id:
-                new_activity_id=item.mail_activity_id.create({
-                    'activity_type_id': item.service_type_activity_id.activity_type_id.id,
-                    'res_id': item.lead_id.id,
-                    'res_model_id': self.env.ref('crm.model_crm_lead').id,
-                    'date_deadline': fields.datetime.now()+timedelta(hours=item.service_type_activity_id.lead_time),
-                    'summary': item.name,
-                    #TODO: Choose the right user to assign
-                    'user_id': (item.service_type_activity_id.employee_role_id.employee_id.id | item.user_id.id | item.lead_id.responsible_id.id | item.lead_id.user_id.id ),
-                    'service_activity_id': item.id,
-                })
-                item.mail_activity_id=new_activity_id
+        operation_list = []
+        for activity_item in self.service_activity_ids:
+            if activity_item.completed==True:
+                operation_list.append(activity_item.id)
+
+
+        for add_activity in self.product_area_id.service_type_activity_ids:
+            user_employee_role=self.env['user.employee.roles'].search([('employee_role_id','=',add_activity.employee_role_id.id)],limit=1)
+
+            temp_id=self.env['crm.service.activity'].create({
+                                        'name': add_activity.name,
+                                        'service_type_activity_id': add_activity.id,
+                                        'lead_id': self._origin.id,
+                                        'completed' : False,
+                                        'employee_role_id': add_activity.employee_role_id.id,
+                                        'user_id': user_employee_role.employee_id.id,
+                                        })
+            operation_list.append(temp_id.id)
+
+        self.service_activity_ids=[(6,0,operation_list)]
+
+        if (self.financial_product_id):
+            if (self.partner_id and self.financial_product_id):
+                self.financial_product_id.partner_id=self.partner_id
+
+            self.financial_product_id.crm_lead_id=self.id
+
+            if (self.user_id and self.financial_product_id):
+                self.financial_product_id.user_id=self.user_id
+        # TODO: Assign mail activities
+        self.next_activity(resource_id=self._origin.id)
+
+    @api.onchange('service_activity_ids')
+    def change_activity_ids(self):
+        self.next_activity(resource_id=self._origin.id)
+        return
+
+    @api.one
+    def next_activity(self,activity_id=None,resource_id=None):
+        #TODO: Set responsible person
+        if not resource_id:
+            resource_id=self.id
+
+        #TODO: If no other mail_activities attached create new mail_activity
+        if self.service_activity_ids.search_count([('mail_activity_id','!=',False)])==0:
+            for item in self.service_activity_ids.search([('date_completed','=',False)],order='sequence',limit=1):
+                #TODO: Open next activity
+                if item.service_type_activity_id.employee_role_id:
+                    user_id=item.service_type_activity_id.employee_role_id.employee_id.id
+                elif item.user_id:
+                    user_id=item.user_id.id
+                elif item.lead_id.responsible_id:
+                    user_id=item.lead_id.responsible_id.id
+                elif item.lead_id.user_id:
+                    user_id=item.lead_id.user_id.id
+                self.responsible_id=user_id
+                if not item.mail_activity_id:
+                    new_activity_id=item.mail_activity_id.create({
+                        'activity_type_id': item.service_type_activity_id.activity_type_id.id,
+                        'res_id': resource_id,
+                        'res_model_id': self.env.ref('crm.model_crm_lead').id,
+                        'date_deadline': fields.datetime.now()+timedelta(hours=item.service_type_activity_id.lead_time),
+                        'summary': item.name,
+                        #TODO: Choose the right user to assign
+                        'user_id': user_id,
+                        'service_activity_id': item.id,
+                    })
+                    item.mail_activity_id=new_activity_id
 
 class CrmTeamAttooh(models.Model):
     _inherit = "crm.team"
@@ -356,15 +391,7 @@ class CRMActivity(models.Model):
     mail_activity_id = fields.Many2one('mail.activity')
     date_completed = fields.Datetime('Completed on')
     stage_id = fields.Many2one('crm.stage',related='service_type_activity_id.stage_id')
-
-    def toggle_completed(self):
-        for item in self:
-            if item.mail_activity_id:
-                item.mail_activity_id.unlink()
-            else:
-                item.completed = True
-                item.date_completed = fields.datetime.now()
-                item.lead_id.next_activity(activity_id=self)
+    employee_role_id = fields.Many2one('employee.roles', related='service_type_activity_id.employee_role_id')
 
 class crm_service_type_activity(models.Model):
     _name = 'crm.service.type.activity'

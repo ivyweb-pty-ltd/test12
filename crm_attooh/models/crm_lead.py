@@ -236,14 +236,22 @@ class crm_lead(models.Model):
         financial_product_id.crm_lead_id=res.id
         return res
 
+    @api.depends('service_activity_ids','responsible_id','stage_id')
+    def _activities_changed(self):
+        self.activity_ids.lead_id=1
+        return
+
     @api.one
     def write(self, vals):
-        # TODO: Delete all tasks that is not completed yet.
-        # TODO: Uncompleted tasks
-        # TODO: Add all relevant tasks for ticket Type
         # TODO: Set partner_id correctly on write for financial_service_product
 
         operation_list = []
+
+        #Create relevant mail activities
+        if self.service_activity_ids.search_count([('lead_id','=',self.id),('mail_activity_id','!=',False)])==0:
+            v2=self.next_activity(resource_id=self.id)
+            if v2:
+                vals.update(v2)
 
         if self.financial_product_id:
             if ('partner_id' in vals):
@@ -273,11 +281,15 @@ class crm_lead(models.Model):
     def change_product_area(self):
 
         operation_list = []
+
+        #Delete all activities that was not completed. Also delete the mail activities attached to these
         for activity_item in self.service_activity_ids:
+            if activity_item.mail_activity_id:
+                activity_item.mail_activity_id.unlink()
             if activity_item.completed==True:
                 operation_list.append(activity_item.id)
 
-
+        #Add all activities related to the specific product area
         for add_activity in self.product_area_id.service_type_activity_ids:
             user_employee_role=self.env['user.employee.roles'].search([('employee_role_id','=',add_activity.employee_role_id.id)],limit=1)
 
@@ -288,6 +300,7 @@ class crm_lead(models.Model):
                                         'completed' : False,
                                         'employee_role_id': add_activity.employee_role_id.id,
                                         'user_id': user_employee_role.employee_id.id,
+                                        'sequence' : add_activity.sequence,
                                         })
             operation_list.append(temp_id.id)
 
@@ -301,45 +314,40 @@ class crm_lead(models.Model):
 
             if (self.user_id and self.financial_product_id):
                 self.financial_product_id.user_id=self.user_id
-        # TODO: Assign mail activities
-        self.next_activity(resource_id=self._origin.id)
-
-    @api.onchange('service_activity_ids')
-    def change_activity_ids(self):
-        self.next_activity(resource_id=self._origin.id)
-        return
-
-    @api.one
+    @api.model
     def next_activity(self,activity_id=None,resource_id=None):
-        #TODO: Set responsible person
+        vals={}
         if not resource_id:
             resource_id=self.id
 
         #TODO: If no other mail_activities attached create new mail_activity
-        if self.service_activity_ids.search_count([('mail_activity_id','!=',False)])==0:
-            for item in self.service_activity_ids.search([('date_completed','=',False)],order='sequence',limit=1):
-                #TODO: Open next activity
-                if item.service_type_activity_id.employee_role_id:
-                    user_id=item.service_type_activity_id.employee_role_id.employee_id.id
-                elif item.user_id:
-                    user_id=item.user_id.id
-                elif item.lead_id.responsible_id:
-                    user_id=item.lead_id.responsible_id.id
-                elif item.lead_id.user_id:
-                    user_id=item.lead_id.user_id.id
-                self.responsible_id=user_id
-                if not item.mail_activity_id:
-                    new_activity_id=item.mail_activity_id.create({
-                        'activity_type_id': item.service_type_activity_id.activity_type_id.id,
-                        'res_id': resource_id,
-                        'res_model_id': self.env.ref('crm.model_crm_lead').id,
-                        'date_deadline': fields.datetime.now()+timedelta(hours=item.service_type_activity_id.lead_time),
-                        'summary': item.name,
-                        #TODO: Choose the right user to assign
-                        'user_id': user_id,
-                        'service_activity_id': item.id,
-                    })
-                    item.mail_activity_id=new_activity_id
+        for item in self.service_activity_ids.search([('lead_id','=',resource_id),('completed','=',False)],order='sequence',limit=1):
+            #TODO: Open next activity
+            if item.service_type_activity_id.employee_role_id:
+                user_id=item.service_type_activity_id.employee_role_id.employee_id.id
+            elif item.user_id:
+                user_id=item.user_id.id
+            elif item.lead_id.responsible_id:
+                user_id=item.lead_id.responsible_id.id
+            elif item.lead_id.user_id:
+                user_id=item.lead_id.user_id.id
+            vals["responsible_id"]=user_id
+            if item.service_type_activity_id.stage_id:
+                vals['stage_id']=item.service_type_activity_id.stage_id.id
+            if not item.mail_activity_id:
+                new_activity_id=item.mail_activity_id.create({
+                    'activity_type_id': item.service_type_activity_id.activity_type_id.id,
+                    'res_id': resource_id,
+                    'res_model_id': self.env.ref('crm.model_crm_lead').id,
+                    'date_deadline': fields.datetime.now()+timedelta(hours=item.service_type_activity_id.lead_time),
+                    'summary': item.name,
+                    #TODO: Choose the right user to assign
+                    'user_id': user_id,
+                    'service_activity_id': item.id,
+                })
+                item.mail_activity_id=new_activity_id
+            return vals
+
 
 class CrmTeamAttooh(models.Model):
     _inherit = "crm.team"
@@ -398,6 +406,7 @@ class crm_service_type_activity(models.Model):
     _description = 'Service Type Activity'
 
     stage_id = fields.Many2one('crm.stage', string='Stage', track_visibility='onchange', index=True)
+    sequence = fields.Integer('Sequence')
     reference = fields.Char(string='Reference', required=True)
     name = fields.Char(string='Process', required=True)
     employee_role_id = fields.Many2one('employee.roles','Responsible')

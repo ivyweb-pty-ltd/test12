@@ -1,0 +1,20 @@
+<data>
+    <record id="dire_comp" model="partner.relationship_type"/>
+    <record id="comp_dire" model="partner.relationship_type"/>
+    <record id="comp_shar" model="partner.relationship_type"/>
+    <record id="shar_comp" model="partner.relationship_type"/>
+    <record id="comp_keyp" model="partner.relationship_type"/>
+    <record id="keyp_comp" model="partner.relationship_type"/>
+    <record id="comp_owne" model="partner.relationship_type"/>
+    <record id="owne_comp" model="partner.relationship_type"/>
+    <record id="trus_memb" model="partner.relationship_type"/>
+    <record id="memb_trus" model="partner.relationship_type"/>
+    <record id="trus_trut" model="partner.relationship_type"/>
+    <record id="trut_trus" model="partner.relationship_type"/>
+    <record id="indi_spou" model="partner.relationship_type"/>
+    <record id="indi_life" model="partner.relationship_type"/>
+    <record id="depe_indi" model="partner.relationship_type"/>
+    <record id="indi_depe" model="partner.relationship_type"/>
+    <record id="comp_empl" model="partner.relationship_type"/>
+    <record id="empl_comp" model="partner.relationship_type"/>
+</data>

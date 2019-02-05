@@ -5,21 +5,26 @@ from datetime import datetime
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError,ValidationError
 
-class EntitySatus(models.Model):
+class entity_status(models.Model):
     _name = 'entity.status'
 
     name = fields.Char('Name')
 
-class CRM(models.Model):
+class res_partner(models.Model):
     _inherit = 'res.partner'
+
+    @api.model
+    def _default_entity_status(self):
+        return self.env.ref('crm_attooh.entity_1')
 
     @api.onchange('company_type')
     def onchange_company_type(self):
-        super(CRM, self).onchange_company_type()
+        super(res_partner, self).onchange_company_type()
         self.id_type = False
         if self.company_type == 'person':
             self.id_type = 'rsa_id'
 
+    is_trust = fields.Boolean('Is Trust',help='This partner is a trust')
     # fields added for Individual
     first_name = fields.Char('First Name')
     preferred_name = fields.Char('Preferred Name')
@@ -29,6 +34,7 @@ class CRM(models.Model):
     initials = fields.Char('Initials')
     second_name = fields.Char('Second Name')
     home_phone = fields.Char('Home Phone')
+    email_2 = fields.Char('Email 2')
     date_of_birth = fields.Date('Date of Birth')
     gender = fields.Selection([('male', 'Male'), ('female', 'Female')], string="Gender")
     marrige_date = fields.Date('Marriage Date')
@@ -210,7 +216,7 @@ class CRM(models.Model):
     client_adviser_id = fields.Many2one('res.users', 'Client Adviser', domain=[('share', '=', False)])
     admin_id = fields.Many2one('res.users', 'Administrator', domain=[('share', '=', False)])
     portfolio_analyst_id = fields.Many2one('res.users', 'Portfolio Analyst', domain=[('share', '=', False)])
-    entity_status = fields.Many2many('entity.status', 'res_partner_entity_rel', 'partner_id', 'entity_id', string='Entity Status')
+    entity_status = fields.Many2many('entity.status', 'res_partner_entity_rel', 'partner_id', 'entity_id', string='Entity Status', default=_default_entity_status)
     category = fields.Selection([
         ('diamond_first', 'Diamond / First'),
         ('platinum_business', 'Platinum / Business'),
@@ -220,65 +226,14 @@ class CRM(models.Model):
         ('supplier', 'Supplier'),
         ('unknown', 'Unknown'),
     ], string="Category")
-    services = fields.Many2many('crm_attooh.service_type', 'res_partner_service_rel', 'partner_id', 'service_id', string='Services')
+    service_ids = fields.Many2many('crm.service.type', 'res_partner_service_rel', 'partner_id', 'service_id', string='Provided Services')
     privacy = fields.Selection([('yes', 'Yes'), ('no', 'No')], string="Privacy")
 
     # change string of existing field
     vat = fields.Char(string='VAT Number')
 
-    relationship = fields.Selection([
-            ('Additional_Partner', 'Additional Partner'),
-            ('Adult_Dependant', 'Adult Dependant'),
-            ('Aunt', 'Aunt'),
-            ('Child', 'Child'),
-            ('Cousin', 'Cousin'),
-            ('Dependent Parent', 'Dependent Parent'),
-            ('Dependent Parent-in-law', 'Dependent Parent-in-law'),
-            ('Ex-Partner', 'Ex-Partner'),
-            ('Fiance', 'Fiance'),
-            ('Fiancee', 'Fiancee'),
-            ('Foster_Child', 'Foster Child'),
-            ('Foster_Parent', 'Foster Parent'),
-            ('Foster_Sibling', 'Foster Sibling'),
-            ('Friend', 'Friend'),
-            ('God_Parent', 'God Parent'),
-            ('Godchild', 'Godchild'),
-            ('Grand_Aunt', 'Grand Aunt'),
-            ('Grand_Nephew', 'Grand Nephew'),
-            ('Grand_Niece', 'Grand Niece'),
-            ('Grand_Parent', 'Grand Parent'),
-            ('Grand_Parent-in-Law', 'Grand Parent-in-Law'),
-            ('Grand_Uncle', 'Grand Uncle'),
-            ('Grandchild', 'Grandchild'),
-            ('Great_Grand_Aunt', 'Great Grand Aunt'),
-            ('Great_Grand_Nephew', 'Great Grand Nephew'),
-            ('Great_Grand_Niece', 'Great Grand Niece'),
-            ('Great_Grand_Parent', 'Great Grand Parent'),
-            ('Great_Grand_Uncle', 'Great Grand Uncle'),
-            ('Great_Grandchild', 'Great Grandchild'),
-            ('Half-Sibling', 'Half-Sibling'),
-            ('Nephew', 'Nephew'),
-            ('Niece', 'Niece'),
-            ('Other', 'Other'),
-            ('Parent', 'Parent'),
-            ('Parent-In-Law', 'Parent-In-Law'),
-            ('Partner', 'Partner'),
-            ('Servant', 'Servant'),
-            ('Sibling', 'Sibling'),
-            ('Sibling-in-Law', 'Sibling-in-Law'),
-            ('Spouse', 'Spouse'),
-            ('Step_Sibling', 'Step Sibling'),
-            ('Stepchild', 'Stepchild'),
-            ('Step-Grand-Parent', 'Step-Grand Parent'),
-            ('Step-Grandchild', 'Step-Grandchild'),
-            ('Step-Parent', 'Step-Parent'),
-            ('Uncle', 'Uncle'),
-            ('Ward', 'Ward'),
-        ], string="Relationship")
-
     is_beneficiary = fields.Boolean('Is a Beneficiary')
-    dependent_id = fields.Many2one('res.partner')
-    dependent_ids = fields.One2many('res.partner', 'dependent_id', string="Relationship")
+    relationship_ids = fields.One2many('partner.relationship','partner_id', string="Relationship")
     income_ids = fields.One2many('partner.income', 'partner_id', string="Incomes")
     expense_ids = fields.One2many('partner.expense', 'partner_id', string="Expenses")
     deduction_ids = fields.One2many('partner.deduction', 'partner_id', string="Deductions")
@@ -292,10 +247,18 @@ class CRM(models.Model):
     attachment_count = fields.Integer(compute="_compute_attachment_count", string="Attachments")
 
     spouse_id = fields.Many2one('res.partner', 'Spouse')
+    otp = fields.Char(string="OTP")
+    dependent = fields.Boolean(compute="_compute_dependent")
+    financial_product_ids = fields.One2many('financial_product','partner_id')
+    financial_product_count = fields.Integer(compute="_compute_financial_product_count")
+
+    def _compute_dependent(self):
+        for partner in self:
+            partner.dependent = True if partner.dependent_ids else False
 
     @api.model
     def create(self, vals):
-        res = super(CRM, self).create(vals)
+        res = super(res_partner, self).create(vals)
         if vals.get('spouse_id'):
             spouse = self.browse(vals.get('spouse_id'))
             spouse.spouse_id = res.id
@@ -307,12 +270,16 @@ class CRM(models.Model):
             spouse = self.browse(vals.get('spouse_id'))
             for record in self:
                 spouse.with_context(no_write=True).write({'spouse_id': record.id})
-        return super(CRM, self).write(vals)
+        return super(res_partner, self).write(vals)
 
     def _compute_attachment_count(self):
         Attachment = self.env['ir.attachment']
         for partner in self:
             partner.attachment_count = Attachment.search_count([('res_model', '=', 'res.partner'), ('res_id', '=', partner.id)])
+
+    def _compute_financial_product_count(self):
+        for partner in self:
+            partner.financial_product_count = partner.financial_product_ids.search_count([('partner_id','=',partner.id)])
 
     @api.multi
     def view_attachments(self):
@@ -601,3 +568,98 @@ class PartnerAsset(models.Model):
     date_of_purchase = fields.Date("Date of Purchase")
     owner = fields.Char(string="Owner/s")
     partner_id = fields.Many2one('res.partner', string='Partner')
+
+class partner_relationship(models.Model):
+    _name = "partner.relationship"
+
+    partner_id = fields.Many2one("res.partner")
+    related_id = fields.Many2one("res.partner")
+    relationship_type_id = fields.Many2one('partner.relationship_type')
+    opposite_relationship_id = fields.Many2one('partner.relationship')
+
+
+#    def write(self,vals):
+#        if "related_id" in vals:
+#            rvals={}
+#            rvals["partner_id"]=vals['related_id']
+#            if 'partner_id' in vals:
+#                rvals["related_id"]=vals['partner_id']
+#            if 'relationship_type_id' in vals:
+#
+#                rvals["relationship_type_id"]=self.env['partner.relations_type'].browse(vals['relationship_type_id'].opposite_id)
+#            vals['opposite_relationship_id']=self.id
+#            if not item.opposite_relationship_id:
+#                item.opposite_relationship_id=self.env('partner.relationship').create(vals)
+#            else:
+#                item.opposite_relatioship_id.write(vals)
+#        return super(partner_relationship, self).write(vals)
+
+
+
+class partner_relationship_type(models.Model):
+    _name = "partner.relationship_type"
+    _rec_name = 'relationship'
+
+    is_trust =fields.Boolean('Trust')
+    is_company = fields.Boolean('Company')
+
+    relationship = fields.Char('Relationship')
+    opposite_id = fields.Many2one('partner.relationship_type','Opposite Relationship')
+
+    @api.onchange('is_trust','is_company')
+    def check_trust_company(self):
+        for item in self:
+            if item.is_company==True:
+                item.is_trust=False
+            else:
+                item.is_trust=True
+                item.is_company=False
+
+# fields.Selection([
+#             ('Additional_Partner', 'Additional Partner'),
+#             ('Adult_Dependant', 'Adult Dependant'),
+#             ('Aunt', 'Aunt'),
+#             ('Child', 'Child'),
+#             ('Cousin', 'Cousin'),
+#             ('Dependent Parent', 'Dependent Parent'),
+#             ('Dependent Parent-in-law', 'Dependent Parent-in-law'),
+#             ('Ex-Partner', 'Ex-Partner'),
+#             ('Fiance', 'Fiance'),
+#             ('Fiancee', 'Fiancee'),
+#             ('Foster_Child', 'Foster Child'),
+#             ('Foster_Parent', 'Foster Parent'),
+#             ('Foster_Sibling', 'Foster Sibling'),
+#             ('Friend', 'Friend'),
+#             ('God_Parent', 'God Parent'),
+#             ('Godchild', 'Godchild'),
+#             ('Grand_Aunt', 'Grand Aunt'),
+#             ('Grand_Nephew', 'Grand Nephew'),
+#             ('Grand_Niece', 'Grand Niece'),
+#             ('Grand_Parent', 'Grand Parent'),
+#             ('Grand_Parent-in-Law', 'Grand Parent-in-Law'),
+#             ('Grand_Uncle', 'Grand Uncle'),
+#             ('Grandchild', 'Grandchild'),
+#             ('Great_Grand_Aunt', 'Great Grand Aunt'),
+#             ('Great_Grand_Nephew', 'Great Grand Nephew'),
+#             ('Great_Grand_Niece', 'Great Grand Niece'),
+#             ('Great_Grand_Parent', 'Great Grand Parent'),
+#             ('Great_Grand_Uncle', 'Great Grand Uncle'),
+#             ('Great_Grandchild', 'Great Grandchild'),
+#             ('Half-Sibling', 'Half-Sibling'),
+#             ('Nephew', 'Nephew'),
+#             ('Niece', 'Niece'),
+#             ('Other', 'Other'),
+#             ('Parent', 'Parent'),
+#             ('Parent-In-Law', 'Parent-In-Law'),
+#             ('Partner', 'Partner'),
+#             ('Servant', 'Servant'),
+#             ('Sibling', 'Sibling'),
+#             ('Sibling-in-Law', 'Sibling-in-Law'),
+#             ('Spouse', 'Spouse'),
+#             ('Step_Sibling', 'Step Sibling'),
+#             ('Stepchild', 'Stepchild'),
+#             ('Step-Grand-Parent', 'Step-Grand Parent'),
+#             ('Step-Grandchild', 'Step-Grandchild'),
+#             ('Step-Parent', 'Step-Parent'),
+#             ('Uncle', 'Uncle'),
+#             ('Ward', 'Ward'),

@@ -1,0 +1,19 @@
+id,is_trust,is_company,relationship,opposite_id:id
+comp_dire,0,1,Director,dire_comp
+dire_comp,0,0,Director of,comp_dire
+comp_shar,0,1,Shareholder,shar_comp
+shar_comp,0,0,Shareholder of,comp_shar
+comp_keyp,0,1,Key Person,keyp_comp
+keyp_comp,0,0,Key Person of,comp_keyp
+comp_owne,0,1,Owner,owne_comp
+owne_comp,0,0,Owner of,comp_owne
+trus_memb,1,0,Member,memb_trus
+memb_trus,0,0,Member of,trus_memb
+trus_trut,1,0,Trustee,trut_trus
+trut_trus,0,0,Trustee of,trut_trus
+indi_spou,0,0,Spouse,indi_spou
+indi_life,0,0,Life Partner,indi_life
+indi_depe,0,0,Dependant,depe_indi
+depe_indi,0,0,Principle,indi_depe
+comp_empl,0,1,Employer of,empl_comp
+empl_comp,0,0,Employee of,comp_empl

@@ -301,6 +301,14 @@ odoo.define('website_attooh_form.animation', function (require) {
         $('.button_preview').on('click',function (){
             $(this).parents('tr').find('#my_model').modal('show');
         });
+        $('.spouse_checkbox').on('click', function (event) {
+            if (this.checked){
+                window.location = '/my/personalfinancial?edit_mode=personal_detail&edit_spouse=true';
+            } else {
+                window.location = '/my/personalfinancial?edit_mode=personal_detail';
+            }
+        });
+
         // TOFIX: on delete newly added line on finance personal portal
         // 'dropContainer' is undefined traceback
 

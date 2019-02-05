@@ -29,7 +29,7 @@ class UserEmployeeRoles(models.Model):
     _name = 'user.employee.roles'
 
     employee_role_id = fields.Many2one('employee.roles', string="Role")
-    employee_id = fields.Many2one('res.users', string="Employee")
+    employee_id = fields.Many2one('res.users', string="Employee",related='user_id')
     financial_advisor_id = fields.Many2one('res.users', string="Financial Advisor")
     user_id = fields.Many2one('res.users', string="User")
 

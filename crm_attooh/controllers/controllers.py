@@ -1,20 +1,9 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 
-# class CrmAttooh(http.Controller):
-#     @http.route('/crm_attooh/crm_attooh/', auth='public')
-#     def index(self, **kw):
-#         return "Hello, world"
 
-#     @http.route('/crm_attooh/crm_attooh/objects/', auth='public')
-#     def list(self, **kw):
-#         return http.request.render('crm_attooh.listing', {
-#             'root': '/crm_attooh/crm_attooh',
-#             'objects': http.request.env['crm_attooh.crm_attooh'].search([]),
-#         })
-
-#     @http.route('/crm_attooh/crm_attooh/objects/<model("crm_attooh.crm_attooh"):obj>/', auth='public')
-#     def object(self, obj, **kw):
-#         return http.request.render('crm_attooh.object', {
-#             'object': obj
-#         })
+class WebsiteSign(http.Controller):
+    @http.route(['/send_sms/<int:id>/<token>'], type='json', auth='public')
+    def sign(self, id, token):
+        request_item = http.request.env['signature.request.item'].sudo().search([('signature_request_id', '=', id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
+        return request_item.send_sms()

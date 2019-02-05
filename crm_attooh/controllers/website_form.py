@@ -3,6 +3,8 @@
 
 import base64
 import json
+import random
+
 import pytz
 
 from datetime import datetime
@@ -14,6 +16,7 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMA
 from odoo.tools.translate import _
 from odoo.exceptions import ValidationError
 from odoo.addons.base.ir.ir_qweb.fields import nl2br
+
 
 class WebsiteAttoohForm(http.Controller):
     # Dict of dynamically called filters following type of field to be fault tolerent
@@ -75,7 +78,7 @@ class WebsiteAttoohForm(http.Controller):
             # I couldn't find a cleaner way to pass data to an exception
             return json.dumps({'error_fields': e.args[0]})
         model_record.write(data['record'])
-        
+
         return json.dumps({'id': model_record.id})
 
     @http.route('/website_form/personal_detail', type='http', auth="user", methods=['POST'], website=True)
@@ -214,7 +217,7 @@ class WebsiteAttoohForm(http.Controller):
                 final_data.append([0, 0, data])
         for id in res['to_delete']:
             final_data.append([2, id])
-            
+
         model_record.write({'expense_ids': final_data})
         return json.dumps({'id': model_record.id})
 
@@ -268,7 +271,7 @@ class WebsiteAttoohForm(http.Controller):
         if any(error_fields):
             raise ValidationError(error_fields + missing_required_fields)
         return data
-    
+
     @http.route(['/get_helpdesk_attachment_id'], type='json', auth="public",website=True)
     def get_helpdesk_attachment_id(self, id=0, **kw):
         if id:
@@ -283,9 +286,41 @@ class WebsiteAttoohForm(http.Controller):
                     value['file_type'] = 'img'
                     img_src = "/web/image/%s?unique=1"%(attachment.id)
                     value['src'] = img_src
-                
+
             else:
                 value['file_type'] = 'other'
                 src = "/web/content/%s?download=true"%(attachment.id)
-                value['src'] = src      
+                value['src'] = src
             return value
+
+    @http.route(['/generate_otp/<int:id>/<token>'], type='json', auth='public')
+    def generate_otp(self, id, token, signature=None):
+        request_item = http.request.env['signature.request.item'].sudo().search(
+            [('signature_request_id', '=', id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
+        if request_item.partner_id.mobile:
+            otp = random.randint(111111, 999999)
+            request_item.partner_id.sudo().write({
+                'otp': otp
+            })
+            sms_compose = request.env['sms.compose'].sudo().create({
+                'from_mobile_id': request.env.ref('sms_frame.sms_number_default').id,
+                'to_number': request_item.sudo().partner_id.mobile,
+                'sms_content': "Your attooh! Online Document Signature One Time PIN is %s" % otp,
+                'model': 'res.partner',
+                'record_id': request_item.sudo().partner_id.id
+            })
+            if sms_compose:
+                sms_compose.sudo().send_entity()
+            print("\n\n\n otp======", otp)
+            return True
+        else:
+            return False
+
+    @http.route(['/check_otp/<int:id>/<token>/<otp>'], type='json', auth='public')
+    def check_otp(self, id, token, otp, signature=None):
+        request_item = http.request.env['signature.request.item'].sudo().search(
+            [('signature_request_id', '=', id)], limit=1)
+        if request_item.partner_id.otp == otp:
+            return True
+        else:
+            return False

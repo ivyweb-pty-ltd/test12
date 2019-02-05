@@ -1,13 +1,43 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models,_
 from datetime import datetime, timedelta
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 class HelpdeskTicket(models.Model):
     _name = 'helpdesk.ticket'
     _inherit = 'helpdesk.ticket'
 
     activites_created = fields.Boolean(string="Activites Created")
+    mobile = fields.Char("Mobile")
+    sms_on_ticket = fields.Boolean(compute="_compute_sms_on_ticket")
+
+    @api.onchange('partner_id')
+    def _onchange_partner_id(self):
+        super(HelpdeskTicket, self)._onchange_partner_id()
+        if self.partner_id:
+            self.mobile = self.partner_id.mobile
+
+    def _compute_sms_on_ticket(self):
+        ICPSudo = self.env['ir.config_parameter'].sudo()
+        sms_on_ticket = ICPSudo.get_param('crm_attooh.sms_on_ticket')
+        for lead in self:
+            lead.sms_on_ticket = sms_on_ticket
+
+    @api.multi
+    def sms_action(self):
+        self.ensure_one()
+        if not self.mobile:
+            raise UserError(_("Please enter mobile number."))
+        default_mobile = self.env.ref('sms_frame.sms_number_default')
+        return {
+            'name': 'SMS Compose',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'sms.compose',
+            'target': 'new',
+            'type': 'ir.actions.act_window',
+            'context': {'default_from_mobile_id': default_mobile.id, 'default_to_number': self.mobile, 'default_record_id': self.id, 'default_model': 'helpdesk.ticket'}
+        }
 
     #TODO: Activities should have deadlines
     #TODO: Turn acrtivity green when all items are done
@@ -32,10 +62,6 @@ class HelpdeskTicket(models.Model):
         #TODO: Delete all tasks that is not completed yet.
         #TODO: Uncompleted tasks
         #TODO: Add all relevant tasks for ticket Type
-
-        print("So there was a change to the ticket type")
-        print("Ticket type",self.ticket_type_id.name)
-        print(self.ticket_activity_ids.search([('completed','=',False)]))
 
         operation_list=[]
         for remove_activity in self.ticket_activity_ids.search([('completed','=',False)]):

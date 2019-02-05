@@ -2,7 +2,7 @@
 <odoo>
     <record id="lead_production_book_pivot_view_leads" model="ir.ui.view">
         <field name="name">crm.lead.pivot.lead</field>
-        <field name="model">crm.lead</field>
+        <field name="model">financial_product</field>
         <field name="arch" type="xml">
             <pivot string="Opportunities" display_quantity="true">
                 <field name="submission_date" type="row" interval="day"/>
@@ -14,15 +14,9 @@
                 <field name="commission_year_1" type="measure"/>
                 <field name="commission_year_2" type="measure"/>
                 <field name="monthly_commission" type="measure"/>
-                <field name="date_of_issue" type="measure"/>
-                <field name="vitality" type="measure"/>
-                <field name="doc" type="measure"/>
-                <field name="complience_mail" type="measure"/>
-                <field name="fica" type="measure"/>
                 <field name="issued_commission_year_1" type="measure"/>
                 <field name="issued_commission_year_2" type="measure"/>
                 <field name="issued_monthly_commission" type="measure"/>
-                <field name="book_notes" type="measure"/>
             </pivot>
         </field>
     </record>

@@ -149,8 +149,6 @@
                     <field name="activity_type_id"/>
                     <field name="service_type_id"/>
                     <field name="document_ids" widget="many2many_tags"/>
-                    <field name="active"/>
-                    <button name="toggle_completed" type="object" string="Complete" class="oe_highlight"/>
                 </tree>
             </field>
         </record>

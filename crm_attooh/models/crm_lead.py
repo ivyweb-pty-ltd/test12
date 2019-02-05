@@ -314,6 +314,7 @@ class crm_lead(models.Model):
 
             if (self.user_id and self.financial_product_id):
                 self.financial_product_id.user_id=self.user_id
+
     @api.model
     def next_activity(self,activity_id=None,resource_id=None):
         vals={}
@@ -393,7 +394,7 @@ class CRMActivity(models.Model):
     lead_id = fields.Many2one('crm.lead')
     sequence = fields.Integer('Sequence')
     completed = fields.Boolean('Completed')
-    service_type_activity_id = fields.Many2one('crm.service.type.activity',required=True)
+    service_type_activity_id = fields.Many2one('crm.service.type.activity',required=False)
     user_id = fields.Many2one('res.users',string='Assigned to User')
 #                              domain=(['user_employee_roles_ids','in',service_type_activity_id.employee_role_id]))
     mail_activity_id = fields.Many2one('mail.activity')

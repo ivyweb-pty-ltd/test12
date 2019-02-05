@@ -39,4 +39,9 @@
         <field name="name">Paraplanner</field>
         <field name="employee_id" ref="base.user_root"></field>
     </record>
+
+    <record id="hr_employee_role_9" model="employee.roles">
+        <field name="name">Trust Specialist</field>
+        <field name="employee_id" ref="base.user_root"/>
+    </record>
 </odoo>

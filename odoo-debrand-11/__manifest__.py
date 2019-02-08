@@ -39,7 +39,7 @@
         'website',
         #'im_livechat',
         'mail',
-        'website_sign'
+        'sign'
     ],
     'data': [
         'views/views.xml',

@@ -3,7 +3,7 @@ odoo.define('website_crm_sign.utils', function (require) {
     var ajax = require("web.ajax");
     var core = require('web.core');
     var Dialog = require('web.Dialog');
-    var website_sign_utils = require('website_sign.utils');
+    // var sign_utils = require('sign.utils');
     var framework = require('web.framework');
     var session = require('web.session');
     
@@ -11,7 +11,7 @@ odoo.define('website_crm_sign.utils', function (require) {
     var _t = core._t;
 
 
-    // var signTemplate = require("website_sign.template");
+    // var signTemplate = require("sign.template");
     function setAsOpportunitySelect($select) {
         var select2Options = {
             allowClear: true,
@@ -85,10 +85,10 @@ odoo.define('website_crm_sign.utils', function (require) {
             setAsOpportunitySelect: setAsOpportunitySelect,
         };
     }
-    var Template = core.action_registry.get('website_sign.Template');
+    var Template = core.action_registry.get('sign.Template');
 
     var CreateSignatureRequestDialog = Dialog.extend({
-            template: 'website_sign.create_signature_request_dialog',
+            template: 'sign.create_signature_request_dialog',
 
             init: function(parent, templateID, rolesToChoose, templateName, attachment, options) {
                 options = options || {};
@@ -149,7 +149,7 @@ odoo.define('website_crm_sign.utils', function (require) {
                 this.$('.o_sign_warning_message_no_field').first().toggle($.isEmptyObject(this.rolesToChoose));
                 this.$('.o_sign_request_signers .o_sign_new_signer').remove();
 
-                website_sign_utils.setAsPartnerSelect(this.$('.o_sign_request_signers .form-group input[type="hidden"]')); // Followers
+                sign_utils.setAsPartnerSelect(this.$('.o_sign_request_signers .form-group input[type="hidden"]')); // Followers
 
                 if($.isEmptyObject(this.rolesToChoose)) {
                     this.addSigner(0, _t("Signers"), true);
@@ -185,7 +185,7 @@ odoo.define('website_crm_sign.utils', function (require) {
 
                 $newSigner.append($signerInfoDiv);
 
-                website_sign_utils.setAsPartnerSelect($signerInfo);
+                sign_utils.setAsPartnerSelect($signerInfo);
 
                 this.$('.o_sign_request_signers').first().prepend($newSigner);
             },
@@ -214,7 +214,7 @@ odoo.define('website_crm_sign.utils', function (require) {
                 var signers = [];
                 self.$('.o_sign_new_signer').each(function(i, el) {
                     var $elem = $(el);
-                    var selectDef = website_sign_utils.processPartnersSelection($elem.find('input[type="hidden"]')).then(function(partners) {
+                    var selectDef = sign_utils.processPartnersSelection($elem.find('input[type="hidden"]')).then(function(partners) {
                         for(var p = 0 ; p < partners.length ; p++) {
                             signers.push({
                                 'partner_id': partners[p],
@@ -228,7 +228,7 @@ odoo.define('website_crm_sign.utils', function (require) {
                 });
 
                 var followers = [];
-                var followerDef = website_sign_utils.processPartnersSelection(self.$('#o_sign_followers_select')).then(function(partners) {
+                var followerDef = sign_utils.processPartnersSelection(self.$('#o_sign_followers_select')).then(function(partners) {
                     followers = partners;
                 });
                 if(followerDef !== false) {
@@ -240,7 +240,7 @@ odoo.define('website_crm_sign.utils', function (require) {
                 var message = self.$messageInput.val();
                 
                 var opportunity_id = false;
-                var opportunity_def  = website_sign_utils.processPartnersSelection(self.$('#o_sign_crm_lead_select')).then(function(opportunity) {
+                var opportunity_def  = sign_utils.processPartnersSelection(self.$('#o_sign_crm_lead_select')).then(function(opportunity) {
                     opportunity_id = opportunity.length ? opportunity[0] : false
                 });
                 if(opportunity_def !== false) {
@@ -256,7 +256,7 @@ odoo.define('website_crm_sign.utils', function (require) {
                             self.do_notify(_t("Success"), _("Your signature request has been sent."));
                             self.do_action({
                                 type: "ir.actions.client",
-                                tag: 'website_sign.Document',
+                                tag: 'sign.Document',
                                 name: _t("New Document"),
                                 context: {
                                     id: sr.id,
@@ -273,7 +273,7 @@ odoo.define('website_crm_sign.utils', function (require) {
             },
         });
     var ShareTemplateDialog = Dialog.extend({
-        template: 'website_sign.share_template_dialog',
+        template: 'sign.share_template_dialog',
 
         events: {
             'focus input': function(e) {

@@ -273,7 +273,7 @@ class crm_lead(models.Model):
     @api.multi
     def open_lead_signature(self):
         self.ensure_one()
-        action = self.env['ir.actions.act_window'].for_xml_id('website_sign', 'signature_request_action')
+        action = self.env['ir.actions.act_window'].for_xml_id('sign', 'signature_request_action')
         action['domain'] = [('id', 'in', self.signature_ids.ids)]
         return action
 

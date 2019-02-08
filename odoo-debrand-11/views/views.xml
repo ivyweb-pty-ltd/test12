@@ -173,8 +173,8 @@
         </xpath>
     </template>
     
-    <!-- Enterprise Debranding website_sign  -->
-    <template id="website_sign_header_extend" inherit_id="website_sign.doc_sign">
+    <!-- Enterprise Debranding sign  -->
+    <template id="sign_header_extend" inherit_id="sign.doc_sign">
         <xpath expr="//div[hasclass('o_sign_document')]" position="replace">
             <header>
                 <div class="container text-center">
@@ -186,11 +186,11 @@
                     </div>
                 </div>
             </header>
-            <t t-call="website_sign._doc_sign"/>
+            <t t-call="sign._doc_sign"/>
         </xpath>
     </template>
     
-    <record id="website_sign.website_sign_mail_template" model="mail.template">
+    <record id="sign.sign_mail_template" model="mail.template">
         <field name="body_html"><![CDATA[
             <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 

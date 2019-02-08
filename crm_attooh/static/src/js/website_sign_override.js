@@ -1,4 +1,4 @@
-odoo.define('website_sign.PDFIframe_NEW', function (require) {
+odoo.define('sign.PDFIframe_NEW', function (require) {
     'use strict';
     var core = require('web.core');
     var Dialog = require('web.Dialog');
@@ -80,7 +80,7 @@ odoo.define('website_sign.PDFIframe_NEW', function (require) {
 
             var $cssLink = $("<link/>", {
                 rel: "stylesheet", type: "text/css",
-                href: "/website_sign/static/src/css/iframe.css"
+                href: "/sign/static/src/css/iframe.css"
             });
             var $faLink = $("<link/>", {
                 rel: "stylesheet", type: "text/css",
@@ -187,7 +187,7 @@ odoo.define('website_sign.PDFIframe_NEW', function (require) {
             var self = this;
             var readonly = this.readonlyFields || (responsible > 0 && responsible !== this.role) || !!value;
 
-            var $signatureItem = $(core.qweb.render('website_sign.signature_item', {
+            var $signatureItem = $(core.qweb.render('sign.signature_item', {
                 editMode: this.editMode,
                 readonly: readonly,
                 type: type['type'],
@@ -244,19 +244,19 @@ odoo.define('website_sign.PDFIframe_NEW', function (require) {
 
     return PDFIframe;
 });
-odoo.define('website_sign.Document_NEW', function (require) {
+odoo.define('sign.Document_NEW', function (require) {
     'use strict';
 
     var ajax = require('web.ajax');
     var core = require('web.core');
     var Dialog = require('web.Dialog');
-    var PDFIframe = require('website_sign.PDFIframe');
+    var PDFIframe = require('sign.PDFIframe');
     var Widget = require('web.Widget');
 
     var _t = core._t;
 
     var ChatterDialog = Dialog.extend({
-        template: "website_sign.chatter",
+        template: "sign.chatter",
 
         init: function(parent, requestID, token, sendAccess, accessToken, options) {
             options = (options || {});
@@ -341,21 +341,21 @@ odoo.define('website_sign.Document_NEW', function (require) {
 
     return Document;
 });
-odoo.define('website_sign.document_signing_NEW', function (require) {
+odoo.define('sign.document_signing_NEW', function (require) {
     'use strict';
 
     var ajax = require('web.ajax');
     var core = require('web.core');
     var Dialog = require('web.Dialog');
     var Widget = require('web.Widget');
-    var Document = require('website_sign.Document');
-    var PDFIframe = require('website_sign.PDFIframe');
+    var Document = require('sign.Document');
+    var PDFIframe = require('sign.PDFIframe');
     var session = require('web.session');
 
     var _t = core._t;
 
     var SignatureDialog = Dialog.extend({
-        template: 'website_sign.signature_dialog',
+        template: 'sign.signature_dialog',
 
         events: {
             'click a.o_sign_mode': function(e) {
@@ -497,7 +497,7 @@ odoo.define('website_sign.document_signing_NEW', function (require) {
         getSVGText: function(font, text) {
             var canvas = this.$signatureField.find('canvas')[0];
 
-            var $svg = $(core.qweb.render('website_sign.svg_text', {
+            var $svg = $(core.qweb.render('sign.svg_text', {
                 width: canvas.width,
                 height: canvas.height,
                 font: font,
@@ -659,7 +659,7 @@ odoo.define('website_sign.document_signing_NEW', function (require) {
     });
 
     var PublicSignerDialog = Dialog.extend({
-        template: "website_sign.public_signer_dialog",
+        template: "sign.public_signer_dialog",
 
         init: function(parent, requestID, requestToken, options) {
             var self = this;
@@ -710,7 +710,7 @@ odoo.define('website_sign.document_signing_NEW', function (require) {
     });
 
     var ThankYouDialog = Dialog.extend({
-        template: "website_sign.no_pub_thank_you_dialog",
+        template: "sign.no_pub_thank_you_dialog",
 
         init: function(parent, options) {
             options = (options || {});
@@ -1104,9 +1104,9 @@ odoo.define('website_sign.document_signing_NEW', function (require) {
 
     function initDocumentToSign() {
         return session.session_bind(session.origin).then(function () {
-            // Manually add 'website_sign' to module list and load the
+            // Manually add 'sign' to module list and load the
             // translations.
-            session.module_list.push('website_sign');
+            session.module_list.push('sign');
             return ajax.loadXML("/crm_attooh/static/src/xml/crm_sign.xml", core.qweb).then(function (){
                 return session.load_translations().then(function () {
                     var documentPage = new SignableDocument(null);
@@ -1132,11 +1132,11 @@ odoo.define('website_sign.document_signing_NEW', function (require) {
     };
 });
 
-odoo.define('website_sign.Override', function (require) {
-    require('website_sign.PDFIframe');
-    require('website_sign.Document');
-    require('website_sign.document_signing');
-    odoo.__DEBUG__.services['website_sign.PDFIframe'] = odoo.__DEBUG__.services['website_sign.PDFIframe_NEW']
-    odoo.__DEBUG__.services['website_sign.document_signing'] = odoo.__DEBUG__.services['website_sign.document_signing_NEW']
-    odoo.__DEBUG__.services['website_sign.Document'] = odoo.__DEBUG__.services['website_sign.Document_NEW']
+odoo.define('sign.Override', function (require) {
+    require('sign.PDFIframe');
+    require('sign.Document');
+    require('sign.document_signing');
+    odoo.__DEBUG__.services['sign.PDFIframe'] = odoo.__DEBUG__.services['sign.PDFIframe_NEW']
+    odoo.__DEBUG__.services['sign.document_signing'] = odoo.__DEBUG__.services['sign.document_signing_NEW']
+    odoo.__DEBUG__.services['sign.Document'] = odoo.__DEBUG__.services['sign.Document_NEW']
 });

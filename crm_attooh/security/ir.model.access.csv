@@ -14,3 +14,5 @@ access_mail_message,access_mail_message,mail.model_mail_message,,1,1,1,0
 access_ticket_type_activity,access_ticket_type_activity,model_ticket_type_activity,,1,0,0,0
 access_employee_roles,access_employee_roles,model_employee_roles,base.group_user,1,0,0,0
 access_user_employee_roles,access_user_employee_roles,model_user_employee_roles,,1,0,0,0
+access_crm_type,access_crm_type,crm.service.type,services_manager,1,1,1,1
+access_crm_type,access_crm_type,crm.service.type,services_user,1,0,0,0

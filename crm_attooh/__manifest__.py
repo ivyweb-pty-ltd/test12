@@ -48,6 +48,7 @@
         'data/partner.relationship_type.xml',
         'data/partner.relationship_type.csv',
         'data/crm_mail_templates.xml',
+        'security/user_groups.xml',
         'security/ir.model.access.csv',
         'views/crm_views.xml',
         'views/hr_views.xml',

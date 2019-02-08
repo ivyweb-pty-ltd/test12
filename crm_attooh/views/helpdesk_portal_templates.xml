@@ -3,7 +3,7 @@
 	<data noupdate="0">
 
 		<template id="helpdesk.portal_my_home_menu_helpdesk" name="Portal layout : helpdesk tickets menu entries"
-			inherit_id="portal.portal_layout" priority="50">
+			inherit_id="portal.portal_breadcrumbs" priority="50">
 			<xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
 				<li t-if="page_name == 'ticket' or ticket">
 					<a t-if="ticket" t-attf-href="/my/tickets?{{ keep_query() }}">Service Requests</a>
@@ -17,6 +17,7 @@
 		</template>
 
 
+<!--TODO: Add ticket count into V12
 		<template id="portal_my_home_helpdesk_ticket_inherited" name="Portal My Home : Helpdesk Ticket"
 			inherit_id="helpdesk.portal_my_home_helpdesk_ticket" priority="50">
 			<xpath expr="//li[@t-if='ticket_count']" position="replace">
@@ -26,6 +27,9 @@
 				</li>
 			</xpath>
 		</template>
+-->
+
+<!--TODO: Confirm V12 already have this
 
 		<template id="portal_helpdesk_ticket_inherit" inherit_id="helpdesk.portal_helpdesk_ticket">
 			<xpath expr="//h3" position="replace">
@@ -35,6 +39,7 @@
 				</h3>
 			</xpath>
 		</template>
+        -->
 		<template id="helpdesk.tickets_followup" name="Helpdesk Tickets">
 			<t t-call="portal.portal_layout">
 				<div class="panel panel-default">

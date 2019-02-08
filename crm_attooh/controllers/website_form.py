@@ -15,7 +15,7 @@ from odoo.http import request
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.tools.translate import _
 from odoo.exceptions import ValidationError
-from odoo.addons.base.ir.ir_qweb.fields import nl2br
+from odoo.addons.base.models.ir_qweb_fields import nl2br
 
 
 class WebsiteAttoohForm(http.Controller):
@@ -295,7 +295,7 @@ class WebsiteAttoohForm(http.Controller):
 
     @http.route(['/generate_otp/<int:id>/<token>'], type='json', auth='public')
     def generate_otp(self, id, token, signature=None):
-        request_item = http.request.env['signature.request.item'].sudo().search(
+        request_item = http.request.env['sign.request.item'].sudo().search(
             [('signature_request_id', '=', id), ('access_token', '=', token), ('state', '=', 'sent')], limit=1)
         if request_item.partner_id.mobile:
             otp = random.randint(111111, 999999)
@@ -318,7 +318,7 @@ class WebsiteAttoohForm(http.Controller):
 
     @http.route(['/check_otp/<int:id>/<token>/<otp>'], type='json', auth='public')
     def check_otp(self, id, token, otp, signature=None):
-        request_item = http.request.env['signature.request.item'].sudo().search(
+        request_item = http.request.env['sign.request.item'].sudo().search(
             [('signature_request_id', '=', id)], limit=1)
         if request_item.partner_id.otp == otp:
             return True

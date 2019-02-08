@@ -15,12 +15,12 @@ from odoo import models, fields, api, _
 from odoo.http import request
 from datetime import datetime, timedelta
 from odoo.exceptions import UserError
-#from odoo.addons.website_sign.models.signature_request import SignatureRequestItem
+#from odoo.addons.sign.models.signature_request import SignatureRequestItem
 
 #TODO: Load Data for all the possible product_types
 
 class SignatureRequest(models.Model):
-    _inherit = 'signature.request'
+    _inherit = 'sign.request'
 
     lead_id = fields.Many2one('crm.lead')
 
@@ -57,7 +57,7 @@ class SignatureRequest(models.Model):
         packet = io.BytesIO()
         can = canvas.Canvas(packet)
         itemsByPage = self.template_id.signature_item_ids.getByPage()
-        SignatureItemValue = self.env['signature.item.value']
+        SignatureItemValue = self.env['sign.item.value']
         for p in range(0, old_pdf.getNumPages()):
             page = old_pdf.getPage(p)
             width = float(page.mediaBox.getUpperRight_x())
@@ -131,7 +131,7 @@ class SignatureRequest(models.Model):
         output.close()
 
 class SignatureItemTypeAttooh(models.Model):
-    _inherit = "signature.item.type"
+    _inherit = "sign.item.type"
 
     type = fields.Selection(selection_add=[('checkbox', 'Checkbox')])
 
@@ -142,7 +142,7 @@ class crm_lead(models.Model):
     service_ids = fields.Many2many('crm.service.type', related='partner_id.service_ids',string='Provided Services')
     activity_type_ids = fields.Many2one('crm.service.type.activity')
     signature_requests_count = fields.Integer("# Signature Requests", compute='_compute_signature_requests')
-    signature_ids = fields.One2many('signature.request', 'lead_id')
+    signature_ids = fields.One2many('sign.request', 'lead_id')
     product_area_id = fields.Many2one('crm.service.type',string='Product Area')
 
 
@@ -357,7 +357,7 @@ class CrmTeamAttooh(models.Model):
 #TODO: Build data for product Types
 
 class SignatureItemAtooh(models.Model):
-    _inherit = 'signature.request.item'
+    _inherit = 'sign.request.item'
 
     ip_address = fields.Char('Ip Address')
     country_name = fields.Char()
@@ -415,6 +415,6 @@ class crm_service_type_activity(models.Model):
     time_allocation = fields.Float('Time Allocation',size=5)
     activity_type_id = fields.Many2one('mail.activity.type', string="Activity Type")
     service_type_id = fields.Many2one('crm.service.type', string="Service Type")
-    document_ids = fields.Many2many('signature.request.template',relation='service_activity_type_documents',
+    document_ids = fields.Many2many('sign.template',relation='service_activity_type_documents',
                                     column1='service_type_activity_id',column2='signature_request_template_id')
     active = fields.Boolean(default=True)

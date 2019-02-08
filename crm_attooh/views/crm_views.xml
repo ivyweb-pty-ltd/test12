@@ -181,12 +181,12 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="stage_id"/>
-                    <field name="reference"/>
+ <!--                   <field name="reference"/>
                     <field name="employee_role_id"/>
                     <field name="service_type_id"/>
                     <filter string="Stage" context="{'group_by':'stage_id'}"/>
                     <filter string="Service Type" context="{'group_by':'service_type_id'}"/>
-                    <filter string="Responsible" context="{'group_by':'employee_role_id'}"/>
+                    <filter string="Responsible" context="{'group_by':'employee_role_id'}"/> -->
                 </search>
             </field>
         </record>
@@ -247,9 +247,9 @@
         </template>
         
         <record id="signature_request_items" model="ir.ui.view">
-            <field name="name">signature.request.item.form</field>
-            <field name="model">signature.request.item</field>
-            <field name="inherit_id" ref="website_sign.signature_request_item_view_form" />
+            <field name="name">sign.request.item.form</field>
+            <field name="model">sign.request.item</field>
+            <field name="inherit_id" ref="sign.sign_request_item_view_form" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='longitude']" position="after">
                     <field name="ip_address"/>

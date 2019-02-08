@@ -2,7 +2,7 @@
 <odoo>
 	<template id="portal_my_home_activity" name="Portal My Home: Activity entries"
 		inherit_id="portal.portal_my_home" priority="47">
-		<xpath expr="//ul[hasclass('o_portal_docs')]" position="inside">
+		<xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
 			<li t-if="activity_count" class="list-group-item">
 				<span class="badge" t-esc="activity_count" />
 				<a href="/my/activities">Activities</a>
@@ -11,7 +11,7 @@
 	</template>
 
 	<template id="portal_my_home_menu_activity_top_menu" name="Portal layout : attachment menu entries"
-		inherit_id="portal.portal_layout" priority="20">
+		inherit_id="portal.portal_breadcrumbs" priority="20">
 		<xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
 			<li t-if="activities and page_name == 'activities'">
 				<t t-if="activity_count == 1">Activity</t>

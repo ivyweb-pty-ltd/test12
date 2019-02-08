@@ -3,7 +3,7 @@
 
 	<template id="portal_my_home_signature" name="Portal My Home: Signature entries"
 		inherit_id="portal.portal_my_home" priority="43">
-		<xpath expr="//ul[hasclass('o_portal_docs')]" position="inside">
+		<xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
 			<li t-if="signature_count" class="list-group-item">
 				<span class="badge" t-esc="signature_count" />
 				<a href="/my/signatures">Signature Requests</a>
@@ -12,7 +12,7 @@
 	</template>
 
 	<template id="portal_my_home_menu_signature" name="Portal layout : signature menu entries"
-		inherit_id="portal.portal_layout" priority="20">
+		inherit_id="portal.portal_breadcrumbs" priority="20">
 		<xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
 			<li t-if="signatures and page_name == 'signatures'">
 				<t t-if="signature_count == 1">Signature Request</t>

@@ -3,7 +3,7 @@
 
 	<template id="portal_my_home_document" name="Portal My Home: Document entries"
 		inherit_id="portal.portal_my_home" priority="45">
-		<xpath expr="//ul[hasclass('o_portal_docs')]" position="inside">
+		<xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
 			<li class="list-group-item">
 				<a href="/my/attachments">Documents</a>
 				<span class="badge" t-esc="document_count or 0" />
@@ -12,7 +12,7 @@
 	</template>
 
 	<template id="portal_my_home_menu_document_top_menu" name="Portal layout : document menu entries"
-		inherit_id="portal.portal_layout" priority="20">
+		inherit_id="portal.portal_breadcrumbs" priority="20">
 		<xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
 			<li t-if="attachments and page_name == 'attachments'">
 				<t t-if="attachment_count == 1">Document</t>

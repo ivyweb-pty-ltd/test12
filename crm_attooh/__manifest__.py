@@ -17,14 +17,26 @@
     'version': '3.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['crm', 'sale_management', 'website_sign', 'website_quote', 'website_event',
-    'website_form', 'helpdesk', 'base_automation', 'portal', 'hr', 'marketing_automation', 'attooh_sms'],
+    'depends': ['crm',
+                'sale_management',
+                'sign',
+                'website_sale',
+                'sale_quotation_builder',
+                'website_event',
+                'website_form',
+                'helpdesk',
+                'base_automation',
+                'portal',
+                'hr',
+                'marketing_automation',
+                'account_reports',
+                #TODO: 'attooh_sms'
+                ],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
         'data/res_partner_data.xml',
-        'data/signature_item_type_data.xml',
+        'data/sign_item_type_data.xml',
         'data/helpdesk_data.xml',
         'data/ticket_type_activity_data.xml',
         'data/crm_demo.xml',
@@ -36,6 +48,7 @@
         'data/partner.relationship_type.xml',
         'data/partner.relationship_type.csv',
         'data/crm_mail_templates.xml',
+        'security/ir.model.access.csv',
         'views/crm_views.xml',
         'views/hr_views.xml',
         'views/financial_product_view.xml',
@@ -46,7 +59,7 @@
         'views/sale_views.xml',
         'views/ticket_type_activity_view.xml',
         'views/report_saleorder_document.xml',
-        'views/website_quote_template.xml',
+        #TODO: 'views/website_quote_template.xml',
         'views/meeting_portal_template.xml',
         'views/signature_portal_template.xml',
         'views/document_portal_template.xml',

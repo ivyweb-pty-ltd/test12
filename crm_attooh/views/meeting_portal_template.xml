@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="portal_my_home_meetings" name="Portal My Home: Meeting entries" inherit_id="portal.portal_my_home" priority="40">
-        <xpath expr="//ul[hasclass('o_portal_docs')]" position="inside">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
             <li t-if="meeting_count" class="list-group-item">
                 <span class="badge" t-esc="meeting_count"/>
                 <a href="/my/meetings">Meetings</a>

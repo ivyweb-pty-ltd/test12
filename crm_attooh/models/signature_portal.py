@@ -9,7 +9,7 @@ class CustomerPortal(CustomerPortal):
 
     def _prepare_portal_layout_values(self):
         values = super(CustomerPortal, self)._prepare_portal_layout_values()
-        Signature = request.env['signature.request']
+        Signature = request.env['sign.request']
         partner_id = request.env.user.partner_id.id
         signature = Signature.search([('request_item_ids.partner_id', '=', partner_id)])
         values['signature_count'] = len(signature)
@@ -18,7 +18,7 @@ class CustomerPortal(CustomerPortal):
     @http.route(['/my/signatures', '/my/signatures/page/<int:page>'], type='http', auth="user", website=True)
     def portal_my_signatures(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
         values = self._prepare_portal_layout_values()
-        Signature = request.env['signature.request']
+        Signature = request.env['sign.request']
         partner_id = request.env.user.partner_id.id
         signature = Signature.search([('request_item_ids.partner_id', '=', partner_id)])
         domain = [('id', 'in', signature.ids)]
@@ -33,7 +33,7 @@ class CustomerPortal(CustomerPortal):
         order = searchbar_sortings[sortby]['order']
 
         # archive groups - Default Group By 'create_date'
-        archive_groups = self._get_archive_groups('signature.request', domain)
+        archive_groups = self._get_archive_groups('sign.request', domain)
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]
         # signatures count
@@ -65,7 +65,7 @@ class CustomerPortal(CustomerPortal):
         return request.render("crm_attooh.portal_my_signatures", values)
 
     def has_signature_access(self, signature_id):
-        Signature = request.env['signature.request']
+        Signature = request.env['sign.request']
         partner_id = request.env.user.partner_id.id
         signature = Signature.search([('request_item_ids.partner_id', '=', partner_id)])
         return signature_id in signature.ids and True or False
@@ -73,7 +73,7 @@ class CustomerPortal(CustomerPortal):
     @http.route(['/my/signature/<int:signature_id>'], type='http', auth="user", website=True)
     def portal_my_signature(self, signature_id=None, **kw):
         if self.has_signature_access(signature_id):
-            signature = request.env['signature.request'].sudo().browse(signature_id)
+            signature = request.env['sign.request'].sudo().browse(signature_id)
             vals = {'signature': signature}
             history = request.session.get('my_signature_history', [])
             vals.update(get_records_pager(history, signature))

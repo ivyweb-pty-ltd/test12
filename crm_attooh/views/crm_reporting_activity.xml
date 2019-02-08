@@ -6,7 +6,7 @@
         <field name="model">crm.activity.report</field>
         <field name="inherit_id" ref="crm.crm_activity_report_view_search"></field>
         <field name="arch" type="xml">
-            <filter name="last_month" position="after">
+            <filter name="filter_date" position="after">
                  <separator/>
                     <filter name="late_activities" string="Late Activities" domain="[('date', '&lt;', context_today().strftime('%Y-%m-%d'))]"/>
                     <filter name="today_activity" string="Today Activities" domain="[('date','&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('date','&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>

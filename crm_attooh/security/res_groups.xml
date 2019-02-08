@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id='usercat_financial_management' model='ir.module.category' >
+    <field name="name">Financial Services</field>
+    <field name="description">User access levels for financial Services</field>
+    <field name="sequence">3</field>
+</record>
+
+    <record id="financial_services_user" model="res.groups" >
+        <field name="name">User</field>
+        <field name="implied_ids" eval="[(4, ref('base.user_root'))]"/>
+        <field name="category_id" ref="crm_attooh.usercat_financial_management"/>
+    </record>
+
+    <record id="financial_services_manager" model="res.groups" >
+        <field name="name">Manager</field>
+        <field name="implied_ids" eval="[(4,ref('crm_attooh.financial_services_user'))]"/>
+        <field name="category_id" ref="crm_attooh.usercat_financial_management"/>
+    </record>
+
+</odoo>

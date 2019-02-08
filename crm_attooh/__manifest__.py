@@ -35,6 +35,7 @@
 
     # always loaded
     'data': [
+        'security/res_groups.xml',
         'data/res_partner_data.xml',
         'data/sign_item_type_data.xml',
         'data/helpdesk_data.xml',
@@ -48,7 +49,6 @@
         'data/partner.relationship_type.xml',
         'data/partner.relationship_type.csv',
         'data/crm_mail_templates.xml',
-        'security/user_groups.xml',
         'security/ir.model.access.csv',
         'views/crm_views.xml',
         'views/hr_views.xml',

@@ -8,7 +8,7 @@ class res_users(models.Model):
     _inherit = 'res.users'
 
     is_financial_advisor = fields.Boolean(string="Is Financial Advisor")
-    user_employee_roles_ids = fields.One2many('user.employee.roles', 'user_id')
+    user_employee_roles_ids = fields.One2many('user.employee.roles', 'financial_advisor_id')
 
     @api.multi
     @api.onchange('is_financial_advisor')
@@ -29,7 +29,7 @@ class UserEmployeeRoles(models.Model):
     _name = 'user.employee.roles'
 
     employee_role_id = fields.Many2one('employee.roles', string="Role")
-    employee_id = fields.Many2one('res.users', string="Employee",related='user_id')
+    employee_id = fields.Many2one('res.users', string="Employee",related='user_id',readonly=False)
     financial_advisor_id = fields.Many2one('res.users', string="Financial Advisor")
     user_id = fields.Many2one('res.users', string="User")
 

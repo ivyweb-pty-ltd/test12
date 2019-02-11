@@ -30,7 +30,7 @@
                 'hr',
                 'marketing_automation',
                 'account_reports',
-                #TODO: 'attooh_sms'
+                # 'attooh_sms'
                 ],
 
     # always loaded

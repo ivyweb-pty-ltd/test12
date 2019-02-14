@@ -30,6 +30,7 @@
                 'hr',
                 'marketing_automation',
                 'account_reports',
+                'documents',
                 # 'attooh_sms'
                 ],
 

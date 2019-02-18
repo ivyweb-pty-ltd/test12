@@ -1,148 +1,131 @@
 id,service_type_id/id,reference,sequence,name,employee_role_id,lead_time,time_allocation,stage_id/id,activity_type_id
-A1.1,crm_attooh.prelim_fin_planning,A1.1,1,Capture & Qualify leads,Financial Advisor,4,0.08,crm_attooh.stage_preparation,To Do
+A1.1,crm_attooh.prelim_fin_planning,A1.1,1,Capture & Qualify leads,Financial Advisor,4,0.16,crm_attooh.stage_preparation,To Do
 A1.2,crm_attooh.prelim_fin_planning,A1.2,2,Schedule Appointment,Diary Clerk,48,0,crm_attooh.stage_preparation,To Do
-A1.3,crm_attooh.prelim_fin_planning,A1.3,3,Thank referring party,New Business Clerk,0.17,0.17,crm_attooh.stage_preparation,To Do
+A1.3,crm_attooh.prelim_fin_planning,A1.3,3,Thank referring party,New Business Clerk,0.16,0.16,crm_attooh.stage_preparation,To Do
 A1.4,crm_attooh.prelim_fin_planning,A1.4,4,Personal info to fill online/ hard copy,Client,72,0,crm_attooh.stage_preparation,To Do
-A1.5,crm_attooh.prelim_fin_planning,A1.5,5,"Draw schedules from Astute, 3rd party",New Business Clerk,24,0.33,crm_attooh.stage_preparation,To Do
-A1.6,crm_attooh.prelim_fin_planning,A1.6,6,Reminder Confirm meeting,New Business Clerk,24,0.17,crm_attooh.stage_preparation,To Do
+A1.5,crm_attooh.prelim_fin_planning,A1.5,5,"Draw schedules from Astute, 3rd party",New Business Clerk,24,0.3,crm_attooh.stage_preparation,To Do
+A1.6,crm_attooh.prelim_fin_planning,A1.6,6,Reminder Confirm meeting,New Business Clerk,24,0.16,crm_attooh.stage_preparation,To Do
 A1.7,crm_attooh.prelim_fin_planning,A1.7,7,Prepare for client meeting at office,New Business Clerk,0.5,0.5,crm_attooh.stage_preparation,To Do
 A2.1,crm_attooh.prelim_fin_planning,A2.1,8,Define client needs - Personal info to fill online/ hard copy (if not received),Financial Advisor,24,1.5,crm_attooh.stage_first_engagement,To Do
-A2.2,crm_attooh.prelim_fin_planning,A2.2,9,Send decision and thank you letter - 3 templates,New Business Clerk,48,0.17,crm_attooh.stage_first_engagement,To Do
-A3,crm_attooh.prelim_fin_planning,A3,10,Analysis and Proposal,,72,0,crm_attooh.stage_proposal,To Do
-A3.1,crm_attooh.prelim_fin_planning,A3.1,11,Send client fee and mandate proposal,Financial Advisor,24,0.5,crm_attooh.stage_proposal,To Do
-A3.2,crm_attooh.prelim_fin_planning,A3.2,12,Client accepts or rejects. If rejected close case,Client,0,0,crm_attooh.stage_proposal,To Do
-A3.3,crm_attooh.prelim_fin_planning,A3.3,13,Send out fee agreement invoice,New Business Clerk,72,0.17,crm_attooh.stage_proposal,To Do
-A3.4,crm_attooh.prelim_fin_planning,A3.4,14,Set up second appointment,Diary Clerk,0,0.25,crm_attooh.stage_proposal,To Do
-A3.5,crm_attooh.prelim_fin_planning,A3.5,15,Capture Personal & FNA information on system,Paraplanner,0,1.5,crm_attooh.stage_proposal,To Do
-A3.6,crm_attooh.prelim_fin_planning,A3.6,16,Prepare product quotes,Paraplanner,72,1,crm_attooh.stage_proposal,To Do
-A4.1,crm_attooh.prelim_fin_planning,A4.1,17,Confirm appointment,Diary Clerk,48,0.17,crm_attooh.stage_compliance,To Do
-A4.2,crm_attooh.prelim_fin_planning,A4.2,18,Advisor meets client to close,Financial Advisor,24,1,crm_attooh.stage_compliance,To Do
-A4.3,crm_attooh.prelim_fin_planning,A4.3,19,Based on close - thank you mail to client,New Business Clerk,120,0.25,crm_attooh.stage_compliance,To Do
-RP1.1,crm_attooh.review,RP1.1,20,Schedule Appointment (Yes/No),Diary Clerk,0.5,0.25,crm_attooh.stage_preparation,To Do
-RP1.2,crm_attooh.review,RP1.2,21,Send email invite with agenda,Diary Clerk,0.5,0.17,crm_attooh.stage_preparation,To Do
-RP1.3,crm_attooh.review,RP1.3,22,Request updated informaiton sheet,Client,0.02,0.33,crm_attooh.stage_preparation,To Do
-RP1.4,crm_attooh.review,RP1.4,23,"Draw schedules from Astute, 3rd party",Paraplanner,24,1,crm_attooh.stage_preparation,To Do
-RP1.5,crm_attooh.review,RP1.5,24,Revise Financial plan from previous engagement,Paraplanner,24,1,crm_attooh.stage_preparation,To Do
-RP1.6,crm_attooh.review,RP1.6,25,Reminder Confirm meeting - System,Diary Clerk,72,0.17,crm_attooh.stage_preparation,To Do
-RP1.7,crm_attooh.review,RP1.7,26,Prepare for client meeting at office,New Business Clerk,24,0.5,crm_attooh.stage_preparation,To Do
-RP2.1,crm_attooh.review,RP2.1,27,"Review client needs, Personal & FNA info to update online/ hard copy (if not received)",Financial Advisor,24,1.5,crm_attooh.stage_first_engagement,To Do
-RP3.1,crm_attooh.review,RP3.1,28,Set up Second Appointment if applicable,Diary Clerk,24,0.25,crm_attooh.stage_proposal,To Do
-RP3.2,crm_attooh.review,RP3.2,29,Update Personal & FNA information on system & FNA,Paraplanner,24,1.5,crm_attooh.stage_proposal,To Do
-RP3.3,crm_attooh.review,RP3.3,30,Prepare product alteration quotes,Paraplanner,72,1,crm_attooh.stage_proposal,To Do
-RP4.1,crm_attooh.review,RP4.1,31,Confirm appointment,Diary Clerk,24,0.17,crm_attooh.stage_second_engagement,To Do
-RP4.2,crm_attooh.review,RP4.2,32,Advisor meet client to close if applicable,Financial Advisor,24,1,crm_attooh.stage_second_engagement,To Do
-RP4.3,crm_attooh.review,RP4.3,33,Based on close (Yes/ No) thank you email to client,New Business Clerk,0.5,0.25,crm_attooh.stage_second_engagement,To Do
-R1.1,crm_attooh.risk,R1.1,34,Quality check apps,New Business Clerk,0.5,0.5,crm_attooh.stage_submission,To Do
-R1.2,crm_attooh.risk,R1.2,35,Note for replacement & file (yes/no),New Business Clerk,0.5,0.17,crm_attooh.stage_submission,To Do
-R1.3,crm_attooh.risk,R1.3,36,Collect documentation from client/self upload on system,New Business Clerk,0.1,0.17,crm_attooh.stage_submission,To Do
-R1.4,crm_attooh.risk,R1.4,37,Submit documents and app to product vendor,New Business Clerk,8,0.17,crm_attooh.stage_submission,To Do
-R1.5,crm_attooh.risk,R1.5,38,"Email ""next steps"" email to client",New Business Clerk,1,0.25,crm_attooh.stage_submission,To Do
-R1.6,crm_attooh.risk,R1.6,39,Update production book,New Business Clerk,1,0.33,crm_attooh.stage_submission,To Do
-R1.7,crm_attooh.risk,R1.7,40,"Check, capture and action medical requirements",New Business Clerk,48,0.33,crm_attooh.stage_submission,To Do
-R1.8,crm_attooh.risk,R1.8,41,Insert date and time of medical appointment,New Business Clerk,24,0.17,crm_attooh.stage_submission,To Do
-R1.9,crm_attooh.risk,R1.9,42,SMS medical app reminder to client,New Business Clerk,0.1,0,crm_attooh.stage_submission,To Do
-R1.10,crm_attooh.risk,R1.10,43,Additional requirements (yes/no),New Business Clerk,72,0.33,crm_attooh.stage_submission,To Do
-R1.11,crm_attooh.risk,R1.11,44,"*Outcome: Accepted, COL, defer or decline?",New Business Clerk,,0,crm_attooh.stage_submission,To Do
-R2.1,crm_attooh.risk,R2.1,45,"Confirm documents, terms, cover and update production book",New Business Clerk,0.15,0.75,crm_attooh.stage_compliance,To Do
-R2.2,crm_attooh.risk,R2.2,46,"If correct - ""thank you"" mail to client",New Business Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-R2.3,crm_attooh.risk,R2.3,47,Reminder on replacement (if applicable),Servicing Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-R2.4,crm_attooh.risk,R2.4,48,If replacement - Submit cancellation instruction,Servicing Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-R2.5,crm_attooh.risk,R2.5,49,When cancelled - Confirm cancellation to client,Servicing Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-R2.6,crm_attooh.risk,R2.6,50,Compliance upload and mail to client,New Business Clerk,0.15,0.5,crm_attooh.stage_compliance,To Do
+A2.2,crm_attooh.prelim_fin_planning,A2.2,9,Send decision and thank you letter - 3 templates,New Business Clerk,48,0.16,crm_attooh.stage_first_engagement,To Do
+A3.1,crm_attooh.prelim_fin_planning,A3.1,10,Send client fee and mandate proposal,Financial Advisor,24,0.5,crm_attooh.stage_proposal,To Do
+A3.2,crm_attooh.prelim_fin_planning,A3.2,11,Client accepts or rejects. If rejected close case,Client,0,0,crm_attooh.stage_proposal,To Do
+A3.3,crm_attooh.prelim_fin_planning,A3.3,12,Send out fee agreement invoice,New Business Clerk,72,0.16,crm_attooh.stage_proposal,To Do
+A3.4,crm_attooh.prelim_fin_planning,A3.4,13,Set up second appointment,Diary Clerk,0,0.3,crm_attooh.stage_proposal,To Do
+A3.5,crm_attooh.prelim_fin_planning,A3.5,14,Capture Personal & FNA information on system,Paraplanner,0,1.5,crm_attooh.stage_proposal,To Do
+A3.6,crm_attooh.prelim_fin_planning,A3.6,15,Prepare product quotes,Paraplanner,72,1,crm_attooh.stage_proposal,To Do
+A4.1,crm_attooh.prelim_fin_planning,A4.1,16,Confirm appointment,Diary Clerk,48,0.16,crm_attooh.stage_compliance,To Do
+A4.2,crm_attooh.prelim_fin_planning,A4.2,17,Advisor meets client to close,Financial Advisor,24,1,crm_attooh.stage_compliance,To Do
+A4.3,crm_attooh.prelim_fin_planning,A4.3,18,Based on close - thank you mail to client,New Business Clerk,120,0.3,crm_attooh.stage_compliance,To Do
+RP1.1,crm_attooh.review,RP1.1,19,Schedule Appointment (Yes/No),Diary Clerk,0.5,0.25,crm_attooh.stage_preparation,To Do
+RP1.2,crm_attooh.review,RP1.2,20,Send email invite with agenda,Diary Clerk,0.5,0.16,crm_attooh.stage_preparation,To Do
+RP1.3,crm_attooh.review,RP1.3,21,Request updated informaiton sheet,Client,0.01,0.3,crm_attooh.stage_preparation,To Do
+RP1.4,crm_attooh.review,RP1.4,22,"Draw schedules from Astute, 3rd party",Paraplanner,24,1,crm_attooh.stage_preparation,To Do
+RP1.5,crm_attooh.review,RP1.5,23,Revise Financial plan from previous engagement,Paraplanner,24,1,crm_attooh.stage_preparation,To Do
+RP1.6,crm_attooh.review,RP1.6,24,Reminder Confirm meeting - System,Diary Clerk,72,0.16,crm_attooh.stage_preparation,To Do
+RP1.7,crm_attooh.review,RP1.7,25,Prepare for client meeting at office,New Business Clerk,72,0.16,crm_attooh.stage_preparation,To Do
+RP2.1,crm_attooh.review,RP2.1,26,"Review client needs, Personal & FNA info to update online/ hard copy (if not received)",Financial Advisor,24,1.5,crm_attooh.stage_first_engagement,To Do
+RP3.1,crm_attooh.review,RP3.1,27,Set up Second Appointment if applicable,Diary Clerk,24,0.25,crm_attooh.stage_proposal,To Do
+RP3.2,crm_attooh.review,RP3.2,28,Update Personal & FNA information on system & FNA,Paraplanner,24,1.5,crm_attooh.stage_proposal,To Do
+RP3.3,crm_attooh.review,RP3.3,29,Prepare product alteration quotes,Paraplanner,72,1,crm_attooh.stage_proposal,To Do
+RP4.1,crm_attooh.review,RP4.1,30,Confirm appointment,Diary Clerk,24,0.17,crm_attooh.stage_second_engagement,To Do
+RP4.2,crm_attooh.review,RP4.2,31,Advisor meet client to close if applicable,Financial Advisor,24,1,crm_attooh.stage_second_engagement,To Do
+RP4.3,crm_attooh.review,RP4.3,32,Based on close (Yes/ No) thank you email to client,New Business Clerk,0.5,0.25,crm_attooh.stage_second_engagement,To Do
+R1.1,crm_attooh.risk,R1.1,33,Quality check apps,New Business Clerk,0.5,0.5,crm_attooh.stage_submission,To Do
+R1.2,crm_attooh.risk,R1.2,34,Note for replacement & file (yes/no),New Business Clerk,0.5,0.16,crm_attooh.stage_submission,To Do
+R1.3,crm_attooh.risk,R1.3,35,Collect documentation from client/self upload on system,New Business Clerk,0.1,0.16,crm_attooh.stage_submission,To Do
+R1.4,crm_attooh.risk,R1.4,36,Submit documents and app to product vendor,New Business Clerk,8,0.16,crm_attooh.stage_submission,To Do
+R1.5,crm_attooh.risk,R1.5,37,"Email ""next steps"" email to client",New Business Clerk,1,0.25,crm_attooh.stage_submission,To Do
+R1.6,crm_attooh.risk,R1.6,38,Update production book,New Business Clerk,1,0.3,crm_attooh.stage_submission,To Do
+R1.7,crm_attooh.risk,R1.7,39,"Check, capture and action medical requirements",New Business Clerk,48,0.3,crm_attooh.stage_submission,To Do
+R1.8,crm_attooh.risk,R1.8,40,Insert date and time of medical appointment,New Business Clerk,24,0.16,crm_attooh.stage_submission,To Do
+R1.9,crm_attooh.risk,R1.9,41,SMS medical app reminder to client,New Business Clerk,0.1,0,crm_attooh.stage_submission,To Do
+R1.10,crm_attooh.risk,R1.10,42,Additional requirements (yes/no),New Business Clerk,72,0.3,crm_attooh.stage_submission,To Do
+R1.11,crm_attooh.risk,R1.11,43,"*Outcome: Accepted, COL, defer or decline?",New Business Clerk,0,0,crm_attooh.stage_submission,To Do
+R2.1,crm_attooh.risk,R2.1,44,"Confirm documents, terms, cover",New Business Clerk,0.25,1,crm_attooh.stage_compliance,To Do
+R2.2,crm_attooh.risk,R2.2,45,"If correct - ""thank you"" mail to client",New Business Clerk,0.25,0.16,crm_attooh.stage_compliance,To Do
+R2.3,crm_attooh.risk,R2.3,46,Update Production book,New Business Clerk,0.25,0,crm_attooh.stage_compliance,To Do
+R2.3,crm_attooh.risk,R2.3,47,Reminder on replacement (if applicable),Servicing Clerk,0.25,0.16,crm_attooh.stage_compliance,To Do
+R2.4,crm_attooh.risk,R2.4,48,If replacement - Submit cancellation instruction,Servicing Clerk,0.25,0.16,crm_attooh.stage_compliance,To Do
+R2.5,crm_attooh.risk,R2.5,49,When cancelled - Confirm cancellation to client,Servicing Clerk,0.25,0.16,crm_attooh.stage_compliance,To Do
+R2.6,crm_attooh.risk,R2.6,50,Compliance upload and mail to client,New Business Clerk,0.25,0.5,crm_attooh.stage_compliance,To Do
 I1.1,crm_attooh.investment,I1.1,51,Quality check apps,New Business Clerk,0.5,0.5,crm_attooh.stage_submission,To Do
-I1.2,crm_attooh.investment,I1.2,52,Note for replacement & file (yes/no),New Business Clerk,0.5,0.17,crm_attooh.stage_submission,To Do
-I1.4,crm_attooh.investment,I1.4,53,Submit documents and app to product vendor,New Business Clerk,8,0.17,crm_attooh.stage_submission,To Do
-I1.5,crm_attooh.investment,I1.5,54,Update production book,New Business Clerk,1,0.33,crm_attooh.stage_submission,To Do
-I1.6,crm_attooh.investment,I1.6,55,Confirm transfer of funds to investment house,New Business Clerk,1,0.33,crm_attooh.stage_submission,To Do
-I1.7,crm_attooh.investment,I1.7,56,Send confirmation of investment to client,New Business Clerk,1,0.17,crm_attooh.stage_submission,To Do
-I2.1,crm_attooh.investment,I2.1,57,"Confirm documents, terms, cover and update production book",New Business Clerk,0.15,0.75,crm_attooh.stage_compliance,To Do
-I2.2,crm_attooh.investment,I2.2,58,"If correct - ""thank you"" mail to client",New Business Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-I2.3,crm_attooh.investment,I2.3,59,Reminder on replacement (if applicable),Servicing Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-I2.4,crm_attooh.investment,I2.4,60,If replacement - Submit cancellation instruction,Servicing Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-I2.5,crm_attooh.investment,I2.5,61,When cancelled - Confirm cancellation to client,Servicing Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-I2.6,crm_attooh.investment,I2.6,62,Compliance upload and mail to client,New Business Clerk,0.15,0.5,crm_attooh.stage_compliance,To Do
-S1.6,crm_attooh.section14,S1.6,63,Submit documents to transferring and receiving company,New Business Clerk,168,0.17,crm_attooh.stage_submission,To Do
-S1.7,crm_attooh.section14,S1.7,64,Confirm transferring company sent Form H to receiving company trustees,New Business Clerk,336,0.17,crm_attooh.stage_submission,To Do
-S1.8,crm_attooh.section14,S1.8,65,Confirm receiving company returns signed Form H to transferring company,New Business Clerk,336,0.17,crm_attooh.stage_submission,To Do
-S1.9,crm_attooh.section14,S1.9,66,Confirms transferring company sends Form J to receiving company to complete,New Business Clerk,336,0.17,crm_attooh.stage_submission,To Do
-S1.10,crm_attooh.section14,S1.10,67,Confirms transferring company to transfer funds and send ROT to receiving company,New Business Clerk,98,0.17,crm_attooh.stage_submission,To Do
-S1.11,crm_attooh.section14,S1.11,68,Confirm receiving company signs Form J and sends to transferring company,New Business Clerk,98,0.17,crm_attooh.stage_submission,To Do
-S1.12,crm_attooh.section14,S1.12,69,Confirm Funds invested by receiving company and policy schedule issued,New Business Clerk,24,0.17,crm_attooh.stage_submission,To Do
-S1.13,crm_attooh.section14,S1.13,70,Update production book,New Business Clerk,2,0.17,crm_attooh.stage_submission,To Do
-S1.14,crm_attooh.section14,S1.14,71,Confirm transfer of funds to investment house,New Business Clerk,24,0.17,crm_attooh.stage_submission,To Do
-S1.15,crm_attooh.section14,S1.15,72,Send confirmation of transfer to client,New Business Clerk,2,0.17,crm_attooh.stage_submission,To Do
-S2.1,crm_attooh.section14,S2.1,73,"Confirm documents, terms, cover and update production book",New Business Clerk,0.25,0.75,crm_attooh.stage_compliance,To Do
-I2.2,crm_attooh.section14,I2.2,74,"If correct - ""thank you"" mail to client",New Business Clerk,0.25,0.17,crm_attooh.stage_compliance,To Do
-I2.3,crm_attooh.section14,I2.3,75,Reminder on replacement (if applicable),Servicing Clerk,0.25,0.17,crm_attooh.stage_compliance,To Do
-I2.4,crm_attooh.section14,I2.4,76,If replacement - Submit cancellation instruction,Servicing Clerk,0.25,0.17,crm_attooh.stage_compliance,To Do
-I2.5,crm_attooh.section14,I2.5,77,When cancelled - Confirm cancellation to client,Servicing Clerk,0.25,0.17,crm_attooh.stage_compliance,To Do
-I2.6,crm_attooh.section14,I2.6,78,Compliance upload and mail to client,New Business Clerk,0.25,0.5,crm_attooh.stage_compliance,To Do
-W1.1,crm_attooh.wills,W1.1,79,Collect relevant information from client,New Business Clerk,48,0,crm_attooh.stage_first_engagement,To Do
-W2.1a,crm_attooh.wills,W2.1a,80,Refer complex will to associate company for processing,New Business Clerk,24,0,crm_attooh.stage_proposal,To Do
-W2.2a,crm_attooh.wills,W2.2a,81,Send Will Specialist invoice to client for payment,New Business Clerk,48,0,crm_attooh.stage_proposal,To Do
-W2.3a,crm_attooh.wills,W2.3a,82,Send confirmation of payment to Will Specialist,New Business Clerk,24,0,crm_attooh.stage_proposal,To Do
-W2.1b,crm_attooh.wills,W2.1b,83,Generates simple will from template,Financial Advisor,48,0,crm_attooh.stage_proposal,To Do
-W3.1,crm_attooh.wills,W3.1,84,"Will document to client for perusal, approval or alteration",Client,48,0,crm_attooh.stage_second_engagement,To Do
-W3.2,crm_attooh.wills,W3.2,85,"Client signs off two hard copies of the will, retains one",Client,48,0,crm_attooh.stage_second_engagement,To Do
-W4.1,crm_attooh.wills,W4.1,86,Scan and save copy of the will to client file,New Business Clerk,24,0,crm_attooh.stage_compliance,To Do
-W4.2,crm_attooh.wills,W4.2,87,Process original for safekeeping,New Business Clerk,24,0,crm_attooh.stage_compliance,To Do
-B1.1,crm_attooh.business_planning,B1.1,88,Quality check vendor app,Client,24,0.5,crm_attooh.stage_second_engagement,To Do
-B1.2,crm_attooh.business_planning,B1.2,89,Note for replacement (yes/no),Client,120,0.17,crm_attooh.stage_second_engagement,To Do
-B1.3,crm_attooh.business_planning,B1.3,90,Collect documentation from client/ self upload on sytem,New Business Clerk,240,0.17,crm_attooh.stage_second_engagement,To Do
-B1.4,crm_attooh.business_planning,B1.4,91,Submit documents and app to product vendor,New Business Clerk,8,0.17,crm_attooh.stage_second_engagement,To Do
-B1.5,crm_attooh.business_planning,B1.5,92,"Email ""next steps"" email to client",New Business Clerk,1,0.25,crm_attooh.stage_second_engagement,To Do
-B1.6,crm_attooh.business_planning,B1.6,93,Update production book,New Business Clerk,1,0.33,crm_attooh.stage_second_engagement,To Do
-B1.7,crm_attooh.business_planning,B1.7,94,"Check, capture and action medical requirements",New Business Clerk,48,0.33,crm_attooh.stage_second_engagement,To Do
-B1.8,crm_attooh.business_planning,B1.8,95,Insert date and time of medical appointment,New Business Clerk,24,0.17,crm_attooh.stage_second_engagement,To Do
-B1.9,crm_attooh.business_planning,B1.9,96,SMS medical app reminder to client,New Business Clerk,0.1,0,crm_attooh.stage_second_engagement,To Do
-B1.10,crm_attooh.business_planning,B1.10,97,Additional requirements (yes/no),New Business Clerk,72,0.33,crm_attooh.stage_second_engagement,To Do
-B1.11,crm_attooh.business_planning,B1.11,98,"*Outcome: Accepted, COL, defer or decline?",,,0,crm_attooh.stage_second_engagement,To Do
-B2.1,crm_attooh.business_planning,B2.1,99,"Confirm documents, terms, cover and update production book",New Business Clerk,0.15,0.75,crm_attooh.stage_compliance,To Do
-B2.2,crm_attooh.business_planning,B2.2,100,"If correct - ""thank you"" mail to client",New Business Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-B2.3,crm_attooh.business_planning,B2.3,101,Set up meeting to get contracts signed,Diary Clerk,24,0.25,crm_attooh.stage_compliance,To Do
-B2.4,crm_attooh.business_planning,B2.4,102,"Draft, email to client and print for appointment with Client",Paraplanner,1,0.02,crm_attooh.stage_compliance,To Do
-B2.5,crm_attooh.business_planning,B2.5,103,Reminder on replacement (if applicable),New Business Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-B2.6,crm_attooh.business_planning,B2.6,104,If replacement - Submit cancellation instruction,Servicing Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-B2.7,crm_attooh.business_planning,B2.7,105,When cancelled - Confirm cancellation to client,Servicing Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
-B2.8,crm_attooh.business_planning,B2.8,106,Compliance upload and mail to client,New Business Clerk,0.15,0.5,crm_attooh.stage_compliance,To Do
-S1.1,crm_attooh.short_term,S1.1,107,Client requests cover,Client,24,0,crm_attooh.stage_first_engagement,To Do
-S1.2,crm_attooh.short_term,S1.2,108,Client provides current cover schedule,Client,24,0,crm_attooh.stage_first_engagement,To Do
-S2.1,crm_attooh.short_term,S2.1,109,Prepare quotes/ alternative quotes,Paraplanner,48,0,crm_attooh.stage_proposal,To Do
-S2.2,crm_attooh.short_term,S2.2,110,Propose add-ons,Paraplanner,,0,crm_attooh.stage_proposal,To Do
-S3.1,crm_attooh.short_term,S3.1,111,Present proposal and quotes to client,Financial Advisor,24,0,crm_attooh.stage_second_engagement,To Do
-S3.2,crm_attooh.short_term,S3.2,112,Fill in vendor app,Client,24,0,crm_attooh.stage_second_engagement,To Do
-S3.3,crm_attooh.short_term,S3.3,113,Collect documentation from client/ self upload on sytem,New Business Clerk,48,0,crm_attooh.stage_second_engagement,To Do
-S4.1,crm_attooh.short_term,S4.1,114,Submit documents and app to product vendor,New Business Clerk,24,0,crm_attooh.stage_submission,To Do
-S4.2,crm_attooh.short_term,S4.2,115,Manage COL,New Business Clerk,24,0,crm_attooh.stage_submission,To Do
-S4.3,crm_attooh.short_term,S4.3,116,Manage NTU,New Business Clerk,24,0,crm_attooh.stage_submission,To Do
-S4.4,crm_attooh.short_term,S4.4,117,Receive confirmation from product vendor,New Business Clerk,48,0,crm_attooh.stage_submission,To Do
-S5.1,crm_attooh.short_term,S5.1,118,Send confirmation client,New Business Clerk,24,0,crm_attooh.stage_compliance,To Do
-S5.2,crm_attooh.short_term,S5.2,119,Provide access to compliance auditor,New Business Clerk,,0,crm_attooh.stage_compliance,To Do
-H1.1,crm_attooh.health,H1.1,120,Client acceptance of proposal,Financial Advisor,24,0,crm_attooh.stage_second_engagement,To Do
-H1.2,crm_attooh.health,H1.2,121,Fill product vendor apps Incl Vitality,Client,48,0,crm_attooh.stage_second_engagement,To Do
-H1.3,crm_attooh.health,H1.3,122,Collect documentation from client/ self upload on sytem,New Business Clerk,48,0,crm_attooh.stage_second_engagement,To Do
-H1.4,crm_attooh.health,H1.4,123,Scan to file,New Business Clerk,24,0,crm_attooh.stage_second_engagement,To Do
-H2.1,crm_attooh.health,H2.1,124,Submit documents and app to product vendor,New Business Clerk,24,0,crm_attooh.stage_submission,To Do
-H2.2,crm_attooh.health,H2.2,125,Manage COL,New Business Clerk,24,0,crm_attooh.stage_submission,To Do
-H2.3,crm_attooh.health,H2.3,126,Manage NTU,New Business Clerk,24,0,crm_attooh.stage_submission,To Do
-H2.4,crm_attooh.health,H2.4,127,Receive confirmation from product vendor,New Business Clerk,72,0,crm_attooh.stage_submission,To Do
-H3.1,crm_attooh.health,H3.1,128,Complete RoA,Financial Advisor,24,0,crm_attooh.stage_submission,To Do
-H3.2,crm_attooh.health,H3.2,129,Send confirmation to client,New Business Clerk,24,0,crm_attooh.stage_submission,To Do
-H3.3,crm_attooh.health,H3.3,130,Provide access to compliance auditor,New Business Clerk,,0,crm_attooh.stage_submission,To Do
-T1.1,crm_attooh.trusts,T1.1,131,Fill trust specialist application,Client,24,0,crm_attooh.stage_second_engagement,To Do
-T1.2,crm_attooh.trusts,T1.2,132,Collect documentation from client,New Business Clerk,96,0,crm_attooh.stage_second_engagement,To Do
-T1.3,crm_attooh.trusts,T1.3,133,Scan to file,New Business Clerk,24,0,crm_attooh.stage_second_engagement,To Do
-T2.1,crm_attooh.trusts,T2.1,134,Submit documents and app to trust specialist,New Business Clerk,24,0,crm_attooh.stage_submission,To Do
-T2.2,crm_attooh.trusts,T2.2,135,Trust specialist invoice provided to client,New Business Clerk,48,0,crm_attooh.stage_submission,To Do
-T2.3,crm_attooh.trusts,T2.3,136,Receive payment confirmation,New Business Clerk,48,0,crm_attooh.stage_submission,To Do
-T2.4,crm_attooh.trusts,T2.4,137,Receive prepared documents from trust specialist,New Business Clerk,36,0,crm_attooh.stage_submission,To Do
-T2.5,crm_attooh.trusts,T2.5,138,Client to sign two hard copies and return to trust specialist,Client,48,0,crm_attooh.stage_submission,To Do
-T2.6,crm_attooh.trusts,T2.6,139,Trust documents submitted to Master of the Court,Trust Specialist,48,0,crm_attooh.stage_submission,To Do
-T3.1,crm_attooh.trusts,T3.1,140,Send confirmation to client when trust is registered,New Business Clerk,96,0,crm_attooh.stage_compliance,To Do
-T3.2,crm_attooh.trusts,T3.2,141,Save scanned stamped trust deed to file,New Business Clerk,24,0,crm_attooh.stage_compliance,To Do
-T3.3,crm_attooh.trusts,T3.3,142,Send originally stamped trust deed to client,New Business Clerk,,0,crm_attooh.stage_compliance,To Do
-G1.1,crm_attooh.gpoa,G1.1,143,Complete first and second agent information,Client,24,0,crm_attooh.stage_first_engagement,To Do
-G2.1,crm_attooh.gpoa,G2.1,144,Generate GPOA from template,Financial Advisor,24,0,crm_attooh.stage_proposal,To Do
-G3.1,crm_attooh.gpoa,G3.1,145,"GPOA document provided to client for perusal, approval or alteration",New Business Clerk,24,0,crm_attooh.stage_second_engagement,To Do
-G3.2,crm_attooh.gpoa,G3.2,146,Client signs off one copy of the GPOA,Client,24,0,crm_attooh.stage_second_engagement,To Do
-G4.1,crm_attooh.gpoa,G4.1,147,Scan and save copy of the GPOA to client file,New Business Clerk,,,crm_attooh.stage_compliance,To Do
+I1.2,crm_attooh.investment,I1.2,52,Note for replacement & file (yes/no),New Business Clerk,0.5,0.16,crm_attooh.stage_submission,To Do
+I1.4,crm_attooh.investment,I1.4,53,Submit documents and app to product vendor,New Business Clerk,8,0.16,crm_attooh.stage_submission,To Do
+I1.5,crm_attooh.investment,I1.5,54,Update production book,New Business Clerk,1,0.3,crm_attooh.stage_submission,To Do
+I1.6,crm_attooh.investment,I1.6,55,Confirm transfer of funds to investment house,New Business Clerk,1,0.3,crm_attooh.stage_submission,To Do
+I1.7,crm_attooh.investment,I1.7,56,Send confirmation of investment to client,New Business Clerk,1,0.16,crm_attooh.stage_submission,To Do
+I2.1,crm_attooh.investment,I2.1,57,"Confirm documents, terms, cover and update production book",New Business Clerk,0.15,1,crm_attooh.stage_compliance,To Do
+I2.2,crm_attooh.investment,I2.2,58,"If correct - ""thank you"" mail to client",New Business Clerk,0.15,10,crm_attooh.stage_compliance,To Do
+I2.3,crm_attooh.investment,I2.3,59,Reminder on replacement (if applicable),Servicing Clerk,0.15,10,crm_attooh.stage_compliance,To Do
+I2.4,crm_attooh.investment,I2.4,60,If replacement - Submit cancellation instruction,Servicing Clerk,0.15,10,crm_attooh.stage_compliance,To Do
+I2.5,crm_attooh.investment,I2.5,61,When cancelled - Confirm cancellation to client,Servicing Clerk,0.15,10,crm_attooh.stage_compliance,To Do
+I2.6,crm_attooh.investment,I2.6,62,Compliance upload and mail to client,New Business Clerk,0.15,30,crm_attooh.stage_compliance,To Do
+S1.1,crm_attooh.section14,S1.1,63,Submit documents to transferring and receiving company,New Business Clerk,168,0.16,crm_attooh.stage_submission,To Do
+S1.2,crm_attooh.section14,S1.2,64,Confirm transferring company sent Form H to receiving company trustees,New Business Clerk,336,0.16,crm_attooh.stage_submission,To Do
+S1.3,crm_attooh.section14,S1.3,65,Confirm receiving company returns signed Form H to transferring company,New Business Clerk,336,0.16,crm_attooh.stage_submission,To Do
+S1.4,crm_attooh.section14,S1.4,66,Confirms transferring company sends Form J to receiving company to complete,New Business Clerk,336,0.16,crm_attooh.stage_submission,To Do
+S1.5,crm_attooh.section14,S1.5,67,Confirms transferring company to transfer funds and send ROT to receiving company,New Business Clerk,168,0.16,crm_attooh.stage_submission,To Do
+S1.6,crm_attooh.section14,S1.6,68,Confirm receiving company signs Form J and sends to transferring company,New Business Clerk,168,0.16,crm_attooh.stage_submission,To Do
+S1.7,crm_attooh.section14,S1.7,69,Confirm Funds invested by receiving company and policy schedule issued,New Business Clerk,24,0.16,crm_attooh.stage_submission,To Do
+S1.8,crm_attooh.section14,S1.8,70,Update production book,New Business Clerk,2,0.16,crm_attooh.stage_submission,To Do
+S1.9,crm_attooh.section14,S1.9,71,Confirm transfer of funds to investment house,New Business Clerk,24,0.16,crm_attooh.stage_submission,To Do
+S1.10,crm_attooh.section14,S1.10,72,Send confirmation of transfer to client,New Business Clerk,2,0.16,crm_attooh.stage_submission,To Do
+S2.1,crm_attooh.section14,S2.1,73,"Confirm documents, terms, cover",New Business Clerk,0.25,1,crm_attooh.stage_submission,To Do
+S2.2,crm_attooh.section14,S2.2,74,"If correct - ""thank you"" mail to client",New Business Clerk,0.25,0.16,crm_attooh.stage_submission,To Do
+S2.3,crm_attooh.section14,S2.3,75,Update Production book,New Business Clerk,0.25,0.16,crm_attooh.stage_submission,To Do
+S2.4,crm_attooh.section14,S2.4,76,Reminder on replacement (if applicable),Servicing Clerk,0.25,0.16,crm_attooh.stage_submission,To Do
+S2.5,crm_attooh.section14,S2.5,77,If replacement - Submit cancellation instruction,Servicing Clerk,0.25,0.16,crm_attooh.stage_submission,To Do
+S2.6,crm_attooh.section14,S2.6,78,When cancelled - Confirm cancellation to client,Servicing Clerk,0.25,0.16,crm_attooh.stage_submission,To Do
+S2.7,crm_attooh.section14,S2.7,79,Compliance upload and mail to client,New Business Clerk,0.25,0.5,crm_attooh.stage_submission,To Do
+W1.1,crm_attooh.wills,W1.1,80,Refer complex will to associate company for processing,New Business Clerk,24,0.16,crm_attooh.stage_proposal,To Do
+W1.2,crm_attooh.wills,W1.2,81,Send Will Specialist invoice to client for payment,New Business Clerk,48,0.16,crm_attooh.stage_proposal,To Do
+W1.3,crm_attooh.wills,W1.3,82,Send confirmation of payment to Will Specialist,New Business Clerk,24,0.16,crm_attooh.stage_proposal,To Do
+W1.4,crm_attooh.wills,W1.4,83,Generates simple will from template,Financial Advisor,48,0.3,crm_attooh.stage_proposal,To Do
+W2.1,crm_attooh.wills,W2.1,84,Scan and save copy of the will to client file,New Business Clerk,24,0.16,crm_attooh.stage_compliance,To Do
+W2.2,crm_attooh.wills,W2.2,85,Process original for safekeeping,New Business Clerk,24,0.16,crm_attooh.stage_compliance,To Do
+B1.1,crm_attooh.business_planning,B1.1,86,Quality check vendor app,New Business Clerk,24,0.5,crm_attooh.stage_second_engagement,To Do
+B1.2,crm_attooh.business_planning,B1.2,87,Note for replacement (yes/no),New Business Clerk,120,0.17,crm_attooh.stage_second_engagement,To Do
+B1.3,crm_attooh.business_planning,B1.3,88,Collect documentation from client/ self upload on sytem,New Business Clerk,240,0.17,crm_attooh.stage_second_engagement,To Do
+B1.4,crm_attooh.business_planning,B1.4,89,Submit documents and app to product vendor,New Business Clerk,8,0.17,crm_attooh.stage_second_engagement,To Do
+B1.5,crm_attooh.business_planning,B1.5,90,"Email ""next steps"" email to client",New Business Clerk,1,0.25,crm_attooh.stage_second_engagement,To Do
+B1.6,crm_attooh.business_planning,B1.6,91,Update production book,New Business Clerk,1,0.33,crm_attooh.stage_second_engagement,To Do
+B1.7,crm_attooh.business_planning,B1.7,92,"Check, capture and action medical requirements",New Business Clerk,48,0.33,crm_attooh.stage_second_engagement,To Do
+B1.8,crm_attooh.business_planning,B1.8,93,Insert date and time of medical appointment,New Business Clerk,24,0.17,crm_attooh.stage_second_engagement,To Do
+B1.9,crm_attooh.business_planning,B1.9,94,SMS medical app reminder to client,New Business Clerk,0.1,0,crm_attooh.stage_second_engagement,To Do
+B1.10,crm_attooh.business_planning,B1.10,95,Additional requirements (yes/no),New Business Clerk,72,0.33,crm_attooh.stage_second_engagement,To Do
+B1.11,crm_attooh.business_planning,B1.11,96,"*Outcome: Accepted, COL, defer or decline?",New Business Clerk,0,0,crm_attooh.stage_second_engagement,To Do
+B2.1,crm_attooh.business_planning,B2.1,97,"Confirm documents, terms, cover",New Business Clerk,0.15,0.75,crm_attooh.stage_compliance,To Do
+B2.2,crm_attooh.business_planning,B2.2,98,"If correct - ""thank you"" mail to client",New Business Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
+B2.3,crm_attooh.business_planning,B2.3,99,Update production book,New Business Clerk,0.25,0.16,crm_attooh.stage_compliance,To Do
+B2.4,crm_attooh.business_planning,B2.4,100,Set up meeting to get contracts signed,Diary Clerk,24,0.25,crm_attooh.stage_compliance,To Do
+B2.5,crm_attooh.business_planning,B2.5,101,"Draft, email to client and print for appointment with Client",Paraplanner,1,0.02,crm_attooh.stage_compliance,To Do
+B2.6,crm_attooh.business_planning,B2.6,102,Reminder on replacement (if applicable),New Business Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
+B2.7,crm_attooh.business_planning,B2.7,103,If replacement - Submit cancellation instruction,Servicing Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
+B2.8,crm_attooh.business_planning,B2.8,104,When cancelled - Confirm cancellation to client,Servicing Clerk,0.15,0.17,crm_attooh.stage_compliance,To Do
+B2.9,crm_attooh.business_planning,B2.9,105,Compliance upload and mail to client,New Business Clerk,0.15,0.5,crm_attooh.stage_compliance,To Do
+ST1.1,crm_attooh.short_term,ST1.1,106,Submit documents and app to product vendor,New Business Clerk,24,0.16,crm_attooh.stage_submission,To Do
+ST1.2,crm_attooh.short_term,ST1.2,107,Manage COL,New Business Clerk,24,0.3,crm_attooh.stage_submission,To Do
+ST1.3,crm_attooh.short_term,ST1.3,108,Manage NTU,New Business Clerk,24,0.3,crm_attooh.stage_submission,To Do
+ST1.4,crm_attooh.short_term,ST1.4,109,Receive confirmation from product vendor,New Business Clerk,48,0.16,crm_attooh.stage_submission,To Do
+ST2.1,crm_attooh.short_term,ST2.1,110,Send confirmation client,New Business Clerk,24,0.16,crm_attooh.stage_submission,To Do
+ST2.2,crm_attooh.short_term,ST2.2,111,Provide access to compliance auditor,New Business Clerk,0,0.16,crm_attooh.stage_submission,To Do
+H1.1,crm_attooh.health,H1.1,112,Submit documents and app to product vendor,New Business Clerk,24,0.16,crm_attooh.stage_submission,To Do
+H1.2,crm_attooh.health,H1.2,113,Manage COL,New Business Clerk,24,0.16,crm_attooh.stage_submission,To Do
+H1.3,crm_attooh.health,H1.3,114,Manage NTU,New Business Clerk,24,0.3,crm_attooh.stage_submission,To Do
+H1.4,crm_attooh.health,H1.4,115,Receive confirmation from product vendor,New Business Clerk,72,0.16,crm_attooh.stage_submission,To Do
+H2.1,crm_attooh.health,H2.1,116,Complete RoA,Financial Advisor,24,1,crm_attooh.stage_submission,To Do
+H2.2,crm_attooh.health,H2.2,117,Send confirmation to client,New Business Clerk,24,0.16,crm_attooh.stage_submission,To Do
+H2.3,crm_attooh.health,H2.3,118,Provide access to compliance auditor,New Business Clerk,24,0.16,crm_attooh.stage_submission,To Do
+T1.1,crm_attooh.trusts,T1.1,119,Submit documents and app to trust specialist,New Business Clerk,24,10,crm_attooh.stage_submission,To Do
+T1.2,crm_attooh.trusts,T1.2,120,Trust specialist invoice provided to client,New Business Clerk,48,10,crm_attooh.stage_submission,To Do
+T1.3,crm_attooh.trusts,T1.3,121,Receive payment confirmation,New Business Clerk,48,10,crm_attooh.stage_submission,To Do
+T1.4,crm_attooh.trusts,T1.4,122,Receive prepared documents from trust specialist,New Business Clerk,72,10,crm_attooh.stage_submission,To Do
+T1.5,crm_attooh.trusts,T1.5,123,Client to sign two hard copies and return to trust specialist,Client,48,30,crm_attooh.stage_submission,To Do
+T1.6,crm_attooh.trusts,T1.6,124,Trust documents submitted to Master of the Court,Trust Specialist,48,0,crm_attooh.stage_submission,To Do
+T2.1,crm_attooh.trusts,T2.1,125,Send confirmation to client when trust is registered,New Business Clerk,96,10,crm_attooh.stage_submission,To Do
+T2.2,crm_attooh.trusts,T2.2,126,Save scanned stamped trust deed to file,New Business Clerk,24,10,crm_attooh.stage_submission,To Do
+T2.3,crm_attooh.trusts,T2.3,127,Send originally stamped trust deed to client,New Business Clerk,0,0,crm_attooh.stage_submission,To Do
+G1.1,crm_attooh.gpoa,G1.1,128,Quality check template completed,New Business Clerk,24,0,crm_attooh.stage_submission,To Do
+G1.2,crm_attooh.gpoa,G1.2,129,Send confirmation of record of GPOA,New Business Clerk,24,0,crm_attooh.stage_submission,To Do
+G2.1,crm_attooh.gpoa,G2.1,130,Save GPOA to client file,New Business Clerk,24,0,crm_attooh.stage_submission,To Do

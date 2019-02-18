@@ -1,0 +1,6 @@
+# https://stackoverflow.com/a/11162362
+*.pdf  binary
+*.bmp  binary
+*.jpeg binary
+*.jpg  binary
+*.png  binary

@@ -1,0 +1,73 @@
+\documentclass{XArticle}
+
+\title{\Xlrate}
+\author{Carel van Dam}
+
+\usepackage{compeng}
+\usepackage[colorlinks]{hyperref}
+
+\usetikzlibrary{matrix}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+
+\begin{tabbing}
+\hspace{1em}\=\hspace{1em}\=\hspace{8em}\=\\\kill
+\nixpath{\xlrate}                  \>\>\> The root of the \Xlrate repository                    \+\\
+\nameref{sec:crm attooh}             \>\> The CRM addon code repository (Originally by \Attooh)   \\
+\nameref{sec:attooh SMS}             \>\> The SMS addon code repository (Originally by \Attooh)   \\
+\end{tabbing}
+
+\section{Workflow}
+
+The workflow follows a pipeline specified in the \nixfile{WorkFlows vs 0.1} file available on Isabe's G-drive account.
+The tabs service.type.activity and service.type are to be exported periodically into the files \nixfile{CRM\_atooh/data/crm.service.type} and \nixfile{CRM\_atooh/data/crm.service.type.activity} respectfully.
+These files are imported into Odoo directly to configure the pipelines in the CRM interface and it is important that the entries in the \emph{employee\_role\_id} column properly matches against the available roles specified within \Odoo/\Xlrate
+
+\section[\Attooh CRM]{\Attooh Content Resource Management} \label{sec:crm attooh}
+
+This superceeds/wraps the CRM module from \Odoo.
+
+\subsection{Data}
+
+\Odoo provides four entries by default under the.
+
+\subsection{Pipelines}
+
+\begin{tikzpicture}
+\matrix [matrix of nodes,
+ label=above:Pipeline,
+ column 1/.style={anchor=west}]
+ (pipeline) at (-3,0)
+{
+ \lstinline|prelim_fin_planning|\\
+ \lstinline|review|             \\
+ \lstinline|risk|               \\
+ \lstinline|investment|         \\
+ \lstinline|section14|          \\
+ \lstinline|wills|              \\
+ \lstinline|business_planning|  \\
+ \lstinline|short_term|         \\
+ \lstinline|health|             \\
+ \lstinline|gpoa|               \\
+};
+\matrix [matrix of nodes,
+ label=above:Stages,
+ column 1/.style={anchor=west}] 
+ (stage) at (3,0)
+{
+ \lstinline|stage_preparation|      \\
+ \lstinline|stage_first_engagement| \\
+ \lstinline|stage_proposal|         \\
+ \lstinline|stage_second_engagement|\\
+ \lstinline|stage_submission|       \\
+ \lstinline|stage_compliance|       \\
+ \lstinline|stage_accepted|         \\
+};
+\end{tikzpicture}
+
+\end{document}

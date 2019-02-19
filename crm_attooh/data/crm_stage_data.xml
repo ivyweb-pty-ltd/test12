@@ -39,7 +39,7 @@
             <field name="name">Submission</field>
             <field name="sequence">50</field>
         </record>
-        <record model="crm.stage" id="stage_compliance">
+        <record model="crm.stage" id="stage_accepted">
             <field name="name">Accepted</field>
             <field name="sequence">60</field>
         </record>

@@ -2,7 +2,7 @@
 <odoo>
 
          <record id="inherit_view_user_form" model="ir.ui.view">
-            <field name="name">res.users</field>
+            <field name="name">res.users.attooh</field>
             <field name="model">res.users</field>
             <field name="inherit_id" ref="base.view_users_form" />
             <field name="arch" type="xml">
@@ -11,8 +11,8 @@
                         <field name="is_financial_advisor" groups="crm_attooh.financial_services_manager"/>
                     </group>
                 </field>
-                <xpath expr="//page[2]" position="after">
-                    <page string="Employee Roles" attrs="{'readonly':[('is_financial_advisor','=',False)]}" groups="crm_attooh.financial_services_user">
+                <xpath expr="//page[@string='Preferences']" position="after">
+                    <page string="Employee Roles" attrs="{'readonly':[('is_financial_advisor','=',False)]}">
                         <field name="user_employee_roles_ids" groups="crm_attooh.financial_services_manager">
                             <tree editable="bottom">
                                 <field name="employee_role_id"/>

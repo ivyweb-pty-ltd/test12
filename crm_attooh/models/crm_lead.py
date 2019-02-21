@@ -395,6 +395,7 @@ class CRMActivity(models.Model):
     sequence = fields.Integer('Sequence')
     completed = fields.Boolean('Completed')
     service_type_activity_id = fields.Many2one('crm.service.type.activity',required=False)
+    reference = fields.Char(related='service_type_activity_id.reference')
     user_id = fields.Many2one('res.users',string='Assigned to User')
 #                              domain=(['user_employee_roles_ids','in',service_type_activity_id.employee_role_id]))
     mail_activity_id = fields.Many2one('mail.activity')

@@ -78,12 +78,12 @@
         <field name="name">General Query</field>
     </record>
 
-    <record id="helpdesk_vendor_engagement" model="helpdesk.stage">
+    <record id="vendor_engagement" model="helpdesk.stage">
         <field name="name">Vendor Engagement</field>
         <field name="sequence">10</field>
     </record>
 
-    <record id="helpdesk_stage_submission" model="helpdesk.stage">
+    <record id="stage_submission" model="helpdesk.stage">
         <field name="name">Submission</field>
         <field name="sequence">20</field>
     </record>

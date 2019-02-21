@@ -127,6 +127,7 @@
             <field name="arch" type="xml">
                 <tree limit="10" default_order="completed,sequence">
                     <field name="sequence" widget="handle"/>
+                    <field name="reference"/>
                     <field name="name"/>
                     <field name="user_id"/>
                     <field name="mail_activity_id"/>
